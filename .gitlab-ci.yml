@@ -1,4 +1,4 @@
-image: "gableroux/unity:latest"
+image: "gableroux/unity3d:latest"
 
 stages:
   - test
