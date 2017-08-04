@@ -2,7 +2,7 @@ image: "gableroux/unity:latest"
 
 stages:
   - test
-  - build
+#  - build
 
 .test: &test
   stage: test
@@ -21,27 +21,27 @@ test-playmode:
   variables:
     TEST_PLATFORM: playmode
 
-.build: &build
-  stage: build
-  before_script:
-    - mkdir builds
-  script:
-    - echo "todo: run build for $BUILD_TARGET"
-    # - xvfb-run --server-args="-screen 0 1024x768x24" /opt/Unity/Editor/Unity unity -projectPath $(pwd) -quit -batchmode -buildTarget $BUILD_TARGET -customBuildTarget $BUILD_TARGET -customBuildPath "./builds/StandaloneLinux64" -customBuildOptions AcceptExternalModificationsToPlayer -executeMethod BuildCommand.PerformBuild -logFile
-  only:
-    - master
-
-build-StandaloneLinux64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneLinux64
-
-build-StandaloneOSXUniversal:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneOSXUniversal
-
-build-StandaloneWindows64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneWindows64
+# .build: &build
+#   stage: build
+#   before_script:
+#     - mkdir builds
+#   script:
+#     - echo "todo: run build for $BUILD_TARGET"
+#     # - xvfb-run --server-args="-screen 0 1024x768x24" /opt/Unity/Editor/Unity unity -projectPath $(pwd) -quit -batchmode -buildTarget $BUILD_TARGET -customBuildTarget $BUILD_TARGET -customBuildPath "./builds/StandaloneLinux64" -customBuildOptions AcceptExternalModificationsToPlayer -executeMethod BuildCommand.PerformBuild -logFile
+#   only:
+#     - master
+#
+# build-StandaloneLinux64:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneLinux64
+#
+# build-StandaloneOSXUniversal:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneOSXUniversal
+#
+# build-StandaloneWindows64:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneWindows64
