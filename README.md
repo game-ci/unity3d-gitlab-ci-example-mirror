@@ -14,11 +14,16 @@ File passed to the unity3d command line as argument to create builds
 
 todo
 
-### tests
+### test files
 
-File passed to the unity3d command line as argument to execute tests
+Very basic `editmode` and `playmode` tests (all passing) can be found in [Assets/Scripts/Editor/EditModeTests](Assets/Scripts/Editor/EditModeTests) and [Assets/Scripts/Editor/PlayModeTests](Assets/Scripts/Editor/PlayModeTests)
 
-todo
+### Execute the tests
+
+```bash
+path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/results.xml -testPlatform editmode
+path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/results.xml -testPlatform playmode
+```
 
 ## License
 

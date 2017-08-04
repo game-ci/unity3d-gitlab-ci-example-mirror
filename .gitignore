@@ -32,3 +32,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Tests
+/Assets/InitTestScene*
+/Assets/InitTestScene*
+/results.xml
