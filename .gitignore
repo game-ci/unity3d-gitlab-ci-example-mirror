@@ -36,4 +36,4 @@ sysinfo.txt
 # Tests
 /Assets/InitTestScene*
 /Assets/InitTestScene*
-/results.xml
+/*results.xml
