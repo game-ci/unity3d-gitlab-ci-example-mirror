@@ -9,17 +9,17 @@ stages:
   before_script:
     - mkdir -p /root/.cache/unity3d
   script:
-    - xvfb-run --server-args="-screen 0 1024x768x24" /opt/Unity/Editor/Unity -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" -projectPath $(pwd) -batchmode -runTests -force-opengl -logFile -testResults $(pwd)/$TEST_PLATFORM-results.xml -testPlatform $TEST_PLATFORM
+    - xvfb-run --server-args="-screen 0 1024x768x24" /opt/Unity/Editor/Unity -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" -projectPath $(pwd) -batchmode -force-free -nographics -runTests -logFile -testResults $(pwd)/$TEST_PLATFORM-results.xml -testPlatform $TEST_PLATFORM
 
 test-editmode:
   <<: *test
   variables:
     TEST_PLATFORM: editmode
 
-test-playmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: playmode
+#test-playmode:
+#  <<: *test
+#  variables:
+#    TEST_PLATFORM: playmode
 
 # .build: &build
 #   stage: build
