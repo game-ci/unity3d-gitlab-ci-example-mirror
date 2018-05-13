@@ -2,46 +2,69 @@ image: "gableroux/unity3d:latest"
 
 stages:
   - test
-#  - build
+  - build
 
 .test: &test
   stage: test
   before_script:
     - mkdir -p /root/.cache/unity3d
-  script:
-    - /opt/Unity/Editor/Unity -projectPath $(pwd) -batchmode -force-free -nographics -runTests -logFile -testResults $(pwd)/$TEST_PLATFORM-results.xml -testPlatform $TEST_PLATFORM
+    - echo "$UNITY_LICENSE_CONTENT" > /root/.local/share/unity3d/Unity/Unity_lic.ulf
+  script: |
+    /opt/Unity/Editor/Unity \
+      -projectPath $(pwd) \
+      -quit \
+      -batchmode \
+      -force-free \
+      -nographics \
+      -runTests \
+      -logFile \
+      -testResults $(pwd)/$TEST_PLATFORM-results.xml \
+      -testPlatform $TEST_PLATFORM
 
 test-editmode:
   <<: *test
   variables:
     TEST_PLATFORM: editmode
 
-#test-playmode:
-#  <<: *test
-#  variables:
-#    TEST_PLATFORM: playmode
+test-playmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: playmode
 
-# .build: &build
-#   stage: build
-#   before_script:
-#     - mkdir builds
-#   script:
-#     - echo "todo: run build for $BUILD_TARGET"
-#     # - xvfb-run --server-args="-screen 0 1024x768x24" /opt/Unity/Editor/Unity unity -projectPath $(pwd) -quit -batchmode -buildTarget $BUILD_TARGET -customBuildTarget $BUILD_TARGET -customBuildPath "./builds/StandaloneLinux64" -customBuildOptions AcceptExternalModificationsToPlayer -executeMethod BuildCommand.PerformBuild -logFile
+.build: &build
+  stage: build
+  before_script:
+    - mkdir Builds
+  script: |
+    echo "Building for $BUILD_TARGET"
+    xvfb-run --server-args="-screen 0 1024x768x24" \
+      /opt/Unity/Editor/Unity \
+      -projectPath $(pwd) \
+      -quit \
+      -batchmode \
+      -buildTarget $BUILD_TARGET \
+      -customBuildTarget $BUILD_TARGET \
+      -customBuildPath "./Builds/$BUILD_TARGET" \
+      -customBuildOptions AcceptExternalModificationsToPlayer \
+      -executeMethod BuildCommand.PerformBuild \
+      -logFile
+  artifacts:
+    paths:
+      - ./Builds/
 #   only:
 #     - master
-#
-# build-StandaloneLinux64:
-#   <<: *build
-#   variables:
-#     BUILD_TARGET: StandaloneLinux64
-#
-# build-StandaloneOSXUniversal:
-#   <<: *build
-#   variables:
-#     BUILD_TARGET: StandaloneOSXUniversal
-#
-# build-StandaloneWindows64:
-#   <<: *build
-#   variables:
-#     BUILD_TARGET: StandaloneWindows64
+
+build-StandaloneLinux64:
+  <<: *build
+    variables:
+      BUILD_TARGET: StandaloneLinux64
+
+build-StandaloneOSXUniversal:
+  <<: *build
+    variables:
+      BUILD_TARGET: StandaloneOSXUniversal
+
+build-StandaloneWindows64:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneWindows64
