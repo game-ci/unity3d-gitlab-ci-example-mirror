@@ -4,12 +4,15 @@ stages:
   - test
   - build
 
-.test: &test
-  stage: test
+.unity_before_script: &unity_before_script
   before_script:
     - mkdir -p /root/.cache/unity3d
     - mkdir -p /root/.local/share/unity3d/Unity/
     - echo "$UNITY_LICENSE_CONTENT" > /root/.local/share/unity3d/Unity/Unity_lic.ulf
+
+.test: &test
+  stage: test
+  <<: *unity_before_script
   script: |
     /opt/Unity/Editor/Unity \
       -projectPath $(pwd) \
@@ -21,6 +24,9 @@ stages:
       -logFile \
       -testResults $(pwd)/$TEST_PLATFORM-results.xml \
       -testPlatform $TEST_PLATFORM
+  artifacts:
+    paths:
+      - ./$TEST_PLATFORM-results.xml
 
 test-editmode:
   <<: *test
@@ -34,10 +40,10 @@ test-playmode:
 
 .build: &build
   stage: build
-  before_script:
-    - mkdir Builds
+  <<: *unity_before_script
   script: |
     echo "Building for $BUILD_TARGET"
+    mkdir -p ./Builds/$BUILD_TARGET
     xvfb-run --server-args="-screen 0 1024x768x24" \
       /opt/Unity/Editor/Unity \
       -projectPath $(pwd) \
