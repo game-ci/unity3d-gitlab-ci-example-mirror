@@ -56,13 +56,13 @@ test-playmode:
 
 build-StandaloneLinux64:
   <<: *build
-    variables:
-      BUILD_TARGET: StandaloneLinux64
+  variables:
+    BUILD_TARGET: StandaloneLinux64
 
 build-StandaloneOSXUniversal:
   <<: *build
-    variables:
-      BUILD_TARGET: StandaloneOSXUniversal
+  variables:
+    BUILD_TARGET: StandaloneOSXUniversal
 
 build-StandaloneWindows64:
   <<: *build
