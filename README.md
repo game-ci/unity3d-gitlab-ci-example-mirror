@@ -1,5 +1,7 @@
 # unity3d gitlab-ci example
 
+[![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
+
 This project is a PoC to run unity3d tests and builds inside gitlab-ci using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/).
 
 ## Point of interest
