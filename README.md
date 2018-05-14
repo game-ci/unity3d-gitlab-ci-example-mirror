@@ -66,7 +66,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     ```
 
 5. Copy xml content and save as `unity3d.alf`
-6. Open https://license.unity3d.com/manualuse
+6. Open https://license.unity3d.com/manual
 7. Upload `unity3d.alf` for manual activation
 8. Download `Unity_v2017.x.ulf`
 9. Copy the content of `Unity_v2017.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
