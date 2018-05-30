@@ -3,6 +3,7 @@ image: "gableroux/unity3d:latest"
 stages:
   - test
   - build
+  - deploy
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -75,3 +76,19 @@ build-StandaloneWindows64:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneWindows64
+
+build-WebGL:
+  <<: *build
+  variables:
+    BUILD_TARGET: WebGL
+
+pages:
+  stage: deploy
+  script:
+   - ls -la
+  artifacts:
+    paths:
+    - ./Builds/WebGL
+    # - public
+#  only:
+#   - master
