@@ -2,9 +2,9 @@
 
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 
-This project is a PoC to run unity3d tests and builds inside gitlab-ci using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/).
+This project is a PoC to run unity3d tests and builds inside gitlab-ci using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build gets published to [gitlab-pages](https://about.gitlab.com/features/pages/)!
 
-## Point of interest
+## Points of interest
 
 ### gitlab-ci
 
@@ -20,7 +20,11 @@ See [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs)
 
 Very basic `editmode` and `playmode` tests (all passing) can be found in [Assets/Scripts/Editor/EditModeTests](Assets/Scripts/Editor/EditModeTests) and [Assets/Scripts/Editor/PlayModeTests](Assets/Scripts/Editor/PlayModeTests)
 
-### Execute the tests
+### CI Pipelines and artifacts
+
+See [project's pipelines](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/pipelines) which contains **built artifacts** 🎉 .
+
+## How to execute the tests
 
 For current project, outside of docker, one can run the tests from command line as usual this way:
 
@@ -72,6 +76,19 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 9. Copy the content of `Unity_v2017.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
 
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+
+## How to add build targets
+
+Update [`.gitlab-ci.yml`](.gitlab-ci.yml) by adding a build section like this:
+
+```yaml
+build-StandaloneWindows64:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneWindows64
+```
+
+Supported build targets can be found [here](https://docs.unity3d.com/ScriptReference/BuildTarget.html)
 
 ## License
 

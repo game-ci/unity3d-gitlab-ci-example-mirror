@@ -83,12 +83,13 @@ build-WebGL:
     BUILD_TARGET: WebGL
 
 pages:
+  image: alpine:latest
   stage: deploy
   script:
-   - ls -la
+    - mv ./Builds/WebGL public
   artifacts:
     paths:
-    - ./Builds/WebGL
-    # - public
-#  only:
-#   - master
+    - public
+  only:
+    - master
+
