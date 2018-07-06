@@ -5,6 +5,9 @@ stages:
   - build
   - deploy
 
+variables:
+  BUILD_NAME: ExampleProjectName
+
 .unity_before_script: &unity_before_script
   before_script:
     - mkdir -p /root/.cache/unity3d
@@ -42,9 +45,11 @@ test-playmode:
 .build: &build
   stage: build
   <<: *unity_before_script
+  variables:
   script: |
     echo "Building for $BUILD_TARGET"
-    mkdir -p ./Builds/$BUILD_TARGET
+    export BUILD_PATH=./Builds/$BUILD_TARGET/
+    mkdir -p $BUILD_PATH
     xvfb-run --server-args="-screen 0 1024x768x24" \
       /opt/Unity/Editor/Unity \
       -projectPath $(pwd) \
@@ -52,15 +57,13 @@ test-playmode:
       -batchmode \
       -buildTarget $BUILD_TARGET \
       -customBuildTarget $BUILD_TARGET \
-      -customBuildPath "./Builds/$BUILD_TARGET" \
+      -customBuildName $BUILD_NAME \
+      -customBuildPath $BUILD_PATH \
       -customBuildOptions AcceptExternalModificationsToPlayer \
       -executeMethod BuildCommand.PerformBuild \
       -logFile
-    ls -la ./Builds/
-    ls -la ./Builds/*
-  after_script:
-    - ls -la ./Builds/$BUILD_TARGET
-    - \[ -n "$(ls -A ./Builds/$BUILD_TARGET)" \] # fail job if build is empty
+    ls -la $BUILD_PATH
+    [ -n "$(ls -A $BUILD_PATH)" ] # fail job if build folder is empty
   
   artifacts:
     paths:
@@ -77,9 +80,6 @@ build-StandaloneOSX:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneOSX
-  after_script:
-    - ls -la ./Builds/$BUILD_TARGET.app
-    - \[ -n "$(ls -A ./Builds/$BUILD_TARGET.app)" \] # fail job if build is empty
 
 build-StandaloneWindows64:
   <<: *build

@@ -51,6 +51,23 @@ static class BuildCommand
 		return buildPath;
 	}
 
+	static string GetBuildName ()
+	{
+		string buildName = GetArgument ("customBuildName");
+		Console.WriteLine (":: Received customBuildName " + buildName);
+		if (buildName == "") {
+			throw new Exception ("customBuildName argument is missing");
+		}
+		return buildName;
+	}
+
+	static string GetFixedBuildPath (BuildTarget buildTarget, string buildPath, string buildName) {
+		if (buildTarget.ToString().ToLower().Contains("windows")) {
+			buildName = buildName + ".exe";
+		}
+		return buildPath + buildName;
+	}
+
 	static BuildOptions GetBuildOptions ()
 	{
 		string buildOptions = GetArgument ("customBuildOptions");
@@ -92,7 +109,12 @@ static class BuildCommand
 		//EditorSetup.AndroidSdkRoot = getEnv ("ANDROID_SDK_HOME");
 		//EditorSetup.JdkRoot = getEnv ("JAVA_HOME");
 		//EditorSetup.AndroidNdkRoot = getEnv ("ANDROID_NDK_HOME");
-		BuildPipeline.BuildPlayer (GetEnabledScenes (), GetBuildPath (), GetBuildTarget (), GetBuildOptions ());
+		var buildTarget = GetBuildTarget ();
+		var buildPath = GetBuildPath ();
+		var buildName = GetBuildName ();
+		var fixedBuildPath = GetFixedBuildPath (buildTarget, buildPath, buildName);
+
+		BuildPipeline.BuildPlayer (GetEnabledScenes (), fixedBuildPath, buildTarget, GetBuildOptions ());
 		Console.WriteLine (":: Done with build");
 	}
 }
