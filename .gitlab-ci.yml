@@ -82,10 +82,10 @@ build-StandaloneLinux64:
 #   variables:
 #     BUILD_TARGET: StandaloneOSX
 
-build-OSXUniversal:
+build-StandaloneOSXUniversal:
   <<: *build
   variables:
-    BUILD_TARGET: OSXUniversal
+    BUILD_TARGET: StandaloneOSXUniversal
 
 build-StandaloneWindows64:
   <<: *build
