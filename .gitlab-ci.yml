@@ -59,7 +59,7 @@ test-playmode:
     ls -la ./Builds/
     ls -la ./Builds/$BUILD_TARGET
     [ -n "$(ls -A ./Builds/$BUILD_TARGET)" ] # fail job if build is empty
-   artifacts:
+  artifacts:
     paths:
       - ./Builds/
 #   only:
