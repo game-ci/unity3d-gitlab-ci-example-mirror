@@ -1,4 +1,4 @@
-image: "gableroux/unity3d:latest"
+image: "gableroux/unity3d:2017.1.0xf3"
 
 stages:
   - test
@@ -76,10 +76,16 @@ build-StandaloneLinux64:
   variables:
     BUILD_TARGET: StandaloneLinux64
 
-build-StandaloneOSX:
+# todo: use me for > 2017.2
+# build-StandaloneOSX:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneOSX
+
+build-OSXUniversal:
   <<: *build
   variables:
-    BUILD_TARGET: StandaloneOSX
+    BUILD_TARGET: OSXUniversal
 
 build-StandaloneWindows64:
   <<: *build
