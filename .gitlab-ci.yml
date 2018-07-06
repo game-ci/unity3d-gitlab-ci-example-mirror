@@ -1,9 +1,12 @@
-image: "gableroux/unity3d:latest"
+image: "gableroux/unity3d:2017.1.0xf3"
 
 stages:
   - test
   - build
   - deploy
+
+variables:
+  BUILD_NAME: ExampleProjectName
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -42,9 +45,11 @@ test-playmode:
 .build: &build
   stage: build
   <<: *unity_before_script
+  variables:
   script: |
     echo "Building for $BUILD_TARGET"
-    mkdir -p ./Builds/$BUILD_TARGET
+    export BUILD_PATH=./Builds/$BUILD_TARGET/
+    mkdir -p $BUILD_PATH
     xvfb-run --server-args="-screen 0 1024x768x24" \
       /opt/Unity/Editor/Unity \
       -projectPath $(pwd) \
@@ -52,10 +57,14 @@ test-playmode:
       -batchmode \
       -buildTarget $BUILD_TARGET \
       -customBuildTarget $BUILD_TARGET \
-      -customBuildPath "./Builds/$BUILD_TARGET" \
+      -customBuildName $BUILD_NAME \
+      -customBuildPath $BUILD_PATH \
       -customBuildOptions AcceptExternalModificationsToPlayer \
       -executeMethod BuildCommand.PerformBuild \
       -logFile
+    ls -la $BUILD_PATH
+    [ -n "$(ls -A $BUILD_PATH)" ] # fail job if build folder is empty
+  
   artifacts:
     paths:
       - ./Builds/
@@ -66,6 +75,12 @@ build-StandaloneLinux64:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneLinux64
+
+# todo: use me for > 2017.2
+# build-StandaloneOSX:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneOSX
 
 build-StandaloneOSXUniversal:
   <<: *build
@@ -92,4 +107,3 @@ pages:
     - public
   only:
     - master
-

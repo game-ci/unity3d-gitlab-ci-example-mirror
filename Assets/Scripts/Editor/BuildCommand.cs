@@ -36,7 +36,6 @@ static class BuildCommand
 			// side effect to fix android build system:
 			EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Internal;
 			#endif
-			return BuildTarget.StandaloneOSXUniversal;
 		}
 
 		return ToEnum<BuildTarget> (buildTargetName, BuildTarget.NoTarget);
@@ -50,6 +49,26 @@ static class BuildCommand
 			throw new Exception ("customBuildPath argument is missing");
 		}
 		return buildPath;
+	}
+
+	static string GetBuildName ()
+	{
+		string buildName = GetArgument ("customBuildName");
+		Console.WriteLine (":: Received customBuildName " + buildName);
+		if (buildName == "") {
+			throw new Exception ("customBuildName argument is missing");
+		}
+		return buildName;
+	}
+
+	static string GetFixedBuildPath (BuildTarget buildTarget, string buildPath, string buildName) {
+		if (buildTarget.ToString().ToLower().Contains("windows")) {
+			buildName = buildName + ".exe";
+		} else if (buildTarget.ToString().ToLower().Contains("webgl")) {
+			// webgl produces a folder with index.html inside, there is no executable name for this buildTarget
+			buildName = "";
+		}
+		return buildPath + buildName;
 	}
 
 	static BuildOptions GetBuildOptions ()
@@ -93,7 +112,12 @@ static class BuildCommand
 		//EditorSetup.AndroidSdkRoot = getEnv ("ANDROID_SDK_HOME");
 		//EditorSetup.JdkRoot = getEnv ("JAVA_HOME");
 		//EditorSetup.AndroidNdkRoot = getEnv ("ANDROID_NDK_HOME");
-		BuildPipeline.BuildPlayer (GetEnabledScenes (), GetBuildPath (), GetBuildTarget (), GetBuildOptions ());
+		var buildTarget = GetBuildTarget ();
+		var buildPath = GetBuildPath ();
+		var buildName = GetBuildName ();
+		var fixedBuildPath = GetFixedBuildPath (buildTarget, buildPath, buildName);
+
+		BuildPipeline.BuildPlayer (GetEnabledScenes (), fixedBuildPath, buildTarget, GetBuildOptions ());
 		Console.WriteLine (":: Done with build");
 	}
 }
