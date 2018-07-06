@@ -25,7 +25,7 @@ stages:
       -logFile \
       -testResults $(pwd)/$TEST_PLATFORM-results.xml \
       -testPlatform $TEST_PLATFORM
- artifacts:
+  artifacts:
     paths:
       - ./$TEST_PLATFORM-results.xml
 
