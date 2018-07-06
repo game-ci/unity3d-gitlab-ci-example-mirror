@@ -36,7 +36,7 @@ static class BuildCommand
 			// side effect to fix android build system:
 			EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Internal;
 			#endif
-			return BuildTarget.StandaloneOSXUniversal;
+			return BuildTarget.StandaloneOSX;
 		}
 
 		return ToEnum<BuildTarget> (buildTargetName, BuildTarget.NoTarget);
