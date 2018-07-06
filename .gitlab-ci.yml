@@ -57,8 +57,10 @@ test-playmode:
       -executeMethod BuildCommand.PerformBuild \
       -logFile
     ls -la ./Builds/
-    ls -la ./Builds/$BUILD_TARGET
-    [ -n "$(ls -A ./Builds/$BUILD_TARGET)" ] # fail job if build is empty
+    ls -la ./Builds/*
+  after_script:
+    - ls -la ./Builds/$BUILD_TARGET
+    - [ -n "$(ls -A ./Builds/$BUILD_TARGET)" ] # fail job if build is empty
   artifacts:
     paths:
       - ./Builds/
@@ -70,10 +72,13 @@ build-StandaloneLinux64:
   variables:
     BUILD_TARGET: StandaloneLinux64
 
-build-StandaloneOSXUniversal:
+build-StandaloneOSX:
   <<: *build
   variables:
-    BUILD_TARGET: StandaloneOSXUniversal
+    BUILD_TARGET: StandaloneOSX
+  after_script:
+    - ls -la ./Builds/$BUILD_TARGET.app
+    - [ -n "$(ls -A ./Builds/$BUILD_TARGET.app)" ] # fail job if build is empty
 
 build-StandaloneWindows64:
   <<: *build
