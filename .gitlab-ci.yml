@@ -25,7 +25,7 @@ stages:
       -logFile \
       -testResults $(pwd)/$TEST_PLATFORM-results.xml \
       -testPlatform $TEST_PLATFORM
-  artifacts:
+ artifacts:
     paths:
       - ./$TEST_PLATFORM-results.xml
 
@@ -56,7 +56,10 @@ test-playmode:
       -customBuildOptions AcceptExternalModificationsToPlayer \
       -executeMethod BuildCommand.PerformBuild \
       -logFile
-  artifacts:
+    ls -la ./Builds/
+    ls -la ./Builds/$BUILD_TARGET
+    [ -n "$(ls -A ./Builds/$BUILD_TARGET)" ] # fail job if build is empty
+   artifacts:
     paths:
       - ./Builds/
 #   only:
