@@ -60,7 +60,8 @@ test-playmode:
     ls -la ./Builds/*
   after_script:
     - ls -la ./Builds/$BUILD_TARGET
-    - [ -n "$(ls -A ./Builds/$BUILD_TARGET)" ] # fail job if build is empty
+    - \[ -n "$(ls -A ./Builds/$BUILD_TARGET)" \] # fail job if build is empty
+  
   artifacts:
     paths:
       - ./Builds/
@@ -78,7 +79,7 @@ build-StandaloneOSX:
     BUILD_TARGET: StandaloneOSX
   after_script:
     - ls -la ./Builds/$BUILD_TARGET.app
-    - [ -n "$(ls -A ./Builds/$BUILD_TARGET.app)" ] # fail job if build is empty
+    - \[ -n "$(ls -A ./Builds/$BUILD_TARGET.app)" \] # fail job if build is empty
 
 build-StandaloneWindows64:
   <<: *build
@@ -100,4 +101,3 @@ pages:
     - public
   only:
     - master
-
