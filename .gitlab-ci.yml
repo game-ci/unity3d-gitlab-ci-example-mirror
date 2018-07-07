@@ -28,8 +28,7 @@ variables:
       -testResults $(pwd)/$TEST_PLATFORM-results.xml \
       -testPlatform $TEST_PLATFORM
     ls ./$TEST_PLATFORM-results.xml
-    # pip install yq==2.6.0
-    # xq .'"test-run"."@result"' | grep "Passed"
+    cat ./$TEST_PLATFORM-results.xml | grep test-run | grep Passed
   artifacts:
     paths:
       - ./$TEST_PLATFORM-results.xml
