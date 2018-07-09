@@ -46,7 +46,6 @@ test-playmode:
 .build: &build
   stage: build
   <<: *unity_before_script
-  variables:
   script: |
     echo "Building for $BUILD_TARGET"
     export BUILD_PATH=./Builds/$BUILD_TARGET/
