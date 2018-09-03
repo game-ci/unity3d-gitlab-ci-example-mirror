@@ -2,11 +2,11 @@
 using NUnit.Framework;
 using System.Collections;
 
-public class PlayModeExampleTest
+public class EditModeExampleTests
 {
 
 	[Test]
-	public void PlayModeExampleTestSimplePasses ()
+	public void EditModeExampleTestSimplePasses ()
 	{
 		// Use the Assert class to test conditions.
 		Assert.True(true);
@@ -15,7 +15,7 @@ public class PlayModeExampleTest
 	// A UnityTest behaves like a coroutine in PlayMode
 	// and allows you to yield null to skip a frame in EditMode
 	[UnityTest]
-	public IEnumerator PlayModeExampleTestWithEnumeratorPasses ()
+	public IEnumerator EditModeExampleTestWithEnumeratorPasses ()
 	{
 		// Use the Assert class to test conditions.
 		// yield to skip a frame
