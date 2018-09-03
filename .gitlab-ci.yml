@@ -1,4 +1,4 @@
-image: "gableroux/unity3d:2017.1.0xf3"
+image: "gableroux/unity3d:2018.1.3f1"
 
 stages:
   - test
@@ -19,6 +19,7 @@ variables:
   <<: *unity_before_script
   script: |
     /opt/Unity/Editor/Unity \
+      -quit \
       -projectPath $(pwd) \
       -batchmode \
       -force-free \
