@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 0130c2bf03bfa8642a4d275a8aba0eef
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: MaleBaseMesh:Head
     100002: MaleBaseMesh:HeadTop_End
@@ -112,16 +112,21 @@ ModelImporter:
     7400004: strafe_right_45
     7400006: strafe_left_45
     9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 002' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar to
@@ -129,12 +134,15 @@ ModelImporter:
       transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: strafe_right
@@ -670,13 +678,18 @@ ModelImporter:
     globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -686,9 +699,11 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human:
     - boneName: MaleBaseMesh:Hips
       humanName: Hips
@@ -1028,265 +1043,265 @@ ModelImporter:
         modified: 0
     skeleton:
     - name: Strafe(Clone)
+      parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Hips
+      parentName: 
       position: {x: -0.0010136749, y: 1.0417384, z: -0.0031359377}
       rotation: {x: -0.4816657, y: 0.4681493, z: -0.5312494, w: 0.51634145}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftUpLeg
+      parentName: 
       position: {x: 0.0628202, y: -0.009657169, z: -0.08007939}
       rotation: {x: -0.0029406652, y: 0.03037003, z: 0.9995206, w: -0.0052549285}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftLeg
+      parentName: 
       position: {x: -0.40885338, y: 1.3322676e-17, z: 1.7763568e-17}
       rotation: {x: 0.0063080858, y: -0.005114581, z: 0.046046697, w: 0.9989063}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftFoot
+      parentName: 
       position: {x: -0.46714023, y: -6.3948843e-16, z: -1.0658141e-16}
       rotation: {x: -0.004284285, y: 0.0010438107, z: -0.47466576, w: 0.8801551}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftToeBase
+      parentName: 
       position: {x: -0.1715372, y: 7.105427e-17, z: 0}
       rotation: {x: 0.0021791693, y: 0.0064075263, z: -0.32197893, w: 0.9467227}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftToe_End
+      parentName: 
       position: {x: -0.059487265, y: 3.3893567e-17, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightUpLeg
+      parentName: 
       position: {x: 0.062365316, y: 0.006322635, z: 0.082815684}
       rotation: {x: 0.0008132306, y: 0.06737894, z: 0.9977145, w: -0.005020587}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightLeg
+      parentName: 
       position: {x: -0.40885338, y: -7.5495166e-17, z: -8.8817837e-17}
       rotation: {x: -0.0063019753, y: 0.0051147137, z: 0.046050355, w: 0.99890614}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightFoot
+      parentName: 
       position: {x: -0.46714023, y: -7.549516e-16, z: 8.8817837e-17}
       rotation: {x: 0.0042143688, y: -0.0009090935, z: -0.47467119, w: 0.8801527}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightToeBase
+      parentName: 
       position: {x: -0.1715372, y: 7.105427e-17, z: -1.7763568e-17}
       rotation: {x: -0.008587778, y: -0.025409266, z: -0.3236698, w: 0.9457899}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightToe_End
+      parentName: 
       position: {x: -0.059438985, y: -0.00022609222, z: 0.0023855728}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Spine
+      parentName: 
       position: {x: -0.09469104, y: -3.1086245e-17, z: -3.8302694e-17}
       rotation: {x: -0.00000004029931, y: -0.00000017463836, z: -0.0016361101, w: 0.9999987}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Spine1
+      parentName: 
       position: {x: -0.099083625, y: 1.3322676e-16, z: -2.0497676e-10}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Spine2
+      parentName: 
       position: {x: -0.11323839, y: 7.687768e-11, z: -2.3642902e-10}
       rotation: {x: -0.020232163, y: -0.00084299274, z: -0.009909936, w: 0.99974585}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftShoulder
+      parentName: 
       position: {x: -0.091702364, y: -0.004228856, z: -0.06147276}
       rotation: {x: 0.47926772, y: -0.49159512, z: 0.54606885, w: 0.4800474}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftArm
+      parentName: 
       position: {x: -0.12384196, y: 2.842171e-16, z: -4.440892e-18}
       rotation: {x: 0.00038744297, y: 0.003781595, z: 0.0024216885, w: 0.99998987}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftForeArm
+      parentName: 
       position: {x: -0.2803106, y: -5.684342e-16, z: 8.8817837e-17}
       rotation: {x: -0.000022134518, y: -0.0000012886796, z: -0.048916098, w: 0.9988029}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHand
+      parentName: 
       position: {x: -0.27268064, y: 0, z: 1.3322676e-17}
       rotation: {x: -5.483174e-12, y: -0.0000000011275268, z: -4.419635e-11, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandIndex1
+      parentName: 
       position: {x: -0.10737077, y: 0.0016333184, z: 0.036185764}
       rotation: {x: 0.022600077, y: 0.04023736, z: -0.02909953, w: 0.9985106}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandIndex2
+      parentName: 
       position: {x: -0.02803537, y: 0, z: 1.7763568e-17}
       rotation: {x: 0.00064978993, y: -0.028554168, z: 0.029626366, w: 0.99915296}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandIndex3
+      parentName: 
       position: {x: -0.02766384, y: -5.684342e-16, z: -3.5527136e-17}
       rotation: {x: -0.00017699527, y: -0.0036338589, z: 0.022071619, w: 0.9997498}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandIndex4
+      parentName: 
       position: {x: -0.025443517, y: 2.842171e-16, z: 8.881784e-18}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandMiddle1
+      parentName: 
       position: {x: -0.10926422, y: 0.0051515196, z: 0.012594561}
       rotation: {x: 0.012576205, y: 0.0072947815, z: -0.0067083044, w: 0.9998718}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandPinky1
+      parentName: 
       position: {x: -0.10630969, y: 0.0031849649, z: -0.03350989}
       rotation: {x: -0.009035791, y: -0.002431605, z: -0.012293664, w: 0.9998807}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandRing1
+      parentName: 
       position: {x: -0.10945778, y: 0.006004725, z: -0.011718286}
       rotation: {x: -0.028727062, y: 0.01728301, z: -0.038346954, w: 0.99870193}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandRing2
+      parentName: 
       position: {x: -0.027187204, y: 0, z: 1.2767564e-17}
       rotation: {x: 0.0000072333637, y: -0.0050851223, z: 0.039693598, w: 0.99919903}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandRing3
+      parentName: 
       position: {x: -0.023403198, y: -2.842171e-16, z: -4.440892e-18}
       rotation: {x: 0.000066837, y: -0.00041876413, z: 0.020416033, w: 0.9997915}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandRing4
+      parentName: 
       position: {x: -0.02391584, y: -2.842171e-16, z: -1.9984014e-17}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandThumb1
+      parentName: 
       position: {x: -0.03646904, y: -0.008491635, z: 0.027794117}
       rotation: {x: 0.692772, y: 0.28320995, z: -0.25624704, w: 0.6117163}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandThumb2
+      parentName: 
       position: {x: -0.03724177, y: -1.4210854e-16, z: -5.684342e-16}
       rotation: {x: -0.7027174, y: 0.021714324, z: 0.025067419, w: 0.7106958}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandThumb3
+      parentName: 
       position: {x: -0.027660808, y: -2.842171e-16, z: 0}
       rotation: {x: -0.01595218, y: -0.023435961, z: 0.021490157, w: 0.99936706}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:LeftHandThumb4
+      parentName: 
       position: {x: -0.025120968, y: 0, z: 1.4210854e-16}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Neck
+      parentName: 
       position: {x: -0.13370408, y: 1.9539925e-16, z: -2.1094237e-17}
       rotation: {x: -0.028601967, y: 0.0017838266, z: 0.11354802, w: 0.9931191}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:Head
+      parentName: 
       position: {x: -0.10065695, y: 3.5527136e-17, z: 8.6736174e-19}
       rotation: {x: -0.000000006396359, y: 0.0000000025721156, z: -0.022592071, w: 0.9997448}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:HeadTop_End
+      parentName: 
       position: {x: -0.1803156, y: 1.4210854e-16, z: -2.558556e-10}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightShoulder
+      parentName: 
       position: {x: -0.09206519, y: 0.002802562, z: 0.061219003}
       rotation: {x: -0.5075589, y: 0.52061397, z: 0.5156302, w: 0.45328867}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightArm
+      parentName: 
       position: {x: -0.12384196, y: -2.842171e-16, z: 3.1530333e-15}
       rotation: {x: -0.00038779384, y: -0.0037816665, z: 0.0024213714, w: 0.99998987}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightForeArm
+      parentName: 
       position: {x: -0.2803106, y: -5.684342e-16, z: -1.02140514e-16}
       rotation: {x: 0.000023937913, y: 0.0000012076496, z: -0.04891609, w: 0.9988029}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHand
+      parentName: 
       position: {x: -0.27268064, y: 2.842171e-16, z: 2.2204459e-17}
       rotation: {x: 4.208614e-12, y: 2.2078696e-14, z: 4.6565704e-10, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandIndex1
+      parentName: 
       position: {x: -0.10737077, y: 0.0016331875, z: -0.036185768}
       rotation: {x: -0.022605544, y: -0.040237308, z: -0.029099608, w: 0.9985105}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandIndex2
+      parentName: 
       position: {x: -0.02803537, y: 0, z: -1.7763568e-17}
       rotation: {x: -0.0006498062, y: 0.028554572, z: 0.02962769, w: 0.99915284}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandIndex3
+      parentName: 
       position: {x: -0.02766384, y: 0, z: 8.881784e-18}
       rotation: {x: 0.00017699249, y: 0.003633699, z: 0.022071637, w: 0.9997498}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandIndex4
+      parentName: 
       position: {x: -0.025443517, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandMiddle1
+      parentName: 
       position: {x: -0.10926422, y: 0.005151474, z: -0.012594579}
       rotation: {x: -0.012574338, y: -0.007294818, z: -0.006708264, w: 0.99987185}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandRing1
+      parentName: 
       position: {x: -0.10945778, y: 0.0060047675, z: 0.011718265}
       rotation: {x: 0.028726779, y: -0.017283142, z: -0.0383469, w: 0.998702}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandRing2
+      parentName: 
       position: {x: -0.027187204, y: -2.842171e-16, z: -4.6074255e-17}
       rotation: {x: -0.0000071853783, y: 0.0050854078, z: 0.039693695, w: 0.999199}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandRing3
+      parentName: 
       position: {x: -0.023403198, y: 2.842171e-16, z: 1.11022296e-17}
       rotation: {x: -0.00006684077, y: 0.0004188228, z: 0.020416034, w: 0.9997915}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandThumb1
+      parentName: 
       position: {x: -0.03646904, y: -0.008491736, z: -0.027794085}
       rotation: {x: -0.6927741, y: -0.28320992, z: -0.25624666, w: 0.6117138}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandThumb2
+      parentName: 
       position: {x: -0.03724177, y: 1.4210854e-16, z: 0}
       rotation: {x: 0.70271945, y: -0.021711312, z: 0.025063416, w: 0.7106939}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandThumb3
+      parentName: 
       position: {x: -0.027660808, y: -2.842171e-16, z: 0}
       rotation: {x: 0.015952189, y: 0.023436034, z: 0.021490162, w: 0.99936706}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     - name: MaleBaseMesh:RightHandThumb4
+      parentName: 
       position: {x: -0.025120968, y: -2.842171e-16, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -1295,7 +1310,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 3
   humanoidOversampling: 1
