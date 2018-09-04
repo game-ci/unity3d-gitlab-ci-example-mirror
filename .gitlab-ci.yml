@@ -21,10 +21,11 @@ variables:
     xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
       /opt/Unity/Editor/Unity \
         -projectPath $(pwd) \
+        -batchmode \
         -runTests \
-        -testPlatform $TEST_PLATFORM \
+        -logFile \
         -testResults $(pwd)/$TEST_PLATFORM-results.xml \
-        -batchmode
+        -testPlatform $TEST_PLATFORM
     UNITY_EXIT_CODE=$?
     if [ $UNITY_EXIT_CODE -eq 0 ]; then
       echo "Run succeeded, no failures occurred"
