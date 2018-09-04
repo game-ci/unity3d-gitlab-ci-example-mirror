@@ -2,7 +2,7 @@ image: "gableroux/unity3d:2018.2.6f1"
 
 stages:
 - test
-# - build
+- build
 - deploy
 
 variables:
@@ -40,7 +40,7 @@ variables:
     exit $UNITY_TEST_EXIT_CODE
   artifacts:
     paths:
-      - $(pwd)/$TEST_PLATFORM-results.xml
+    - $(pwd)/$TEST_PLATFORM-results.xml
 
 test-editmode:
   <<: *test
@@ -53,8 +53,9 @@ test-playmode:
     TEST_PLATFORM: playmode
 
 .build: &build
-  # stage: build
-  stage: test # reusing same stage to do everything in parallel reduces overall time
+  stage: build
+  #tip: you can reuse same stage to do everything in parallel and reduce overall time
+  # stage: test
   <<: *unity_before_script
   script: |
     echo "Building for $BUILD_TARGET"
@@ -78,7 +79,7 @@ test-playmode:
   artifacts:
     paths:
     - ./Builds/
-#uncomment following lines if you'd like to build only on master branch
+#tip: uncomment following lines if you'd like to build only on master branch
 #   only:
 #     - master
 
@@ -92,7 +93,7 @@ build-StandaloneOSX:
   variables:
     BUILD_TARGET: StandaloneOSX
 
-#For versions < 2017.2:
+#Note: build target names changed in recent versions, use this for versions < 2017.2:
 # build-StandaloneOSXUniversal:
 #   <<: *build
 #   variables:
