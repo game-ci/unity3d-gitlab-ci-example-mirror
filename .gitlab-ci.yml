@@ -22,7 +22,6 @@ variables:
     /opt/Unity/Editor/Unity \
       -projectPath $(pwd) \
       -batchmode \
-      -force-free \
       -runTests \
       -logFile \
       -testResults $(pwd)/$TEST_PLATFORM-results.xml \
