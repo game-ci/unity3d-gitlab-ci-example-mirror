@@ -2,7 +2,7 @@ image: "gableroux/unity3d:2018.1.3f1"
 
 stages:
   - test
-  - build
+  # - build
   - deploy
 
 variables:
@@ -53,7 +53,8 @@ test-playmode:
     TEST_PLATFORM: playmode
 
 .build: &build
-  stage: build
+  # stage: build
+  stage: test # reusing same stage to do everything in parallel reduces overall time
   <<: *unity_before_script
   script: |
     echo "Building for $BUILD_TARGET"
