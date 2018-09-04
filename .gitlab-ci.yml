@@ -1,31 +1,30 @@
 image: "gableroux/unity3d:2018.1.3f1"
 
 stages:
-  - test
-  # - build
-  - deploy
+- test
+# - build
+- deploy
 
 variables:
   BUILD_NAME: ExampleProjectName
 
 .unity_before_script: &unity_before_script
   before_script:
-    - mkdir -p /root/.cache/unity3d
-    - mkdir -p /root/.local/share/unity3d/Unity/
-    - echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
+  - mkdir -p /root/.cache/unity3d
+  - mkdir -p /root/.local/share/unity3d/Unity/
+  - echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
 
 .test: &test
   stage: test
   <<: *unity_before_script
   script: |
     xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-    /opt/Unity/Editor/Unity \
-      -projectPath $(pwd) \
-      -batchmode \
-      -runTests \
-      -logFile \
-      -testResults $(pwd)/$TEST_PLATFORM-results.xml \
-      -testPlatform $TEST_PLATFORM
+      /opt/Unity/Editor/Unity \
+        -projectPath $(pwd) \
+        -runTests \
+        -testPlatform $TEST_PLATFORM \
+        -testResults $(pwd)/$TEST_PLATFORM-results.xml \
+        -batchmode
     UNITY_EXIT_CODE=$?
     if [ $UNITY_EXIT_CODE -eq 0 ]; then
       echo "Run succeeded, no failures occurred"
@@ -77,7 +76,7 @@ test-playmode:
   
   artifacts:
     paths:
-      - ./Builds/
+    - ./Builds/
 #uncomment following lines if you'd like to build only on master branch
 #   only:
 #     - master
@@ -112,9 +111,9 @@ pages:
   image: alpine:latest
   stage: deploy
   script:
-    - mv ./Builds/WebGL public
+  - mv ./Builds/WebGL public
   artifacts:
     paths:
     - public
   only:
-    - master
+  - master
