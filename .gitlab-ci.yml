@@ -1,4 +1,4 @@
-image: "gableroux/unity3d:2018.1.3f1"
+image: "gableroux/unity3d:2018.2.6f1"
 
 stages:
 - test
