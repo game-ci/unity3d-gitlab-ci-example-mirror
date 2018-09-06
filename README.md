@@ -1,37 +1,79 @@
-# unity3d gitlab-ci example
+# unity3d ci example
 
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 
-This project is a PoC to run unity3d tests and builds inside gitlab-ci using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build gets published to [gitlab-pages](https://about.gitlab.com/features/pages/)!
+This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
+
+* [github](https://github.com/gableroux/unity3d-ci-example)
+* [gitlab](https://gitlab.com/gableroux/unity3d-gitlab-ci-example)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Getting started](#getting-started)
+- [Points of interest](#points-of-interest)
+    - [Build script](#build-script)
+    - [CI Configuration](#ci-configuration)
+        - [gitlab-ci](#gitlab-ci)
+        - [CircleCI](#circleci)
+        - [Travis](#travis)
+    - [Test files](#test-files)
+- [How to activate](#how-to-activate)
+- [How to add build targets](#how-to-add-build-targets)
+    - [gitlab-ci](#gitlab-ci-1)
+- [How to run tests manually](#how-to-run-tests-manually)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Getting started
+
+If you don't have a Unity project yet:
+
+1. Fork this project from github or gitlab
+2. Update the readme and remove undesired CI configurations
+3. Follow How to activate instructions
+4. Configure your CI
+
+If you already have your own project:
+
+1. Copy desired CI file
+2. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
+3. Copy build script (make sure you use the same path as original project, it must be in an `Editor` folder)
+4. Follow How to activate instructions
+5. Configure your CI
 
 ## Points of interest
 
-### gitlab-ci
+This is probably what you're looking for.
 
-This is probably what you're looking for, have a look to [`.gitlab-ci.yml`](.gitlab-ci.yml)
+### Build script
 
-### build script
+Script passed to the unity3d command line as argument to create builds
 
-File passed to the unity3d command line as argument to create builds
+* See [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs)
 
-See [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs)
+### CI Configuration
 
-### test files
+Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't support Gitlab as of september 2018, if you're on github, Travis is more popular but CircleCI and [gitlab-ci will also work](https://about.gitlab.com/features/github/). If you can't decide, see [CircleCI vs. GitLab CI/CD](https://about.gitlab.com/comparison/gitlab-vs-circleci.html) and [Travis CI vs GitLab](https://about.gitlab.com/comparison/travis-ci-vs-gitlab.html).
 
-Very basic `editmode` and `playmode` tests (all passing) can be found in [Assets/Scripts/Editor/EditModeTests](Assets/Scripts/Editor/EditModeTests) and [Assets/Scripts/Editor/PlayModeTests](Assets/Scripts/Editor/PlayModeTests)
+#### gitlab-ci
 
-### CI Pipelines and artifacts
+* [`.gitlab-ci.yml`](.gitlab-ci.yml)
 
-See [project's pipelines](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/pipelines) which contains **built artifacts** 🎉 .
+#### CircleCI
 
-## How to execute the tests
+* [`.circleci/config.yml`](.circleci/config.yml)
 
-For current project, outside of docker, one can run the tests from command line as usual this way:
+#### Travis
 
-```bash
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/editmode-results.xml -testPlatform editmode
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results.xml -testPlatform playmode
-```
+* [`.travis.yml`](.travis.yml)
+
+### Test files
+
+* [`editmode` tests in `Assets/Scripts/Editor/EditModeTests`](Assets/Scripts/Editor/EditModeTests)
+* [`playmode` tests in `Assets/Tests/`](Assets/Tests/)
 
 ## How to activate
 
@@ -84,6 +126,10 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 
 ## How to add build targets
 
+Supported build targets can be found [here](https://docs.unity3d.com/ScriptReference/BuildTarget.html)
+
+### gitlab-ci
+
 Update [`.gitlab-ci.yml`](.gitlab-ci.yml) by adding a build section like this:
 
 ```yaml
@@ -93,7 +139,22 @@ build-StandaloneWindows64:
     BUILD_TARGET: StandaloneWindows64
 ```
 
-Supported build targets can be found [here](https://docs.unity3d.com/ScriptReference/BuildTarget.html)
+### iOS support
+
+**Help wanted!** See [#16](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/16)
+
+### Android support
+
+**Help wanted!** See [#17](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/17)
+
+## How to run tests manually
+
+For current project, outside of docker, one can run the tests from command line as usual this way:
+
+```bash
+path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/editmode-results.xml -testPlatform editmode
+path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results.xml -testPlatform playmode
+```
 
 ## License
 
