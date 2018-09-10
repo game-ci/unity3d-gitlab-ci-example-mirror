@@ -24,8 +24,8 @@ jobs:
         - $(pwd)/$TEST_PLATFORM-results.xml
   - <<: *test
     env: TEST_PLATFORM=editmode
-#   - <<: *test
-#     env: TEST_PLATFORM=playmode
+  - <<: *test
+    env: TEST_PLATFORM=playmode
 #   - &build
 #     before_script: ./ci/before_script.sh
 #     addons:
