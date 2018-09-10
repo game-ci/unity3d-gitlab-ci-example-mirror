@@ -1,4 +1,5 @@
 language: bash
+script: skip
 
 env:
   global:
