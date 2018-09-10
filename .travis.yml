@@ -1,5 +1,5 @@
+sudo: required
 language: bash
-script: skip
 
 env:
   global:
@@ -12,10 +12,9 @@ services:
 jobs:
   include:
   - &test
-    sudo: required
     stage: test
-    before_script: ./ci/before_script.sh
-    script: ./ci/test.sh
+    before_script: sudo ./ci/before_script.sh
+    script: sudo ./ci/test.sh
     addons:
       artifacts:
         target_paths:
@@ -24,22 +23,22 @@ jobs:
     env: TEST_PLATFORM=editmode
   - <<: *test
     env: TEST_PLATFORM=playmode
-#   - &build
-#     before_script: ./ci/before_script.sh
-#     addons:
-#     artifacts:
-#       target_paths:
-#       - ./Builds/
-#     #Uncomment if you'd like to build only on master
-#     # if: branch = master
-#   - <<: *build
-#     env: BUILD_TARGET=StandaloneLinux64
-#   - <<: *build
-#     env: BUILD_TARGET=StandaloneOSX
-#   - <<: *build
-#     env: BUILD_TARGET=StandaloneWindows64
-#   - <<: *build
-#     env: BUILD_TARGET=WebGL
+  - &build
+    before_script: sudo ./ci/before_script.sh
+    addons:
+    artifacts:
+      target_paths:
+      - ./Builds/
+    #Uncomment if you'd like to build only on master
+    # if: branch = master
+  - <<: *build
+    env: BUILD_TARGET=StandaloneLinux64
+  - <<: *build
+    env: BUILD_TARGET=StandaloneOSX
+  - <<: *build
+    env: BUILD_TARGET=StandaloneWindows64
+  - <<: *build
+    env: BUILD_TARGET=WebGL
 #   name: build
 #   - name: deploy
 #     stage: deploy
