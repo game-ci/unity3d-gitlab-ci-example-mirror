@@ -24,34 +24,34 @@ jobs:
         - $(pwd)/$TEST_PLATFORM-results.xml
   - <<: *test
     env: TEST_PLATFORM=editmode
-  - <<: *test
-    env: TEST_PLATFORM=playmode
-  - &build
-    before_script: ./ci/before_script.sh
-    addons:
-    artifacts:
-      target_paths:
-      - ./Builds/
-    #Uncomment if you'd like to build only on master
-    # if: branch = master
-  - <<: *build
-    env: BUILD_TARGET=StandaloneLinux64
-  - <<: *build
-    env: BUILD_TARGET=StandaloneOSX
-  - <<: *build
-    env: BUILD_TARGET=StandaloneWindows64
-  - <<: *build
-    env: BUILD_TARGET=WebGL
-  name: build
-  - name: deploy
-    stage: deploy
-    if: branch = master
+#   - <<: *test
+#     env: TEST_PLATFORM=playmode
+#   - &build
+#     before_script: ./ci/before_script.sh
+#     addons:
+#     artifacts:
+#       target_paths:
+#       - ./Builds/
+#     #Uncomment if you'd like to build only on master
+#     # if: branch = master
+#   - <<: *build
+#     env: BUILD_TARGET=StandaloneLinux64
+#   - <<: *build
+#     env: BUILD_TARGET=StandaloneOSX
+#   - <<: *build
+#     env: BUILD_TARGET=StandaloneWindows64
+#   - <<: *build
+#     env: BUILD_TARGET=WebGL
+#   name: build
+#   - name: deploy
+#     stage: deploy
+#     if: branch = master
 
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  local-dir: ./Builds/WebGL
-  on:
-    branch: master
+# deploy:
+#   provider: pages
+#   skip-cleanup: true
+#   github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+#   keep-history: true
+#   local-dir: ./Builds/WebGL
+#   on:
+#     branch: master
