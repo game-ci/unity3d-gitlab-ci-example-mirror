@@ -1,12 +1,9 @@
 language: bash
 
 env:
-- IMAGE_NAME=gableroux/unity3d:2018.2.6f1
-- BUILD_NAME=ExampleProjectName
-# Set these in travis settings:
-#ARTIFACTS_KEY=(AWS access key id)
-#ARTIFACTS_SECRET=(AWS secret access key)
-#ARTIFACTS_BUCKET=(S3 bucket name)
+  global:
+  - IMAGE_NAME=gableroux/unity3d:2018.2.6f1
+  - BUILD_NAME=ExampleProjectName
 
 services:
 - docker
