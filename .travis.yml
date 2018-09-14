@@ -23,6 +23,7 @@ jobs:
         target_paths:
         - $(pwd)/$TEST_PLATFORM-results.xml
   - stage: test
+    script: ./ci/docker_test.sh
     env: TEST_PLATFORM=playmode
     addons:
       artifacts:
