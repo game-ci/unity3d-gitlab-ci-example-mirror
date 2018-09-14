@@ -3,7 +3,7 @@
 set -e
 
 docker run \
-  -e BUILD_NAME=$BUILD_NAME \
+  -e BUILD_NAME \
   -e UNITY_LICENSE_CONTENT \
   -e BUILD_TARGET \
   -e UNITY_USERNAME \

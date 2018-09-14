@@ -120,9 +120,21 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
 8. Download `Unity_v2018.x.ulf`
-9. Copy the content of `Unity_v2017.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
+9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+
+### Travis
+
+Travis doesn't support multiple-lines env variable out of the box. You can use [the trick shown in the following example project](https://github.com/GabLeRoux/travis-multiline-env-example/).
+
+Executing the following command will output what you want to paste into travis environment variable
+
+```bash
+echo \"\$\(echo -e \'`awk '{printf "%s\\n", $0}' Unity_v2018.x.ulf`\'\)\"
+```
+
+On macos, you can append `| pbcopy` to above command to grab output and place it into your clipboard
 
 ## How to add build targets
 
