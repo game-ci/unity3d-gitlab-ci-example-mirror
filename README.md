@@ -126,12 +126,10 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 
 ### Travis
 
-Travis doesn't support multiple-lines env variable out of the box. You can use [the trick shown in the following example project](https://github.com/GabLeRoux/travis-multiline-env-example/).
-
-Executing the following command will output what you want to paste into travis environment variable
+Travis doesn't support multiple-lines env variable out of the box and its environment variables may have troubles with characters like ` ` or `$`, make sure you escape them. For the License file content, I recommend escaping all spaces and removing endlines like this:
 
 ```bash
-echo \"\$\(echo -e \'`awk '{printf "%s\\n", $0}' Unity_v2018.x.ulf`\'\)\"
+cat Unity_v2018.x.ulf | sed 's/ /\\ /g' | awk '{printf "%s", $0}'
 ```
 
 On macos, you can append `| pbcopy` to above command to grab output and place it into your clipboard
