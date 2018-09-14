@@ -10,7 +10,6 @@ services:
 - docker
 
 before_install:
-- sudo apt-get update && sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 - docker pull $IMAGE_NAME
 
 jobs:
@@ -21,6 +20,8 @@ jobs:
       docker run \
         -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
         -e TEST_PLATFORM \
+        -e UNITY_USERNAME \
+        -e UNITY_PASSWORD \
         -v $(pwd):/project/ \
         $IMAGE_NAME \
         /bin/bash -c "/project/ci/before_script.sh && /project/ci/test.sh"
@@ -38,6 +39,8 @@ jobs:
         -e BUILD_NAME=$BUILD_NAME \
         -e UNITY_LICENSE_CONTENT \
         -e BUILD_TARGET \
+        -e UNITY_USERNAME \
+        -e UNITY_PASSWORD \
         -v $(pwd):/project/ \
         $IMAGE_NAME \
         /bin/bash -c "/project/ci/before_script.sh && /project/ci/build.sh"
