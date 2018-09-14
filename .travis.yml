@@ -9,16 +9,18 @@ env:
 services:
 - docker
 
+before_install:
+- sudo apt-get update && sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+- docker pull $IMAGE_NAME
+
 jobs:
   include:
   - &test
     stage: test
-    #before_script: sudo ./ci/before_script.sh
     script: |
-      docker pull $IMAGE_NAME
       docker run \
         -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
-        -e TEST_PLATFORM=$TEST_PLATFORM \
+        -e TEST_PLATFORM \
         -v $(pwd):/project/ \
         $IMAGE_NAME \
         /bin/bash -c "/project/ci/before_script.sh && /project/ci/test.sh"
@@ -32,11 +34,10 @@ jobs:
     env: TEST_PLATFORM=playmode
   - &build
     before_script: |
-      docker pull $IMAGE_NAME
       docker run \
         -e BUILD_NAME=$BUILD_NAME \
-        -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
-        -e BUILD_TARGET=$BUILD_TARGET \
+        -e UNITY_LICENSE_CONTENT \
+        -e BUILD_TARGET \
         -v $(pwd):/project/ \
         $IMAGE_NAME \
         /bin/bash -c "/project/ci/before_script.sh && /project/ci/build.sh"
