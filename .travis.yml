@@ -14,50 +14,50 @@ before_install:
 
 jobs:
   include:
-  - &test
-    stage: test
-    script: |
-      docker run \
-        -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
-        -e TEST_PLATFORM \
-        -e UNITY_USERNAME \
-        -e UNITY_PASSWORD \
-        -v $(pwd):/project/ \
-        $IMAGE_NAME \
-        /bin/bash -c "/project/ci/before_script.sh && /project/ci/test.sh"
+
+  - stage: test
+    script: ./ci/docker_test.sh
+    env: TEST_PLATFORM=editmode
     addons:
       artifacts:
         target_paths:
         - $(pwd)/$TEST_PLATFORM-results.xml
-  - <<: *test
-    env: TEST_PLATFORM=editmode
-  - <<: *test
+  - stage: test
     env: TEST_PLATFORM=playmode
-  - &build
-    before_script: |
-      docker run \
-        -e BUILD_NAME=$BUILD_NAME \
-        -e UNITY_LICENSE_CONTENT \
-        -e BUILD_TARGET \
-        -e UNITY_USERNAME \
-        -e UNITY_PASSWORD \
-        -v $(pwd):/project/ \
-        $IMAGE_NAME \
-        /bin/bash -c "/project/ci/before_script.sh && /project/ci/build.sh"
     addons:
-    artifacts:
-      target_paths:
-      - ./Builds/
-    #Uncomment if you'd like to build only on master
-    # if: branch = master
-  - <<: *build
+      artifacts:
+        target_paths:
+        - $(pwd)/$TEST_PLATFORM-results.xml
+
+  - stage: build
     env: BUILD_TARGET=StandaloneLinux64
-  - <<: *build
+    script: ./ci/docker_build.sh
+    addons:
+      artifacts:
+        target_paths:
+        - ./Builds/
+  - stage: build
     env: BUILD_TARGET=StandaloneOSX
-  - <<: *build
+    script: ./ci/docker_build.sh
+    addons:
+      artifacts:
+        target_paths:
+        - ./Builds/
+  - stage: build
     env: BUILD_TARGET=StandaloneWindows64
-  - <<: *build
+    script: ./ci/docker_build.sh
+    addons:
+      artifacts:
+        target_paths:
+        - ./Builds/
+  - stage: build
     env: BUILD_TARGET=WebGL
+    script: ./ci/docker_build.sh
+    addons:
+      artifacts:
+        target_paths:
+        - ./Builds/
+
 #   name: build
 #   - name: deploy
 #     stage: deploy
