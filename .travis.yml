@@ -1,74 +1,58 @@
 sudo: required
 language: bash
-
 env:
   global:
   - IMAGE_NAME=gableroux/unity3d:2018.2.6f1
   - BUILD_NAME=ExampleProjectName
-
 services:
 - docker
-
 before_install:
+- openssl aes-256-cbc -K $encrypted_82766e747237_key -iv $encrypted_82766e747237_iv
+  -in Unity_v2018.x.ulf.enc -out ./Unity_v2018.x.ulf -d
+- export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
+- rm Unity_v2018.x.ulf
 - docker pull $IMAGE_NAME
-
 jobs:
   include:
-
   - stage: test
-    script: ./ci/docker_test.sh
+    script: "./ci/docker_test.sh"
     env: TEST_PLATFORM=editmode
     addons:
       artifacts:
         target_paths:
-        - $(pwd)/$TEST_PLATFORM-results.xml
+        - "$(pwd)/$TEST_PLATFORM-results.xml"
   - stage: test
-    script: ./ci/docker_test.sh
+    script: "./ci/docker_test.sh"
     env: TEST_PLATFORM=playmode
     addons:
       artifacts:
         target_paths:
-        - $(pwd)/$TEST_PLATFORM-results.xml
-
+        - "$(pwd)/$TEST_PLATFORM-results.xml"
   - stage: build
     env: BUILD_TARGET=StandaloneLinux64
-    script: ./ci/docker_build.sh
+    script: "./ci/docker_build.sh"
     addons:
       artifacts:
         target_paths:
-        - ./Builds/
+        - "./Builds/"
   - stage: build
     env: BUILD_TARGET=StandaloneOSX
-    script: ./ci/docker_build.sh
+    script: "./ci/docker_build.sh"
     addons:
       artifacts:
         target_paths:
-        - ./Builds/
+        - "./Builds/"
   - stage: build
     env: BUILD_TARGET=StandaloneWindows64
-    script: ./ci/docker_build.sh
+    script: "./ci/docker_build.sh"
     addons:
       artifacts:
         target_paths:
-        - ./Builds/
+        - "./Builds/"
   - stage: build
     env: BUILD_TARGET=WebGL
-    script: ./ci/docker_build.sh
+    script: "./ci/docker_build.sh"
     addons:
       artifacts:
         target_paths:
-        - ./Builds/
-
-#   name: build
-#   - name: deploy
-#     stage: deploy
-#     if: branch = master
-
-# deploy:
-#   provider: pages
-#   skip-cleanup: true
-#   github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-#   keep-history: true
-#   local-dir: ./Builds/WebGL
-#   on:
-#     branch: master
+        - "./Builds/"

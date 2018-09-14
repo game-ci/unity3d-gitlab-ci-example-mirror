@@ -126,13 +126,17 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 
 ### Travis
 
-Travis doesn't support multiple-lines env variable out of the box and its environment variables may have troubles with characters like ` ` or `$`, make sure you escape them. For the License file content, I recommend escaping all spaces and removing endlines like this:
+Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
 
 ```bash
-cat Unity_v2018.x.ulf | sed 's/ /\\ /g' | awk '{printf "%s", $0}'
+travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf
 ```
 
-On macos, you can append `| pbcopy` to above command to grab output and place it into your clipboard
+For the record, the message I was getting:
+
+> The previous command failed, possibly due to a malformed secure environment variable.
+>  Please be sure to escape special characters such as ' ' and '$'.
+>  For more information, see https://docs.travis-ci.com/user/encryption-keys.
 
 ## How to add build targets
 
