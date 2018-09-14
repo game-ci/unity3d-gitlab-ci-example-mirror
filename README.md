@@ -156,6 +156,14 @@ path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/editmode-results
 path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results.xml -testPlatform playmode
 ```
 
+## Shameless plug
+
+I made this for free as a gift to the video game community so if this tool helped you, I would be very happy if you'd like to support me, support [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+
+[![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
+
+[![Become a Patron](./doc/become_a_patron_button.png)](https://www.patreon.com/bePatron?c=1073078)
+
 ## License
 
 [MIT](LICENSE.md) © [Gabriel Le Breton](https://gableroux.com)
