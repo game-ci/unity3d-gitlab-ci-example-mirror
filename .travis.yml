@@ -13,8 +13,15 @@ jobs:
   include:
   - &test
     stage: test
-    before_script: sudo ./ci/before_script.sh
-    script: sudo ./ci/test.sh
+    #before_script: sudo ./ci/before_script.sh
+    script: |
+      docker pull $IMAGE_NAME
+      docker run \
+        -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
+        -e TEST_PLATFORM=$TEST_PLATFORM \
+        -v $(pwd):/project/ \
+        $IMAGE_NAME \
+        /bin/bash -c "/project/ci/before_script.sh && /project/ci/test.sh"
     addons:
       artifacts:
         target_paths:
@@ -24,7 +31,15 @@ jobs:
   - <<: *test
     env: TEST_PLATFORM=playmode
   - &build
-    before_script: sudo ./ci/before_script.sh
+    before_script: |
+      docker pull $IMAGE_NAME
+      docker run \
+        -e BUILD_NAME=$BUILD_NAME \
+        -e UNITY_LICENSE_CONTENT=$UNITY_LICENSE_CONTENT \
+        -e BUILD_TARGET=$BUILD_TARGET \
+        -v $(pwd):/project/ \
+        $IMAGE_NAME \
+        /bin/bash -c "/project/ci/before_script.sh && /project/ci/build.sh"
     addons:
     artifacts:
       target_paths:
