@@ -179,7 +179,7 @@ path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results
 
 ## Shameless plug
 
-I made this for free as a gift to the video game community so if this tool helped you, I would be very happy if you'd like to support me, support [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+I made this for free as a gift to the video game community. If this tool helped you, feel free to become a patron for [Totema Studio](https://totemastudio.com) on Patreon: :beers:
 
 [![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
 
