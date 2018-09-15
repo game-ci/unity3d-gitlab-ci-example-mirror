@@ -9,8 +9,8 @@ references:
 #      export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
 #      rm Unity_v2018.x.ulf
 jobs:
-  environment:
-  - BUILD_NAME: ExampleProjectName
+#  environment:
+#  - BUILD_NAME: ExampleProjectName
   test:
     - checkout
     - run:
