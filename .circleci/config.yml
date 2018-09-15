@@ -12,9 +12,6 @@ jobs:
   environment:
   - BUILD_NAME: ExampleProjectName
   test:
-    branches:
-      ignore:
-      - gh-pages
     <<: *docker_image
     steps:
     - checkout
@@ -35,9 +32,6 @@ jobs:
         path: "$(pwd)/$TEST_PLATFORM-results.xml"
         destination: "$TEST_PLATFORM-results.xml"
   build:
-    branches:
-      ignore:
-      - gh-pages
     <<: *docker_image
     steps:
     - run:
@@ -103,6 +97,11 @@ workflows:
     jobs:
     - test
     - build
+##TODO: prevent build on gh-pages branch in workflows
+#filter:
+#  branches:
+#    ignore:
+#    - gh-pages
 
 ## example if you'd like to create builds only on master
 #    - build:
