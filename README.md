@@ -17,13 +17,17 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
     - [Build script](#build-script)
     - [CI Configuration](#ci-configuration)
         - [gitlab-ci](#gitlab-ci)
-        - [CircleCI](#circleci)
+        - [WIP: CircleCI](#wip-circleci)
         - [Travis](#travis)
     - [Test files](#test-files)
 - [How to activate](#how-to-activate)
+    - [Travis](#travis-1)
 - [How to add build targets](#how-to-add-build-targets)
     - [gitlab-ci](#gitlab-ci-1)
+    - [iOS support](#ios-support)
+    - [Android support](#android-support)
 - [How to run tests manually](#how-to-run-tests-manually)
+- [Shameless plug](#shameless-plug)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -63,7 +67,9 @@ Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't suppor
 
 * [`.gitlab-ci.yml`](.gitlab-ci.yml)
 
-#### CircleCI
+#### WIP: CircleCI
+
+**TODO**
 
 * [`.circleci/config.yml`](.circleci/config.yml)
 
