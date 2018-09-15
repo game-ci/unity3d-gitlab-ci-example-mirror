@@ -1,13 +1,112 @@
 version: 2
-jobs:
-  build:
+references:
+  docker_image: &docker_image
     docker:
-      - image: debian:stretch
+    - image: gableroux/unity3d:2018.2.6f1
+jobs:
+  environment:
+  - BUILD_NAME: ExampleProjectName
+  test:
+    <<: *docker_image
     steps:
-      - checkout
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-      - run:
-          name: Print the Current Time
-          command: date
+    - checkout
+    - run:
+        environment:
+          TEST_PLATFORM: editmode
+        command: "./ci/test.sh"
+    - store_artifacts:
+        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+        destination: "$TEST_PLATFORM-results.xml"
+    - run:
+        environment:
+          TEST_PLATFORM: playmode
+        command: "./ci/test.sh"
+    - store_artifacts:
+        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+        destination: "$TEST_PLATFORM-results.xml"
+  build:
+    <<: *docker_image
+    steps:
+    - run:
+        BUILD_TARGET: StandaloneLinux64
+        command: "./ci/build.sh"
+    - store_artifacts:
+        path: "./Builds/"
+    - run:
+        environment:
+          BUILD_TARGET: StandaloneOSX
+        command: "./ci/build.sh"
+    - store_artifacts:
+        path: "./Builds/"
+    - run:
+        environment:
+          BUILD_TARGET: StandaloneWindows64
+        command: "./ci/build.sh"
+    - store_artifacts:
+        path: "./Builds/"
+    - run:
+        environment:
+          BUILD_TARGET: WebGL
+        command: "./ci/build.sh"
+    - store_artifacts:
+        path: "./Builds/"
+## following is untested, but deploying to github-pages from CircleCI should look like this:
+#  deploy_pages:
+#    machine:
+#      enabled: true
+#    steps:
+#    - run:
+#        name: Deploy github-pages
+#        environment:
+#        - SOURCE_BRANCH: master
+#        - TARGET_BRANCH: gh-pages
+#        command: |
+#          if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
+#            git config --global user.email $GH_EMAIL
+#            git config --global user.name $GH_NAME
+#
+#            git clone $CIRCLE_REPOSITORY_URL out
+#
+#            cd out
+#            git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+#            git rm -rf .
+#            cd ..
+#
+#            cp -a ./Builds/ out/.
+#
+#            #mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
+#            cd out
+#
+#            git add -A
+#            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+#
+#            git push origin $TARGET_BRANCH
+#          fi
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+    - test:
+        branches:
+          ignore:
+          - gh-pages
+    - build:
+        branches:
+          ignore:
+          - gh-pages
+
+## example if you'd like to create builds only on master
+#    - build:
+#        filters:
+#          branches:
+#            only:
+#            - master
+## example for deploying github pages
+#    - deploy_pages:
+#        requires:
+#        - test
+#        - build
+#        filters:
+#          branches:
+#            only:
+#            - master
