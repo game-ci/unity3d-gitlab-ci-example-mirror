@@ -12,7 +12,7 @@ jobs:
     - run:
         environment:
           TEST_PLATFORM: editmode
-          command: "echo $TEST_PLATFORM"
+        command: "echo $TEST_PLATFORM"
   build:
     <<: *docker_image
     steps:
@@ -20,7 +20,7 @@ jobs:
     - run:
         environment:
           BUILD_TARGET: StandaloneLinux64
-          command: "echo $BUILD_TARGET"
+        command: "echo $BUILD_TARGET"
 
 #  setup_unity_license_env_var: &setup_unity_license_env_var
 #    command: |
