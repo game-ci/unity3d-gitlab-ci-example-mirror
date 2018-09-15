@@ -5,7 +5,8 @@ references:
     - image: gableroux/unity3d:2018.2.6f1
   setup_unity_license_env_var: &setup_unity_license_env_var
     command: |
-      openssl aes-256-cbc -d -in ./ci/Unity_v2018.x.ulf.enc -out Unity_v2018.x.ulf -k $KEY
+      openssl version
+      openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.x.ulf.enc -out Unity_v2018.x.ulf -k $KEY
       export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
       rm Unity_v2018.x.ulf
 jobs:
@@ -47,6 +48,13 @@ jobs:
         command: "./ci/build.sh"
     - store_artifacts:
         path: "./Builds/"
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+    - test_editmode
+    - test_playmode
+    - build_StandaloneLinux64
 
 #    - run:
 #        environment:
