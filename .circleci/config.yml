@@ -9,7 +9,7 @@ references:
       export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
       rm Unity_v2018.x.ulf
 jobs:
-  test:
+  test_editmode:
     <<: *docker_image
     steps:
     - checkout
@@ -18,8 +18,24 @@ jobs:
     - run:
         environment:
           TEST_PLATFORM: editmode
-        command: "echo $TEST_PLATFORM"
-  build:
+        command: "./ci/test.sh"
+    - store_artifacts:
+        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+        destination: "$TEST_PLATFORM-results.xml"
+  test_playmode:
+    <<: *docker_image
+    steps:
+    - checkout
+    - run:
+        <<: *setup_unity_license_env_var
+    - run:
+        environment:
+          TEST_PLATFORM: playmode
+        command: "./ci/test.sh"
+    - store_artifacts:
+        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+        destination: "$TEST_PLATFORM-results.xml"
+  build_StandaloneLinux64:
     <<: *docker_image
     steps:
     - checkout
@@ -28,14 +44,10 @@ jobs:
     - run:
         environment:
           BUILD_TARGET: StandaloneLinux64
-        command: "echo $BUILD_TARGET"
+        command: "./ci/build.sh"
+    - store_artifacts:
+        path: "./Builds/"
 
-#  test:
-#    <<: *docker_image
-#    steps:
-#    - checkout
-##    - run:
-##        <<: *setup_unity_license_env_var
 #    - run:
 #        environment:
 #          TEST_PLATFORM: editmode
