@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 [![Build Status](https://travis-ci.com/GabLeRoux/unity3d-ci-example.svg?branch=master)](https://travis-ci.com/GabLeRoux/unity3d-ci-example)
+[![CircleCI](https://circleci.com/gh/GabLeRoux/unity3d-ci-example.svg?style=svg)](https://circleci.com/gh/GabLeRoux/unity3d-ci-example)
 
 This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
 
