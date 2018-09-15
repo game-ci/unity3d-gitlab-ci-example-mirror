@@ -18,9 +18,9 @@ jobs:
     steps:
     - checkout
     - run:
-      environment:
-        BUILD_TARGET: StandaloneLinux64
-        command: "echo $BUILD_TARGET"
+        environment:
+          BUILD_TARGET: StandaloneLinux64
+          command: "echo $BUILD_TARGET"
 
 #  setup_unity_license_env_var: &setup_unity_license_env_var
 #    command: |
