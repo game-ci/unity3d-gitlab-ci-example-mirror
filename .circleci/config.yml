@@ -21,16 +21,16 @@ jobs:
         environment:
           TEST_PLATFORM: editmode
         command: "./ci/test.sh"
-    - store_artifacts:
-        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-        destination: "$TEST_PLATFORM-results.xml"
+#    - store_artifacts:
+#        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+#        destination: "$TEST_PLATFORM-results.xml"
     - run:
         environment:
           TEST_PLATFORM: playmode
         command: "./ci/test.sh"
-    - store_artifacts:
-        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-        destination: "$TEST_PLATFORM-results.xml"
+#    - store_artifacts:
+#        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+#        destination: "$TEST_PLATFORM-results.xml"
   build:
     <<: *docker_image
     steps:
@@ -39,26 +39,26 @@ jobs:
     - run:
         BUILD_TARGET: StandaloneLinux64
         command: "./ci/build.sh"
-    - store_artifacts:
-        path: "./Builds/"
+#    - store_artifacts:
+#        path: "./Builds/"
     - run:
         environment:
           BUILD_TARGET: StandaloneOSX
         command: "./ci/build.sh"
-    - store_artifacts:
-        path: "./Builds/"
+#    - store_artifacts:
+#        path: "./Builds/"
     - run:
         environment:
           BUILD_TARGET: StandaloneWindows64
         command: "./ci/build.sh"
-    - store_artifacts:
-        path: "./Builds/"
+#    - store_artifacts:
+#        path: "./Builds/"
     - run:
         environment:
           BUILD_TARGET: WebGL
         command: "./ci/build.sh"
-    - store_artifacts:
-        path: "./Builds/"
+#    - store_artifacts:
+#        path: "./Builds/"
 ## following is untested, but deploying to github-pages from CircleCI should look like this:
 #  deploy_pages:
 #    machine:
@@ -93,7 +93,7 @@ jobs:
 #          fi
 workflows:
   version: 2
-  build_and_test:
+  test_and_build:
     jobs:
     - test
     - build
