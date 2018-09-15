@@ -9,12 +9,14 @@ variables:
   BUILD_NAME: ExampleProjectName
 
 .unity_before_script: &unity_before_script
-  before_script: ./ci/before_script.sh
+  before_script:
+  - ./ci/before_script.sh
 
 .test: &test
   stage: test
   <<: *unity_before_script
-  script: ./ci/test.sh
+  script:
+  - ./ci/test.sh
   artifacts:
     paths:
     - $(pwd)/$TEST_PLATFORM-results.xml
@@ -34,7 +36,8 @@ test-playmode:
   #tip: you can reuse same stage to do everything in parallel and reduce overall time
   # stage: test
   <<: *unity_before_script
-  script: ./ci/build.sh
+  script:
+  - ./ci/build.sh
 
   artifacts:
     paths:
