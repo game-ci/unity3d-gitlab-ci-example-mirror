@@ -14,8 +14,10 @@ jobs:
           TEST_PLATFORM: editmode
           command: "echo $TEST_PLATFORM"
   build:
-  - checkout
-  - run:
+    <<: *docker_image
+    steps:
+    - checkout
+    - run:
       environment:
         BUILD_TARGET: StandaloneLinux64
         command: "echo $BUILD_TARGET"
