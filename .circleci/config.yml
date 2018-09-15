@@ -12,53 +12,66 @@ jobs:
   environment:
   - BUILD_NAME: ExampleProjectName
   test:
-    <<: *docker_image
-    steps:
     - checkout
-#    - run:
-#        <<: *setup_unity_license_env_var
     - run:
         environment:
           TEST_PLATFORM: editmode
-        command: "./ci/test.sh"
-#    - store_artifacts:
-#        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-#        destination: "$TEST_PLATFORM-results.xml"
-    - run:
-        environment:
-          TEST_PLATFORM: playmode
-        command: "./ci/test.sh"
-#    - store_artifacts:
-#        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-#        destination: "$TEST_PLATFORM-results.xml"
+          command: "echo $TEST_PLATFORM"
   build:
-    <<: *docker_image
-    steps:
-#    - run:
-#        <<: *setup_unity_license_env_var
-    - run:
+  - checkout
+  - run:
+      environment:
         BUILD_TARGET: StandaloneLinux64
-        command: "./ci/build.sh"
-#    - store_artifacts:
-#        path: "./Builds/"
-    - run:
-        environment:
-          BUILD_TARGET: StandaloneOSX
-        command: "./ci/build.sh"
-#    - store_artifacts:
-#        path: "./Builds/"
-    - run:
-        environment:
-          BUILD_TARGET: StandaloneWindows64
-        command: "./ci/build.sh"
-#    - store_artifacts:
-#        path: "./Builds/"
-    - run:
-        environment:
-          BUILD_TARGET: WebGL
-        command: "./ci/build.sh"
-#    - store_artifacts:
-#        path: "./Builds/"
+        command: "echo $BUILD_TARGET"
+
+#  test:
+#    <<: *docker_image
+#    steps:
+#    - checkout
+##    - run:
+##        <<: *setup_unity_license_env_var
+#    - run:
+#        environment:
+#          TEST_PLATFORM: editmode
+#        command: "./ci/test.sh"
+##    - store_artifacts:
+##        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+##        destination: "$TEST_PLATFORM-results.xml"
+#    - run:
+#        environment:
+#          TEST_PLATFORM: playmode
+#        command: "./ci/test.sh"
+##    - store_artifacts:
+##        path: "$(pwd)/$TEST_PLATFORM-results.xml"
+##        destination: "$TEST_PLATFORM-results.xml"
+#  build:
+#    <<: *docker_image
+#    steps:
+##    - run:
+##        <<: *setup_unity_license_env_var
+#    - run:
+#        BUILD_TARGET: StandaloneLinux64
+#        command: "./ci/build.sh"
+##    - store_artifacts:
+##        path: "./Builds/"
+#    - run:
+#        environment:
+#          BUILD_TARGET: StandaloneOSX
+#        command: "./ci/build.sh"
+##    - store_artifacts:
+##        path: "./Builds/"
+#    - run:
+#        environment:
+#          BUILD_TARGET: StandaloneWindows64
+#        command: "./ci/build.sh"
+##    - store_artifacts:
+##        path: "./Builds/"
+#    - run:
+#        environment:
+#          BUILD_TARGET: WebGL
+#        command: "./ci/build.sh"
+##    - store_artifacts:
+##        path: "./Builds/"
 ## following is untested, but deploying to github-pages from CircleCI should look like this:
 #  deploy_pages:
 #    machine:
