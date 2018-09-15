@@ -18,11 +18,13 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
     - [Build script](#build-script)
     - [CI Configuration](#ci-configuration)
         - [gitlab-ci](#gitlab-ci)
-        - [WIP: CircleCI](#wip-circleci)
+        - [CircleCI](#circleci)
         - [Travis](#travis)
     - [Test files](#test-files)
 - [How to activate](#how-to-activate)
+    - [Gitlab-CI](#gitlab-ci)
     - [Travis](#travis-1)
+    - [CircleCI](#circleci-1)
 - [How to add build targets](#how-to-add-build-targets)
     - [gitlab-ci](#gitlab-ci-1)
     - [iOS support](#ios-support)
@@ -44,7 +46,7 @@ If you don't have a Unity project yet:
 
 If you already have your own project:
 
-1. Copy desired CI file
+1. Copy desired CI file and scripts in `ci` folder
 2. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
 3. Copy build script (make sure you use the same path as original project, it must be in an `Editor` folder)
 4. Follow How to activate instructions
