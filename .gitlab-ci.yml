@@ -10,13 +10,13 @@ variables:
 
 .unity_before_script: &unity_before_script
   before_script:
-  - ./ci/before_script.sh
+  - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .test: &test
   stage: test
   <<: *unity_before_script
   script:
-  - ./ci/test.sh
+  - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
     paths:
     - $(pwd)/$TEST_PLATFORM-results.xml
@@ -37,7 +37,7 @@ test-playmode:
   # stage: test
   <<: *unity_before_script
   script:
-  - ./ci/build.sh
+  - chmod +x ./ci/build.sh && ./ci/build.sh
 
   artifacts:
     paths:
@@ -82,3 +82,4 @@ pages:
     - public
   only:
   - master
+
