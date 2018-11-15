@@ -20,6 +20,7 @@ static class BuildCommand
 		return (
 		    from scene in EditorBuildSettings.scenes
 		 	where scene.enabled
+		 	where !string.IsNullOrEmpty(scene.path)
 		 	select scene.path
 		).ToArray ();
 	}
