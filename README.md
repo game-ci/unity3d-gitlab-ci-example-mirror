@@ -26,7 +26,9 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
     - [gitlab-ci](#gitlab-ci-1)
     - [iOS support](#ios-support)
     - [Android support](#android-support)
-- [How to run tests manually](#how-to-run-tests-manually)
+- [How to run scripts manually](#how-to-run-scripts-manually)
+    - [Test](#test)
+    - [Build](#build)
 - [Shameless plug](#shameless-plug)
 - [License](#license)
 
@@ -168,13 +170,22 @@ build-StandaloneWindows64:
 
 **Help wanted!** See [#17](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/17)
 
-## How to run tests manually
+## How to run scripts manually
 
-For current project, outside of docker, one can run the tests from command line as usual this way:
+You can execute the local scripts and specify the path of your Unity executable using `UNITY_EXECUTABLE`. You may try this in your project before you setup the whole CI so you confirm it works with your current unity version :+1:
+
+### Test
 
 ```bash
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/editmode-results.xml -testPlatform editmode
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results.xml -testPlatform playmode
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.3.0f2/Unity.app/Contents/MacOS/Unity" \
+  ./local_test.sh
+```
+
+### Build
+
+```bash
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.3.0f2/Unity.app/Contents/MacOS/Unity" \
+  ./local_build.sh
 ```
 
 ## Shameless plug
