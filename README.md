@@ -2,6 +2,7 @@
 
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 [![Build Status](https://travis-ci.com/GabLeRoux/unity3d-ci-example.svg?branch=master)](https://travis-ci.com/GabLeRoux/unity3d-ci-example)
+[![CircleCI](https://circleci.com/gh/GabLeRoux/unity3d-ci-example.svg?style=svg)](https://circleci.com/gh/GabLeRoux/unity3d-ci-example)
 
 This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
 
@@ -17,11 +18,13 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
     - [Build script](#build-script)
     - [CI Configuration](#ci-configuration)
         - [gitlab-ci](#gitlab-ci)
-        - [WIP: CircleCI](#wip-circleci)
+        - [CircleCI](#circleci)
         - [Travis](#travis)
     - [Test files](#test-files)
 - [How to activate](#how-to-activate)
+    - [Gitlab-CI](#gitlab-ci)
     - [Travis](#travis-1)
+    - [CircleCI](#circleci-1)
 - [How to add build targets](#how-to-add-build-targets)
     - [gitlab-ci](#gitlab-ci-1)
     - [iOS support](#ios-support)
@@ -45,7 +48,7 @@ If you don't have a Unity project yet:
 
 If you already have your own project:
 
-1. Copy desired CI file
+1. Copy desired CI file and scripts in `ci` folder
 2. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
 3. Copy build script (make sure you use the same path as original project, it must be in an `Editor` folder)
 4. Follow How to activate instructions
@@ -69,9 +72,7 @@ Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't suppor
 
 * [`.gitlab-ci.yml`](.gitlab-ci.yml)
 
-#### WIP: CircleCI
-
-**TODO**
+#### CircleCI
 
 * [`.circleci/config.yml`](.circleci/config.yml)
 
@@ -129,23 +130,48 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
 8. Download `Unity_v2018.x.ulf`
-9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
-   _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
-[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+9. Pass the license as a secret to your CI Configuration (see following sections)
+
+### Gitlab-CI
+
+Gitlab-CI Supports using mutli-line environment variables out of the box. :tada:
+
+Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
+
+_Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_. [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
 
 ### Travis
 
-Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
+Travis doesn't support multiple-lines environment variables. I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
+
+Move your `Unity_v2018.x.ulf` to `ci` folder (so you don't clutter your project's root). Just make sure you don't track it inside git.
 
 ```bash
-travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf
+travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./ci/Unity_v2018.x.ulf
 ```
 
-For the record, the message I was getting:
+For the record, the message I was getting when trying to paste license content directly into  the env var in travis settings:
 
 > The previous command failed, possibly due to a malformed secure environment variable.
 >  Please be sure to escape special characters such as ' ' and '$'.
 >  For more information, see https://docs.travis-ci.com/user/encryption-keys.
+
+### CircleCI
+
+CircleCI doesn't support multi-lines environment variables. We can use a solution similar to Travis by encrypting the license and decrypting it from the CI using `openssl` [as explained here](https://github.com/circleci/encrypted-files):
+
+Move your `Unity_v2018.x.ulf` to `ci` folder (so you don't clutter your project's root). Just make sure you don't track it inside git.
+
+1. Generate a strong password
+2. Store that password in a new `KEY` env var in CircleCI
+3. Encrypt the license using the same `KEY`
+
+```bash
+export KEY=insert-your-strong-generated-key-here
+openssl aes-256-cbc -e -in ci/Unity_v2018.x.ulf -out ci/Unity_v2018.x.ulf-cipher -k $KEY
+git add ci/Unity_v2018.x.ulf-cipher
+git commit -m "Add encrypted Unity_v2018.x.ulf using openssl aes-256-cbc KEY"
+```
 
 ## How to add build targets
 
@@ -190,7 +216,7 @@ UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/M
 
 ## Shameless plug
 
-I made this for free as a gift to the video game community so if this tool helped you, I would be very happy if you'd like to support me, support [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+I made this for free as a gift to the video game community. If this tool helped you, feel free to become a patron for [Totema Studio](https://totemastudio.com) on Patreon: :beers:
 
 [![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
 
