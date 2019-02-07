@@ -69,7 +69,8 @@ jobs:
     <<: *docker_image
     steps:
       - run:
-          command: apt-get update && apt-get install -y git && git --version
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
       - checkout
       - run:
           <<: *setup_project_add_sumodule
