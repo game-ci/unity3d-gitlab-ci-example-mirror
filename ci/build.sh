@@ -28,6 +28,7 @@ if [ $UNITY_EXIT_CODE -eq 0 ]; then
   echo "Run succeeded, no failures occurred";
   cd $BUILD_PATH
   zip archive -r .
+  cd /root/project
 elif [ $UNITY_EXIT_CODE -eq 2 ]; then
   echo "Run succeeded, some tests failed";
 elif [ $UNITY_EXIT_CODE -eq 3 ]; then
