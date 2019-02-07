@@ -112,4 +112,5 @@ workflows:
   test_and_build:
     jobs:
       - build_StandaloneWindows
+      - build_StandaloneOSX
       - test_editmode
