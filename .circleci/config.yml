@@ -14,7 +14,7 @@ references:
       openssl version
       openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.ulf-cipher -out /Unity_v2018.ulf -k $KEY
       export UNITY_LICENSE_CONTENT=`cat /Unity_v2018.ulf`
-      echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
+    #   echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
   remove_license_file: &remove_license_file
     command: |
       rm /Unity_v2018.ulf
