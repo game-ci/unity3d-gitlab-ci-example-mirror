@@ -65,7 +65,7 @@ jobs:
       - store_artifacts:
           path: '$(pwd)/$TEST_PLATFORM-results.xml'
           destination: '$TEST_PLATFORM-results.xml'
-  build_StandaloneLinux64:
+  build_StandaloneWindows:
     <<: *docker_image
     steps:
       - run:
@@ -77,7 +77,7 @@ jobs:
           <<: *setup_unity_license_env_var
       - run:
           environment:
-            BUILD_TARGET: StandaloneLinux64
+            BUILD_TARGET: StandaloneWindows
           command: |
             chmod -R 755 ./ci/build.sh
             ./ci/build.sh
@@ -89,5 +89,5 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - build_StandaloneLinux64
+      - build_StandaloneWindows
       - test_editmode
