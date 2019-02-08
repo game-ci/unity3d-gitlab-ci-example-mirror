@@ -101,7 +101,6 @@ jobs:
       - run:
           command: |
             apt-get update && apt-get install -y git build-essential  file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
       - checkout
       - run:
           <<: *setup_unity_license_env_var
@@ -116,6 +115,7 @@ jobs:
             ANDROID_NDK_ROOT: /usr/local/Cellar/android-ndk-${NDK-VERSION}/${NDK-VERSION}
             ANDROID_SDK_ROOT: /usr/local/Cellar/android-sdk/${INSTALLED_SDK_VERSION}
           command: |
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
             brew update
             brew install android-ndk
             brew install android-sdk
