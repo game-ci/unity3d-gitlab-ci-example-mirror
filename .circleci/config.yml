@@ -101,10 +101,9 @@ jobs:
       - run:
           command: |
             apt-get update && apt-get install -y git build-essential curl file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
-            adduser --disabled-password --gecos '' r
-            adduser r sudo
-            echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-            sh -m r -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+            curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
+            ls
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
             test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
             test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
             test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
