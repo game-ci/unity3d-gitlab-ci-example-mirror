@@ -100,7 +100,7 @@ jobs:
     steps:
       - run:
           command: |
-            apt-get update && apt-get install -y git build-essential  file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
+            apt-get update && apt-get install -y git build-essential curl file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
       - checkout
       - run:
           <<: *setup_unity_license_env_var
