@@ -100,8 +100,7 @@ jobs:
     steps:
       - run:
           command: |
-            apt-get update && apt-get install -y git && git --version
-            apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
+            apt-get update && apt-get install -y git build-essential curl m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
             ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
       - checkout
       - run:
