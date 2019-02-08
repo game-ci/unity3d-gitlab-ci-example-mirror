@@ -3,10 +3,6 @@ references:
   docker_image: &docker_image
     docker:
       - image: gableroux/unity3d:2018.2.6f1
-  setup_project_add_sumodule: &setup_project_add_sumodule
-    command: |
-      git submodule init 
-      git submodule foreach git pull origin master
   setup_unity_license_env_var: &setup_unity_license_env_var
     command: |
       mkdir -p /root/.cache/unity3d
@@ -30,8 +26,6 @@ jobs:
           command: apt-get update && apt-get install -y git && git --version
       - checkout
       - run:
-          <<: *setup_project_add_sumodule
-      - run:
           <<: *setup_unity_license_env_var
       - run:
           environment:
@@ -50,8 +44,6 @@ jobs:
       - run:
           command: apt-get update && apt-get install -y git && git --version
       - checkout
-      - run:
-          <<: *setup_project_add_sumodule
       - run:
           <<: *setup_unity_license_env_var
       - run:
@@ -73,8 +65,6 @@ jobs:
             apt-get update && apt-get install -y git zip && git --version
       - checkout
       - run:
-          <<: *setup_project_add_sumodule
-      - run:
           <<: *setup_unity_license_env_var
       - run:
           environment:
@@ -94,13 +84,43 @@ jobs:
             apt-get update && apt-get install -y git zip && git --version
       - checkout
       - run:
-          <<: *setup_project_add_sumodule
-      - run:
           <<: *setup_unity_license_env_var
       - run:
           environment:
             BUILD_TARGET: StandaloneOSX
           command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: './Builds/'
+  build_Android:
+    <<: *docker_image
+    steps:
+      - run:
+          command: |
+            apt-get update && apt-get install -y git && git --version
+            apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
+            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            BUILD_TARGET: Android
+            PATH: $HOME/.linuxbrew/bin:$PATH
+            MANPATH: $HOME/.linuxbrew/share/man:$MANPATH
+            INFOPATH: $HOME/.linuxbrew/share/info:$INFOPATH
+            BUNDLE_IDENTIFIER: com.sample.circleci
+            JDK_ROOT: /usr/libexec/java_home
+            ANDROID_NDK_ROOT: /usr/local/Cellar/android-ndk-${NDK-VERSION}/${NDK-VERSION}
+            ANDROID_SDK_ROOT: /usr/local/Cellar/android-sdk/${INSTALLED_SDK_VERSION}
+          command: |
+            brew update
+            brew install android-ndk
+            brew install android-sdk
+            android update sdk --no-ui --all --filter "tools,platform-tools,build-tools-24.0.1,android-24,extra-google-google_play_services,extra-google-m2repository"
             chmod -R 755 ./ci/build.sh
             ./ci/build.sh
       - run:
