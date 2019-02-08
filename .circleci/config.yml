@@ -102,7 +102,7 @@ jobs:
           command: |
             apt-get update && apt-get install -y git build-essential curl file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev && git --version
             curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh > ./install.sh
-            chmod -R 755 ./install.sh 
+            chmod -R 777 ./install.sh 
             sh -c ./install.sh
             test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
             test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
