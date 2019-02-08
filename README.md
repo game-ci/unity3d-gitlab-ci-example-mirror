@@ -1,216 +1,305 @@
 # unity3d ci example
 
-[![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
-[![Build Status](https://travis-ci.com/GabLeRoux/unity3d-ci-example.svg?branch=master)](https://travis-ci.com/GabLeRoux/unity3d-ci-example)
-[![CircleCI](https://circleci.com/gh/GabLeRoux/unity3d-ci-example.svg?style=svg)](https://circleci.com/gh/GabLeRoux/unity3d-ci-example)
+[![CircleCI](https://circleci.com/gh/MizoTake/unity3d-ci-example.svg?style=svg)](https://circleci.com/gh/MizoTake/unity3d-ci-example)
 
-This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
+[GabLeRoux/unity3d-ci-example](https://github.com/GabLeRoux/unity3d-ci-example)
+をforkしています。CircleCIでUnityのTestとBuildをするまでの流れをまとめています。
 
-* [github](https://github.com/gableroux/unity3d-ci-example)
-* [gitlab](https://gitlab.com/gableroux/unity3d-gitlab-ci-example)
+今回参考にしたRepositoryは２つです
+- [GabLeRoux/unity3d-ci-example](https://github.com/GabLeRoux/unity3d-ci-example)
+- [wtanaka/docker-unity3d](https://github.com/wtanaka/docker-unity3d)
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+## セットアップ
 
-- [Getting started](#getting-started)
-- [Points of interest](#points-of-interest)
-    - [Build script](#build-script)
-    - [CI Configuration](#ci-configuration)
-        - [gitlab-ci](#gitlab-ci)
-        - [CircleCI](#circleci)
-        - [Travis](#travis)
-    - [Test files](#test-files)
-- [How to activate](#how-to-activate)
-    - [Gitlab-CI](#gitlab-ci)
-    - [Travis](#travis-1)
-    - [CircleCI](#circleci-1)
-- [How to add build targets](#how-to-add-build-targets)
-    - [gitlab-ci](#gitlab-ci-1)
-    - [iOS support](#ios-support)
-    - [Android support](#android-support)
-- [How to run tests manually](#how-to-run-tests-manually)
-- [Shameless plug](#shameless-plug)
-- [License](#license)
+CircleCIやDockerの登録やらなんやらの説明は省きます。
+https://circleci.com/
+基本的には公式サイトに行ってGitHubやBitBucketの連携登録をすれば簡単にできるかと思います。
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+https://www.docker.com/
+MacやLinuxの方はすんなりセットアップできると思います、Windowsの方はセットアップして起動できてなさそうであればhyper-vという項目をONにしないといけないので[こちら](https://docs.microsoft.com/ja-jp/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)を参考にしてみてください。
 
-## Getting started
+unity3d-ci-exampleで最初わからなかったのがREADMEにある`How to activate`という項目…
+要するにUnityのLicense認証なのですが少し手間でした。
 
-If you don't have a Unity project yet:
+またこの段階からDockerが必要となります。Docker初心者ですが調べつつ何とかなったのでコマンドも覚えているものは残しておきます。
+今回使用するContainerは[gableroux/unity3d](https://hub.docker.com/r/gableroux/unity3d/)です。
 
-1. Fork this project from github or gitlab
-2. Update the readme and remove undesired CI configurations
-3. Follow How to activate instructions
-4. Configure your CI
+DockerHubからimageを落として来ないといけないので落としてきます
 
-If you already have your own project:
-
-1. Copy desired CI file and scripts in `ci` folder
-2. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
-3. Copy build script (make sure you use the same path as original project, it must be in an `Editor` folder)
-4. Follow How to activate instructions
-5. Configure your CI
-
-## Points of interest
-
-This is probably what you're looking for.
-
-### Build script
-
-Script passed to the unity3d command line as argument to create builds
-
-* See [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs)
-
-### CI Configuration
-
-Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't support Gitlab as of september 2018, if you're on github, Travis is more popular but CircleCI and [gitlab-ci will also work](https://about.gitlab.com/features/github/). If you can't decide, see [CircleCI vs. GitLab CI/CD](https://about.gitlab.com/comparison/gitlab-vs-circleci.html) and [Travis CI vs GitLab](https://about.gitlab.com/comparison/travis-ci-vs-gitlab.html).
-
-#### gitlab-ci
-
-* [`.gitlab-ci.yml`](.gitlab-ci.yml)
-
-#### CircleCI
-
-* [`.circleci/config.yml`](.circleci/config.yml)
-
-#### Travis
-
-* [`.travis.yml`](.travis.yml)
-
-### Test files
-
-* [`editmode` tests in `Assets/Scripts/Editor/EditModeTests`](Assets/Scripts/Editor/EditModeTests)
-* [`playmode` tests in `Assets/Tests/`](Assets/Tests/)
-
-## How to activate
-
-You'll first need to run this locally. All you need is [docker](https://www.docker.com/) installed on your machine.
-
-1. Clone this project
-2. Pull the docker image and run bash inside, passing unity username and password to env
-
-    _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
-
-    ```bash
-    UNITY_VERSION=2018.2.3f1
-    docker run -it --rm \
-    -e "UNITY_USERNAME=username@example.com" \
-    -e "UNITY_PASSWORD=example_password" \
-    -e "TEST_PLATFORM=linux" \
-    -e "WORKDIR=/root/project" \
-    -v "$(pwd):/root/project" \
-    gableroux/unity3d:$UNITY_VERSION \
-    bash
-    ```
-3. In Unity docker container's bash, run once like this, it will try to activate
-
-    ```bash
-    xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-    /opt/Unity/Editor/Unity \
-    -logFile \
-    -batchmode \
-    -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD"
-    ```
-
-4. Wait for output that looks like this:
-
-    ```
-    LICENSE SYSTEM [2017723 8:6:38] Posting <?xml version="1.0" encoding="UTF-8"?><root><SystemInfo><IsoCode>en</IsoCode><UserName>[...]
-    ```
-    If you get the following error:
-    
-    > Can't activate unity: No sufficient permissions while processing request HTTP error code 401
-    
-    Make sure your credentials are valid. You may try to disable 2FA in your account and try again. Once done, you should enable 2FA again for security reasons. See [#11](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/11) for more details.
-
-5. Copy xml content and save as `unity3d.alf`
-6. Open https://license.unity3d.com/manual and answer questions
-7. Upload `unity3d.alf` for manual activation
-8. Download `Unity_v2018.x.ulf`
-9. Pass the license as a secret to your CI Configuration (see following sections)
-
-### Gitlab-CI
-
-Gitlab-CI Supports using mutli-line environment variables out of the box. :tada:
-
-Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
-
-_Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_. [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
-
-### Travis
-
-Travis doesn't support multiple-lines environment variables. I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
-
-Move your `Unity_v2018.x.ulf` to `ci` folder (so you don't clutter your project's root). Just make sure you don't track it inside git.
-
-```bash
-travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./ci/Unity_v2018.x.ulf
+```sh
+docker pull gableroux/unity3d
 ```
 
-For the record, the message I was getting when trying to paste license content directly into  the env var in travis settings:
+落とせたかどうかは
 
-> The previous command failed, possibly due to a malformed secure environment variable.
->  Please be sure to escape special characters such as ' ' and '$'.
->  For more information, see https://docs.travis-ci.com/user/encryption-keys.
+```sh
+docker images
+```
 
-### CircleCI
+で確認できます。
 
-CircleCI doesn't support multi-lines environment variables. We can use a solution similar to Travis by encrypting the license and decrypting it from the CI using `openssl` [as explained here](https://github.com/circleci/encrypted-files):
+落とせていたら
 
-Move your `Unity_v2018.x.ulf` to `ci` folder (so you don't clutter your project's root). Just make sure you don't track it inside git.
+```sh
+UNITY_VERSION=2018.2.3f1
+docker run -it --rm \
+-e "UNITY_USERNAME=username@example.com" \
+-e "UNITY_PASSWORD=example_password" \
+-e "TEST_PLATFORM=linux" \
+-e "WORKDIR=/root/project" \
+-v "$(pwd):/root/project" \
+gableroux/unity3d:$UNITY_VERSION \
+bash
+```
 
-1. Generate a strong password
-2. Store that password in a new `KEY` env var in CircleCI
-3. Encrypt the license using the same `KEY`
+UNITY_VERSIONやUNITY_USERNAME、UNITY_PASSWORDは適宜変えましょう。
+何をしているかというとgableroux/unity3dを起動させるときに環境変数として値を渡しているみたいです。
+コマンドの処理が終わるとDockerが起動してDocker上のbashが操作できるようになります。
+一回Dockerから出たい時は
 
-```bash
+```sh
+exit
+```
+
+だけ打てば出れます。再度入る時は入った時と同じコマンドでいいと思います。
+次にDocker上で
+
+```sh
+xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+/opt/Unity/Editor/Unity \
+-logFile \
+-batchmode \
+-username "$UNITY_USERNAME" -password "$UNITY_PASSWORD"
+```
+
+Unityの起動を行いLicense認証をしようと動きます。
+うまくいくと
+
+```sh
+LICENSE SYSTEM [2017723 8:6:38] Posting <?xml version="1.0" encoding="UTF-8"?><root><SystemInfo><IsoCode>en</IsoCode><UserName>[...]
+```
+
+というxmlがログに現れるので`unity3d.alf`という名前でホストのOSに保存しましょう。
+次に https://license.unity3d.com/manual をホストのOSで開いて`unity3d.alf`を選択して送信します。
+すると`Unity_v2018.x.ulf`というファイルがダウンロードされます。
+`How to activate`的には、ここまでで区切りですがCircleCIの場合はもう少しセットアップが必要です。
+
+`Unity_v2018.x.ulf`というのがUnityのLicenseあるよ！という証明するファイルになるのですが、そのままgit管理してしまうのは危険かもしれません。PlusライセンスやProライセンスだと他の人がアクティベートできてしまうからです。(たぶん)
+そこで自分でKEYを決めて暗号化をかけてCircleCI上で復号化して使おうじゃないか！という流れです。
+
+次もホストOSでの処理になります。
+
+```sh
 export KEY=insert-your-strong-generated-key-here
 openssl aes-256-cbc -e -in ci/Unity_v2018.x.ulf -out ci/Unity_v2018.x.ulf-cipher -k $KEY
 git add ci/Unity_v2018.x.ulf-cipher
 git commit -m "Add encrypted Unity_v2018.x.ulf using openssl aes-256-cbc KEY"
 ```
 
-## How to add build targets
+`insert-your-strong-generated-key-here`を好きな文字列に置き換えて覚えておいてください。後々CircleCIの環境変数として保存します。
+そして暗号化されたファイルが`Unity_v2018.x.ulf-cipher`となります。間違っても`Unity_v2018.x.ulf`を追加しないように気をつけてください。
+そのためリポジトリとは別のディレクトリで作業して`Unity_v2018.x.ulf-cipher`のみリポジトリに追加する方が安全かもしれません。
 
-Supported build targets can be found [here](https://docs.unity3d.com/ScriptReference/BuildTarget.html)
+### CircleCIに環境変数を登録する
+先ほど暗号化に使ったKEYをCircleCIに登録します。
+CircleCIとリポジトリを連携するとリポジトリに対して設定が行えるようになります。設定画面にある
+<img width="657" alt="名称未設定.png" src="https://qiita-image-store.s3.amazonaws.com/0/127761/732bf623-c40f-fbf0-fbbf-cfe3f5c8170c.png">
 
-### gitlab-ci
+`Enviroment Variables`の項目があり選択すると画像にはないですが右上に`Add Variables`というボタンがあるのでKEYという名前で環境変数を登録しましょう。
 
-Update [`.gitlab-ci.yml`](.gitlab-ci.yml) by adding a build section like this:
+セットアップは終わりです。
 
-```yaml
-build-StandaloneWindows64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneWindows64
+## config.ymlを書くぞ
+CicleCIで処理して欲しい項目をyml形式で書くことになります。
+保存場所はリポジトリのルートに`.circlci`フォルダを作って配下に`config.yml`を追加してください。
+今回使用したのは以下のymlです。(unity3d-ci-sampleのものをベースにしました)
+
+```yml:config.yml
+version: 2
+references:
+  docker_image: &docker_image
+    docker:
+      - image: gableroux/unity3d:2018.2.6f1
+  setup_unity_license_env_var: &setup_unity_license_env_var
+    command: |
+      mkdir -p /root/.cache/unity3d
+      mkdir -p /root/.local/share/unity3d/Unity/
+      openssl version
+      openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.ulf-cipher -out /Unity_v2018.ulf -k $KEY
+      export UNITY_LICENSE_CONTENT=`cat /Unity_v2018.ulf`
+      echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
+  remove_license_file: &remove_license_file
+    command: |
+      rm /Unity_v2018.ulf
+      rm /root/.local/share/unity3d/Unity/Unity_lic.ulf
+jobs:
+  test_editmode:
+    <<: *docker_image
+    steps:
+      # TODO: Add git to unity image so this is not required anymore
+      # this will prevent following error on 'checkout' step:
+      # Either git or ssh (required by git to clone through SSH) is not installed in the image. Falling back to CircleCI's native git client but the behavior may be different from official git. If this is an issue, please use an image that has official git and ssh installed.
+      - run:
+          command: apt-get update && apt-get install -y git && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            TEST_PLATFORM: editmode
+          command: |
+            chmod -R 755 ./ci/test.sh
+            ./ci/test.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: '$(pwd)/$TEST_PLATFORM-results.xml'
+          destination: '$TEST_PLATFORM-results.xml'
+  test_playmode:
+    <<: *docker_image
+    steps:
+      - run:
+          command: apt-get update && apt-get install -y git && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            TEST_PLATFORM: playmode
+          command: |
+            chmod -R 755 ./ci/test.sh
+            ./ci/test.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: '$(pwd)/$TEST_PLATFORM-results.xml'
+          destination: '$TEST_PLATFORM-results.xml'
+  build_StandaloneWindows:
+    <<: *docker_image
+    steps:
+      - run:
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            BUILD_TARGET: StandaloneWindows
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: './Builds/'
+  build_StandaloneOSX:
+    <<: *docker_image
+    steps:
+      - run:
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            BUILD_TARGET: StandaloneOSX
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: './Builds/'
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - build_StandaloneWindows
+      - build_StandaloneOSX
+      - test_editmode
+
 ```
 
-### iOS support
+これが
+![コメント 2019-02-07 233248.jpg](https://qiita-image-store.s3.amazonaws.com/0/127761/a65c9b56-8a46-6fe3-543b-7e79d2f2f8bd.jpeg)
+こうなります。
 
-**Help wanted!** See [#16](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/16)
+少し分解して解説を入れます。
+`setup_unity_license_env_var`だけを見ます。
 
-### Android support
-
-**Help wanted!** See [#17](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/17)
-
-## How to run tests manually
-
-For current project, outside of docker, one can run the tests from command line as usual this way:
-
-```bash
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/editmode-results.xml -testPlatform editmode
-path/to/unity -runTests -projectPath $(pwd) -testResults $(pwd)/playmode-results.xml -testPlatform playmode
+```sh
+# なんでこれ追加したんだったか…無くて怒られたような…
+mkdir -p /root/.cache/unity3d
+mkdir -p /root/.local/share/unity3d/Unity/
+openssl version
+# 暗号化したファイルを復号化する処理
+openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.ulf-cipher -out /Unity_v2018.ulf -k $KEY
+export UNITY_LICENSE_CONTENT=`cat /Unity_v2018.ulf`
+# 復号化した中身をファイルとしてUnity配下に保存
+echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
 ```
 
-## Shameless plug
+復号化した中身をファイルとしてUnity配下に保存をしないと自分の場合動きませんでした。`unity3d-ci-example`にはなかったのですが`wtanaka/docker-unity3d`にはその記述があり書いてみたらライセンスが通りました。。。先駆者たちに感謝っ・・・・！圧倒的感謝っ・・・・！
 
-I made this for free as a gift to the video game community. If this tool helped you, feel free to become a patron for [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+あとは`unity3d-ci-example`のciフォルダ配下の.shに権限与えて動かしているだけです。
+.shの中身はunityをコマンドで動かしているだけなので色々といじれるとは思います。
+編集したり調べる際には[コマンド引数のリファレンス](https://docs.unity3d.com/ja/2018.1/Manual/CommandLineArguments.html)にだいたい乗っているので確認してみてください。
 
-[![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
+Testは基本的に成功知れていればいいと思いますがBuildは成果物がダウンロードできないと意味がないのでダウンロードする用意をします。
+CircleCIには[Artifacts](https://circleci.com/docs/2.0/artifacts/)という機能がありArtifactsに保存したい成果物を登録しておけば長期的に保存ができるものになります。
 
-[![Become a Patron](./doc/become_a_patron_button.png)](https://www.patreon.com/bePatron?c=1073078)
+`unity3d-ci-sample`もBuildフォルダというものを作っておりフォルダごと保存するようになっています。
+jobの詳細画面？でArtifactsが確認できます。
+![コメント 2019-02-07 231417.jpg](https://qiita-image-store.s3.amazonaws.com/0/127761/1dbe4e69-1fe2-ce99-c8f6-221ba091c3b7.jpeg)
 
-## License
+フォルダを成果物としているのでかなりバラバラになっています。(-customBuildPathの環境変数登録してなくてそのままなのはスルー)
+１つ１つダウンロードしてられないのでzipにまとめます。
 
-[MIT](LICENSE.md) © [Gabriel Le Breton](https://gableroux.com)
+```yml:config.yml
+build_StandaloneWindows:
+    <<: *docker_image
+    steps:
+      - run:
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          environment:
+            BUILD_TARGET: StandaloneWindows
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: './Builds/'
+```
+
+一部抜粋ですが、apt-getでgitのついでにzipも一緒にインストールしておきます。最後の方にartifactsに登録しているのがわかると思います。
+そしてbuild.shの一部を編集します。
+
+```sh:build.sh
+if [ $UNITY_EXIT_CODE -eq 0 ]; then
+  echo "Run succeeded, no failures occurred";
+  cd $BUILD_PATH
+  zip archive -r .
+  cd /root/project
+elif [ $UNITY_EXIT_CODE -eq 2 ]; then
+  echo "Run succeeded, some tests failed";
+elif [ $UNITY_EXIT_CODE -eq 3 ]; then
+  echo "Run failure (other failure)";
+else
+  echo "Unexpected exit code $UNITY_EXIT_CODE";
+fi
+```
+
+成功したときにartifactsに登録するディレクトリに移動してzip処理をします。そして後処理があるのでディレクトリをもとの位置に戻ります。
+上記の編集を加えると
+
+![コメント 2019-02-07 231229.jpg](https://qiita-image-store.s3.amazonaws.com/0/127761/b8549553-c3fa-a12a-4763-4ab8ee72aa01.jpeg)
+
+archive.zipになっているのがわかります。archive.zipを落として解答すればビルド結果が確認できるかと思います。
