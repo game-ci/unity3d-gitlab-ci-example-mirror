@@ -2,69 +2,200 @@ version: 2
 references:
   docker_image: &docker_image
     docker:
-    - image: gableroux/unity3d:2018.2.6f1
+      - image: gableroux/unity3d:2018.3.3f1
+  docker_image_android: &docker_image_android
+    docker:
+      - image: gableroux/unity3d:2018.3.3f1-android
   setup_unity_license_env_var: &setup_unity_license_env_var
     command: |
+      mkdir -p /root/.cache/unity3d
+      mkdir -p /root/.local/share/unity3d/Unity/
       openssl version
       openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.x.ulf-cipher -out Unity_v2018.x.ulf -k $KEY
       export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
-      rm Unity_v2018.x.ulf
+      echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
+  remove_license_file: &remove_license_file
+    command: |
+      rm /Unity_v2018.ulf
+      rm /root/.local/share/unity3d/Unity/Unity_lic.ulf
+  zipArhive: &zipArhive
+    command: |
+      chmod -R 755 ./ci/zip.sh
+      ./ci/zip.sh
 jobs:
   test_editmode:
     <<: *docker_image
     steps:
-    # TODO: Add git to unity image so this is not required anymore
-    # this will prevent following error on 'checkout' step:
-    # Either git or ssh (required by git to clone through SSH) is not installed in the image. Falling back to CircleCI's native git client but the behavior may be different from official git. If this is an issue, please use an image that has official git and ssh installed.
-    - run:
-        command: apt-get update && apt-get install -y git && git --version
-    - checkout
-    - run:
-        <<: *setup_unity_license_env_var
-    - run:
-        environment:
-          TEST_PLATFORM: editmode
-        command: "./ci/test.sh"
-    - store_artifacts:
-        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-        destination: "$TEST_PLATFORM-results.xml"
+      # TODO: Add git to unity image so this is not required anymore
+      # this will prevent following error on 'checkout' step:
+      # Either git or ssh (required by git to clone through SSH) is not installed in the image. Falling back to CircleCI's native git client but the behavior may be different from official git. If this is an issue, please use an image that has official git and ssh installed.
+      - run:
+          name: setup apt-get install
+          command: apt-get update && apt-get install -y git && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: editmode run
+          environment:
+            TEST_PLATFORM: editmode
+          command: |
+            chmod -R 755 ./ci/test.sh
+            ./ci/test.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: '$(pwd)/$TEST_PLATFORM-results.xml'
+          destination: '$TEST_PLATFORM-results.xml'
   test_playmode:
     <<: *docker_image
     steps:
-    - run:
-        command: apt-get update && apt-get install -y git && git --version
-    - checkout
-    - run:
-        <<: *setup_unity_license_env_var
-    - run:
-        environment:
-          TEST_PLATFORM: playmode
-        command: "./ci/test.sh"
-    - store_artifacts:
-        path: "$(pwd)/$TEST_PLATFORM-results.xml"
-        destination: "$TEST_PLATFORM-results.xml"
+      - run:
+          name: setup apt-get install
+          command: apt-get update && apt-get install -y git && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: playmode run
+          environment:
+            TEST_PLATFORM: playmode
+          command: |
+            chmod -R 755 ./ci/test.sh
+            ./ci/test.sh
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          path: '$(pwd)/$TEST_PLATFORM-results.xml'
+          destination: '$TEST_PLATFORM-results.xml'
   build_StandaloneLinux64:
     <<: *docker_image
     steps:
-    - run:
-        command: apt-get update && apt-get install -y git && git --version
-    - checkout
-    - run:
-        <<: *setup_unity_license_env_var
-    - run:
-        environment:
-          BUILD_TARGET: StandaloneLinux64
-        command: "./ci/build.sh"
-    - store_artifacts:
-        path: "./Builds/"
+      - run:
+          name: setup apt-get install
+          command: apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: build Linux64
+          environment:
+            BUILD_TARGET: StandaloneLinux64
+            BUILD_NAME: SampleBuild
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - run:
+          <<: *zipArhive
+      - store_artifacts:
+          path: './Builds/'
+  build_StandaloneWindows:
+    <<: *docker_image
+    steps:
+      - run:
+          name: setup apt-get install
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: build windwos
+          environment:
+            BUILD_TARGET: StandaloneWindows
+            BUILD_NAME: SampleBuild
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - run:
+          <<: *zipArhive
+      - store_artifacts:
+          path: './Builds/'
+  build_StandaloneOSX:
+    <<: *docker_image
+    steps:
+      - run:
+          name: setup apt-get install
+          command: |
+            apt-get update && apt-get install -y git zip && git --version
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: build macOS
+          environment:
+            BUILD_TARGET: StandaloneOSX
+            BUILD_NAME: SampleBuild
+          command: |
+            chmod -R 755 ./ci/build.sh
+            ./ci/build.sh
+      - run:
+          <<: *remove_license_file
+      - run:
+          <<: *zipArhive
+      - store_artifacts:
+          path: './Builds/'
+  build_Android:
+    <<: *docker_image_android
+    steps:
+      - run:
+          name: setup apt-get install & android sdk, gradle
+          command: |
+            apt-get update && apt-get install -y openjdk-8-jdk bison git rbenv ruby-build ruby-dev autoconf build-essential curl file m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev zip unzip libreadline-dev && git --version
+            cd /opt && \
+            wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O android-sdk.zip && \
+            unzip -q android-sdk.zip -d android-sdk-linux && \
+            rm -f android-sdk.zip && \
+            ls -ahl android-sdk-linux
+            wget https://services.gradle.org/distributions/gradle-5.1-all.zip --no-check-certificate && \
+            unzip gradle-5.1-all.zip -d /opt/gradle
+      - checkout
+      - run:
+          <<: *setup_unity_license_env_var
+      - run:
+          name: build android
+          environment:
+            BUNDLE_IDENTIFIER: com.sample.circleci
+            BUILD_TARGET: Android
+            BUILD_NAME: SampleBuild
+            GRADLE_HOME: /opt/gradle/gradle-5.1
+            ANDROID_HOME: /opt/android-sdk-linux
+            JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64/jre/
+            BUILD_PATH: /project/Builds/$BUILD_TARGET/
+          command: |
+            mkdir -p ./Builds ./Builds/$BUILD_TARGET ./Builds/$BUILD_TARGET/$BUILD_NAME
+            rbenv install 2.3.0-dev
+            cp -pR ./ci/$BUILD_TARGET/* ./Builds/$BUILD_TARGET/$BUILD_NAME/
+            cd ./Builds/$BUILD_TARGET/$BUILD_NAME
+            eval "$(rbenv init -)"
+            rbenv local 2.3.0-dev
+            rbenv rehash
+            rbenv exec gem install bundler
+            rbenv rehash
+            $GRADLE_HOME/bin/gradle wrapper
+            bundle install --path .bundle
+            bundle exec fastlane beta
+      - run:
+          <<: *remove_license_file
+      - store_artifacts:
+          environment:
+            BUILD_TARGET: Android
+            BUILD_NAME: SampleBuild
+          path: './Builds/$BUILD_TARGET/$BUILD_NAME/build/outputs/apk/debug/$BUILD_NAME-deubg.apk'
 workflows:
   version: 2
   test_and_build:
     jobs:
-    - test_editmode
-    - test_playmode
-    - build_StandaloneLinux64
-
+      - test_playmode
+      - test_editmode
+      - build_StandaloneLinux64
+      - build_StandaloneWindows
+      - build_StandaloneOSX
+      - build_Android
 #    - run:
 #        environment:
 #          TEST_PLATFORM: editmode

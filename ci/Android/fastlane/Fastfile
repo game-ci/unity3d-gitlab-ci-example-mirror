@@ -1,0 +1,46 @@
+default_platform :android
+
+platform :android do
+  # before_all do
+  #   ENV["SLACK_URL"] = "slack web hook url"
+  # end
+
+  desc "Unity Project Export Android Project"
+  lane :exportAndroidProject do
+    sh "chmod -R 755 /root/project/ci/build.sh"
+    sh "/root/project/ci/build.sh"
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    exportAndroidProject
+    gradle(
+      task: "assemble",
+      build_type: 'Debug'
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "assembleRelease")
+    supply
+  end
+
+  # after_all do |lane|
+  #   slack(
+  #       message: ":tada: Successfully deployed new App Build."
+  #     )
+  # end
+
+  error do |lane, exception|
+    slack(
+       message: exception.message,
+       success: false
+    )
+  end
+end

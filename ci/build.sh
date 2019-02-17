@@ -5,6 +5,10 @@ set -x
 
 echo "Building for $BUILD_TARGET"
 
+# need fastlane build 
+export CURRENT_PATH=$(pwd)
+cd /root/project
+
 export BUILD_PATH=./Builds/$BUILD_TARGET/
 mkdir -p $BUILD_PATH
 
@@ -19,7 +23,8 @@ xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
     -customBuildPath $BUILD_PATH \
     -customBuildOptions AcceptExternalModificationsToPlayer \
     -executeMethod BuildCommand.PerformBuild \
-    -logFile
+    -logFile \
+    -nographics
 
 UNITY_EXIT_CODE=$?
 
@@ -35,3 +40,5 @@ fi
 
 ls -la $BUILD_PATH
 [ -n "$(ls -A $BUILD_PATH)" ] # fail job if build folder is empty
+
+cd $CURRENT_PATH
