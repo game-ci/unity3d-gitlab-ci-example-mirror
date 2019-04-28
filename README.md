@@ -102,7 +102,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
 
     ```bash
-    UNITY_VERSION=2018.2.3f1
+    UNITY_VERSION=2019.1.0f2
     docker run -it --rm \
     -e "UNITY_USERNAME=username@example.com" \
     -e "UNITY_PASSWORD=example_password" \
@@ -136,7 +136,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 5. Copy xml content and save as `unity3d.alf`
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
-8. Download `Unity_v2018.x.ulf`
+8. Download `Unity_v2018.x.ulf` # TODO: confirm new file name for 2019
 9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
@@ -146,7 +146,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
 
 ```bash
-travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf
+travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf # TODO confirm new file name for 2019
 ```
 
 For the record, the message I was getting:
@@ -185,14 +185,14 @@ You can execute the local scripts and specify the path of your Unity executable 
 ### Test
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.0f2/Unity.app/Contents/MacOS/Unity" \
   ./local_test.sh
 ```
 
 ### Build
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.0f2/Unity.app/Contents/MacOS/Unity" \
   ./local_build.sh
 ```
 
