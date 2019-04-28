@@ -3,14 +3,20 @@
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 [![Build Status](https://travis-ci.com/GabLeRoux/unity3d-ci-example.svg?branch=master)](https://travis-ci.com/GabLeRoux/unity3d-ci-example)
 
-This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
+This project is a PoC to **run unity3d tests and builds inside a CI** using **[gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)**. It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages](https://pages.github.com/)! **You can try the built project on [the published gitlab-pages](https://gableroux.gitlab.io/unity3d-gitlab-ci-example/)**. 
+
+_github-pages integration will be done in [GabLeRoux/unity3d-ci-example#4](https://github.com/GabLeRoux/unity3d-ci-example/issues/4)._
+
+## Git remotes
+
+This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](https://about.gitlab.com/product/continuous-integration/), [Travis](https://travis-ci.org/) and [CircleCI](https://circleci.com/)
 
 * [github](https://github.com/gableroux/unity3d-ci-example)
 * [gitlab](https://gitlab.com/gableroux/unity3d-gitlab-ci-example)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+## Table of Contents  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Getting started](#getting-started)
 - [Points of interest](#points-of-interest)
@@ -29,6 +35,8 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
 - [How to run scripts manually](#how-to-run-scripts-manually)
     - [Test](#test)
     - [Build](#build)
+- [About the example project](#about-the-example-project)
+- [Get involved](#get-involved)
 - [Shameless plug](#shameless-plug)
 - [License](#license)
 
@@ -188,9 +196,17 @@ UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/M
   ./local_build.sh
 ```
 
+## About the example project
+
+This is only a blank unity project with a free asset from the asset store: [3rd Person Controller + Fly Mode](https://assetstore.unity.com/packages/templates/systems/3rd-person-controller-fly-mode-28647) which is not affiliated with this project at all. If you feel there should be a different example in here, send a merge request! It can be a good thing to showcase free open source assets in here :v:
+
+## Get involved
+
+There is a discord `#technical-english` channel at [totema.studio/discord](https://totema.studio/discord). Feel free to join in! I will be looking for maintainers as this project is getting more and more attention :tada:.
+
 ## Shameless plug
 
-I made this for free as a gift to the video game community so if this tool helped you, I would be very happy if you'd like to support me, support [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+I made this for free as a gift to the video game community so if this tool helped you and you would like to support me, send your love to [Totema Studio](https://totemastudio.com) on Patreon: :beers:
 
 [![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
 
@@ -199,3 +215,4 @@ I made this for free as a gift to the video game community so if this tool helpe
 ## License
 
 [MIT](LICENSE.md) © [Gabriel Le Breton](https://gableroux.com)
+
