@@ -8,4 +8,4 @@ set +x
 echo 'Writing $UNITY_LICENSE_CONTENT to license file /root/.local/share/unity3d/Unity/Unity_lic.ulf'
 echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
 
-apt-get update && apt-get install -y pulseaudio
+apt-get install update && apt-get install -y pulseaudio
