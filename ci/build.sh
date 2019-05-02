@@ -18,11 +18,11 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -customBuildPath $BUILD_PATH \
   -customBuildOptions AcceptExternalModificationsToPlayer \
   -executeMethod BuildCommand.PerformBuild \
-  -logFile build.log
+  -logFile $(pwd)/$BUILD_TARGET-output.log
 
 UNITY_EXIT_CODE=$?
 
-cat build.log
+cat $(pwd)/$BUILD_TARGET-output.log
 
 if [ $UNITY_EXIT_CODE -eq 0 ]; then
   echo "Run succeeded, no failures occurred";
