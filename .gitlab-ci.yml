@@ -1,4 +1,4 @@
-image: "gableroux/unity3d:2019.1.0f2"
+image: "gableroux/unity3d@sha256:0c5c93b4262a89e8f425fe0f34655c59f6a4493d6c255e5d5509097ac00b71e4"
 
 stages:
 - test
