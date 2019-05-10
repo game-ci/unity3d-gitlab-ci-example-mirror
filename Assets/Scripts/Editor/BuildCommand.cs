@@ -65,9 +65,6 @@ static class BuildCommand
 	static string GetFixedBuildPath (BuildTarget buildTarget, string buildPath, string buildName) {
 		if (buildTarget.ToString().ToLower().Contains("windows")) {
 			buildName = buildName + ".exe";
-		} else if (buildTarget.ToString().ToLower().Contains("webgl")) {
-			// webgl produces a folder with index.html inside, there is no executable name for this buildTarget
-			buildName = "";
 		}
 		return buildPath + buildName;
 	}

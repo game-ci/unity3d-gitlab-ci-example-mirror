@@ -71,6 +71,10 @@ build-WebGL:
   <<: *build
   variables:
     BUILD_TARGET: WebGL
+  after_script:
+    - mv ./Builds/WebGL/$BUILD_NAME ./Builds/
+    - rm -rf ./Builds/WebGL
+    - mv ./Builds/$BUILD_NAME/ ./Builds/WebGL/
 
 pages:
   image: alpine:latest
