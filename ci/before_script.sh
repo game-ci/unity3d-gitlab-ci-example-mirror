@@ -16,5 +16,4 @@ cp ci/etc/asound.conf /etc/asound.conf
 
 # Workaround for https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/36
 # webgl build fails due to missing ffmpeg otherwise
-sudo apt-get update
-sudo apt-get install -y ffmpeg
+apt-get update && apt-get install -y ffmpeg
