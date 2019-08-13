@@ -24,10 +24,6 @@ variables:
   <<: *cache
   script:
   - chmod +x ./ci/test.sh && ./ci/test.sh
-  cache:
-    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
-    paths:
-      - Library/
   artifacts:
     paths:
     - $(pwd)/$TEST_PLATFORM-results.xml
