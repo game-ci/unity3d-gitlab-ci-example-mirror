@@ -1,4 +1,4 @@
-image: "gableroux/unity3d@sha256:0c5c93b4262a89e8f425fe0f34655c59f6a4493d6c255e5d5509097ac00b71e4"
+image: "gableroux/unity3d@sha256:eb3509eecb7e8a207ab4f88ab767f787ee9bc9e926ac0f3a3f02f63438a403b1"
 
 stages:
 - test
