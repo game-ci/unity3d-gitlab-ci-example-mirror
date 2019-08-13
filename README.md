@@ -102,7 +102,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
 
     ```bash
-    UNITY_VERSION=2019.1.0f2
+    UNITY_VERSION=2019.1.14f1
     docker run -it --rm \
     -e "UNITY_USERNAME=username@example.com" \
     -e "UNITY_PASSWORD=example_password" \
@@ -185,14 +185,14 @@ You can execute the local scripts and specify the path of your Unity executable 
 ### Test
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.0f2/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
   ./local_test.sh
 ```
 
 ### Build
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.0f2/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
   ./local_build.sh
 ```
 
