@@ -1,15 +1,15 @@
 image: "gableroux/unity3d@sha256:eb3509eecb7e8a207ab4f88ab767f787ee9bc9e926ac0f3a3f02f63438a403b1"
 
 stages:
-- build_and_test
-- deploy
+  - build_and_test
+  - deploy
 
 variables:
   BUILD_NAME: ExampleProjectName
 
 .unity_before_script: &unity_before_script
   before_script:
-  - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .cache: &cache
   cache:
@@ -32,10 +32,10 @@ get-license:
   <<: *unity_before_script
   <<: *cache
   script:
-  - chmod +x ./ci/test.sh && ./ci/test.sh
+    - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
     paths:
-    - $(pwd)/$TEST_PLATFORM-results.xml
+      - $(pwd)/$TEST_PLATFORM-results.xml
 
 test:
   <<: *test
@@ -47,14 +47,14 @@ test:
   <<: *unity_before_script
   <<: *cache
   script:
-  - chmod +x ./ci/build.sh && ./ci/build.sh
+    - chmod +x ./ci/build.sh && ./ci/build.sh
   cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
     paths:
       - Library/
   artifacts:
     paths:
-    - ./Builds/
+      - ./Builds/
 #tip: uncomment following lines if you'd like to build only on master branch
 #   only:
 #     - master
@@ -89,10 +89,10 @@ pages:
   image: alpine:latest
   stage: deploy
   script:
-  - mv ./Builds/WebGL public
+    - mv ./Builds/WebGL public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
 
