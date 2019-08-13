@@ -1,8 +1,7 @@
 image: "gableroux/unity3d@sha256:eb3509eecb7e8a207ab4f88ab767f787ee9bc9e926ac0f3a3f02f63438a403b1"
 
 stages:
-- test
-- build
+- build_and_test
 - deploy
 
 variables:
@@ -23,14 +22,13 @@ variables:
 # Look at the logs and grab the XML
 get-license:
   when: manual
-  stage: test
-#  <<: *unity_before_script
+  stage: build_and_test
   <<: *cache
   script:
     - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
 
 .test: &test
-  stage: test
+  stage: build_and_test
   <<: *unity_before_script
   <<: *cache
   script:
@@ -45,9 +43,7 @@ test:
     TEST_PLATFORM: playmode
 
 .build: &build
-  stage: build
-  #tip: you can reuse same stage to do everything in parallel and reduce overall time
-  # stage: test
+  stage: build_and_test
   <<: *unity_before_script
   <<: *cache
   script:
