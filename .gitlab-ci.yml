@@ -61,20 +61,20 @@ test:
 
 build-StandaloneLinux64:
   <<: *build
-  image: gableroux/unity3d@2019.1.14f1-linux
+  image: gableroux/unity3d@2019.1.14f1-unity
   variables:
     BUILD_TARGET: StandaloneLinux64
 
 build-StandaloneOSX:
   <<: *build
-  image: gableroux/unity3d@2019.1.14f1-macos
+  image: gableroux/unity3d@2019.1.14f1-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
 #Note: build target names changed in recent versions, use this for versions < 2017.2:
 # build-StandaloneOSXUniversal:
 #   <<: *build
-#   image: gableroux/unity3d@2019.1.14f1-macos
+#   image: gableroux/unity3d@2019.1.14f1-mac
 #   variables:
 #     BUILD_TARGET: StandaloneOSXUniversal
 
