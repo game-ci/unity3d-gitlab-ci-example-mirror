@@ -198,7 +198,7 @@ UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/
 
 ## About the example project
 
-This is only a blank unity project with a free asset from the asset store: [3rd Person Controller + Fly Mode](https://assetstore.unity.com/packages/templates/systems/3rd-person-controller-fly-mode-28647) which is not affiliated with this project at all. If you feel there should be a different example in here, send a merge request! It can be a good thing to showcase free open source assets in here :v:
+This is an updated version of the [Unity's Creator Kit: RPG free asset](https://assetstore.unity.com/packages/templates/tutorials/creator-kit-rpg-149309) which is not affiliated with this project at all. Feel free to explore it, dialogs are updated ;)
 
 ## Get involved
 
