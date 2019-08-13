@@ -18,6 +18,17 @@ variables:
     paths:
       - Library/
 
+# run this when you need to request a license again
+# you will need to follow activation steps from documentation
+# Look at the logs and grab the XML
+get-license:
+  when: manual
+  stage: test
+#  <<: *unity_before_script
+  <<: *cache
+  script:
+    - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
+
 .test: &test
   stage: test
   <<: *unity_before_script
@@ -28,12 +39,7 @@ variables:
     paths:
     - $(pwd)/$TEST_PLATFORM-results.xml
 
-test-editmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: editmode
-
-test-playmode:
+test:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
