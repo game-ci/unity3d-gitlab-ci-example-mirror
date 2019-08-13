@@ -1,4 +1,4 @@
-image: "gableroux/unity3d@sha256:eb3509eecb7e8a207ab4f88ab767f787ee9bc9e926ac0f3a3f02f63438a403b1"
+image: gableroux/unity3d@2019.1.14f1
 
 stages:
   - build_and_test
@@ -61,27 +61,32 @@ test:
 
 build-StandaloneLinux64:
   <<: *build
+  image: gableroux/unity3d@2019.1.14f1-linux
   variables:
     BUILD_TARGET: StandaloneLinux64
 
 build-StandaloneOSX:
   <<: *build
+  image: gableroux/unity3d@2019.1.14f1-macos
   variables:
     BUILD_TARGET: StandaloneOSX
 
 #Note: build target names changed in recent versions, use this for versions < 2017.2:
 # build-StandaloneOSXUniversal:
 #   <<: *build
+#   image: gableroux/unity3d@2019.1.14f1-macos
 #   variables:
 #     BUILD_TARGET: StandaloneOSXUniversal
 
 build-StandaloneWindows64:
   <<: *build
+  image: gableroux/unity3d@2019.1.14f1-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
+  image: gableroux/unity3d@2019.1.14f1-webgl
   variables:
     BUILD_TARGET: WebGL
 
