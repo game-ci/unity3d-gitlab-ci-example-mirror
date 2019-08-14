@@ -89,7 +89,7 @@ pages:
   image: alpine:latest
   stage: deploy
   script:
-    - mv ./Builds/WebGL public
+    - mv "./Builds/WebGL/${BUILD_NAME}" public
   artifacts:
     paths:
       - public
