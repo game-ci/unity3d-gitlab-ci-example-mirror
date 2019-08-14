@@ -66,9 +66,11 @@ static class BuildCommand
 		if (buildTarget.ToString().ToLower().Contains("windows")) {
 			buildName = buildName + ".exe";
 		} else if (buildTarget.ToString().ToLower().Contains("webgl")) {
-			// webgl produces a folder with index.html inside, there is no executable name for this buildTarget
-			buildName = "";
-		}
+            #if !UNITY_2018_1_OR_NEWER
+            // webgl produces a folder with index.html inside, there is no executable name for this buildTarget
+            buildName = "";
+            #endif
+        }
 		return buildPath + buildName;
 	}
 
