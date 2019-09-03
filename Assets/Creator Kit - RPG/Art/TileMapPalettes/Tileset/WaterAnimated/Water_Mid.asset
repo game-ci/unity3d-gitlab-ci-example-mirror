@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Water_Mid
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300026, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300032, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300038, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300044, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300098, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300104, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300110, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  - {fileID: 21300116, guid: aaa735c5fdc695d4691e911ab4338879, type: 3}
+  m_MinSpeed: 3
+  m_MaxSpeed: 3
+  m_AnimationStartTime: 0
+  m_TileColliderType: 2

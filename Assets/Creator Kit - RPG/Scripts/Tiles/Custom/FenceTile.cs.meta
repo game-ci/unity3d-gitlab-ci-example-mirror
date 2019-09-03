@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: b9c0716b337164542ad31041cbc6631e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - LT: {fileID: 21300006, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LR: {fileID: 21300008, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LB: {fileID: 21300002, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - TR: {fileID: 21300000, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - TB: {fileID: 21300018, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - RB: {fileID: 21300004, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LTR: {fileID: 21300012, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - TRB: {fileID: 21300020, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LRB: {fileID: 21300022, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LTB: {fileID: 21300014, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - LTRB: {fileID: 21300010, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - L: {fileID: 21300022, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - T: {fileID: 21300024, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - R: {fileID: 21300028, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - B: {fileID: 21300030, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  - alone: {fileID: 21300016, guid: a53d2c44340a6d14ea260ceefba9a1e8, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

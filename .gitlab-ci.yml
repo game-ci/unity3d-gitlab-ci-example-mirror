@@ -1,47 +1,60 @@
-image: "gableroux/unity3d:2018.2.6f1"
+image: gableroux/unity3d:2019.1.14f1
 
 stages:
-- test
-- build
-- deploy
+  - build_and_test
+  - deploy
 
 variables:
   BUILD_NAME: ExampleProjectName
 
 .unity_before_script: &unity_before_script
   before_script:
-  - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+
+.cache: &cache
+  cache:
+    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
+    paths:
+      - Library/
+
+# run this when you need to request a license again
+# you will need to follow activation steps from documentation
+# Look at the logs and grab the XML
+get-license:
+  when: manual
+  stage: build_and_test
+  <<: *cache
+  script:
+    - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
 
 .test: &test
-  stage: test
+  stage: build_and_test
   <<: *unity_before_script
+  <<: *cache
   script:
-  - chmod +x ./ci/test.sh && ./ci/test.sh
+    - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
     paths:
-    - $(pwd)/$TEST_PLATFORM-results.xml
+      - $(pwd)/$TEST_PLATFORM-results.xml
 
-test-editmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: editmode
-
-test-playmode:
+test:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
 
 .build: &build
-  stage: build
-  #tip: you can reuse same stage to do everything in parallel and reduce overall time
-  # stage: test
+  stage: build_and_test
   <<: *unity_before_script
+  <<: *cache
   script:
-  - chmod +x ./ci/build.sh && ./ci/build.sh
-
+    - chmod +x ./ci/build.sh && ./ci/build.sh
+  cache:
+    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
+    paths:
+      - Library/
   artifacts:
     paths:
-    - ./Builds/
+      - ./Builds/
 #tip: uncomment following lines if you'd like to build only on master branch
 #   only:
 #     - master
@@ -71,19 +84,15 @@ build-WebGL:
   <<: *build
   variables:
     BUILD_TARGET: WebGL
-  after_script:
-    - mv ./Builds/WebGL/$BUILD_NAME ./Builds/
-    - rm -rf ./Builds/WebGL
-    - mv ./Builds/$BUILD_NAME/ ./Builds/WebGL/
 
 pages:
   image: alpine:latest
   stage: deploy
   script:
-  - mv ./Builds/WebGL public
+    - mv "./Builds/WebGL/${BUILD_NAME}" public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
 

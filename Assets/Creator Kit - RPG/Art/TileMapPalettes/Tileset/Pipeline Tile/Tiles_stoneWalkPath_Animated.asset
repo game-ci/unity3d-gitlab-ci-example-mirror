@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c0716b337164542ad31041cbc6631e, type: 3}
+  m_Name: Tiles_stoneWalkPath_Animated
+  m_EditorClassIdentifier: 
+  colliderType: 0
+  LT: {fileID: 21300006, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LR: {fileID: 21300008, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LB: {fileID: 21300022, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  TR: {fileID: 21300000, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  TB: {fileID: 21300018, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  RB: {fileID: 21300004, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LTR: {fileID: 21300012, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  TRB: {fileID: 21300020, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LRB: {fileID: 21300026, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LTB: {fileID: 21300014, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  LTRB: {fileID: 21300010, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  L: {fileID: 21300022, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  T: {fileID: 21300024, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  R: {fileID: 21300028, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  B: {fileID: 21300030, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}
+  alone: {fileID: 21300016, guid: b2cf06612d923d6438d12b0d3a2c7ecc, type: 3}

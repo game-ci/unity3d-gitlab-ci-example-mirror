@@ -3,14 +3,20 @@
 [![pipeline status](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/badges/master/pipeline.svg)](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/commits/master)
 [![Build Status](https://travis-ci.com/GabLeRoux/unity3d-ci-example.svg?branch=master)](https://travis-ci.com/GabLeRoux/unity3d-ci-example)
 
-This project is a PoC to **run unity3d tests and builds inside a CI** using [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/). It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages]()! This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](), [Travis]() and [CircleCI]():
+This project is a PoC to **run unity3d tests and builds inside a CI** using **[gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)**. It currently creates builds for Windows, Linux, MacOS and webgl. The webgl build is published by the CI to [gitlab-pages](https://about.gitlab.com/features/pages/) and [github-pages](https://pages.github.com/)! **You can try the built project on [the published gitlab-pages](https://gableroux.gitlab.io/unity3d-gitlab-ci-example/)**. 
+
+_github-pages integration will be done in [GabLeRoux/unity3d-ci-example#4](https://github.com/GabLeRoux/unity3d-ci-example/issues/4)._
+
+## Git remotes
+
+This repository is hosted on multiple remotes to provide examples for [Gitlab-CI](https://about.gitlab.com/product/continuous-integration/), [Travis](https://travis-ci.org/) and [CircleCI](https://circleci.com/)
 
 * [github](https://github.com/gableroux/unity3d-ci-example)
 * [gitlab](https://gitlab.com/gableroux/unity3d-gitlab-ci-example)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+## Table of Contents  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Getting started](#getting-started)
 - [Points of interest](#points-of-interest)
@@ -31,6 +37,8 @@ This project is a PoC to **run unity3d tests and builds inside a CI** using [gab
 - [How to run scripts manually](#how-to-run-scripts-manually)
     - [Test](#test)
     - [Build](#build)
+- [About the example project](#about-the-example-project)
+- [Get involved](#get-involved)
 - [Shameless plug](#shameless-plug)
 - [License](#license)
 
@@ -98,7 +106,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
 
     ```bash
-    UNITY_VERSION=2018.2.3f1
+    UNITY_VERSION=2019.1.14f1
     docker run -it --rm \
     -e "UNITY_USERNAME=username@example.com" \
     -e "UNITY_PASSWORD=example_password" \
@@ -132,7 +140,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 5. Copy xml content and save as `unity3d.alf`
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
-8. Download `Unity_v2018.x.ulf`
+8. Download `Unity_v2018.x.ulf` # TODO: confirm new file name for 2019
 9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
@@ -176,7 +184,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
 
 ```bash
-travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf
+travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf # TODO confirm new file name for 2019
 ```
 
 For the record, the message I was getting:
@@ -215,20 +223,28 @@ You can execute the local scripts and specify the path of your Unity executable 
 ### Test
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
   ./local_test.sh
 ```
 
 ### Build
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2018.2.6f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
   ./local_build.sh
 ```
 
+## About the example project
+
+This is an updated version of the [Unity's Creator Kit: RPG free asset](https://assetstore.unity.com/packages/templates/tutorials/creator-kit-rpg-149309) which is not affiliated with this project at all. Feel free to explore it, dialogs are updated ;)
+
+## Get involved
+
+There is a discord `#technical-english` channel at [totema.studio/discord](https://totema.studio/discord). Feel free to join in! I will be looking for maintainers as this project is getting more and more attention :tada:.
+
 ## Shameless plug
 
-I made this for free as a gift to the video game community so if this tool helped you, I would be very happy if you'd like to support me, support [Totema Studio](https://totemastudio.com) on Patreon: :beers:
+I made this for free as a gift to the video game community so if this tool helped you and you would like to support me, send your love to [Totema Studio](https://totemastudio.com) on Patreon: :beers:
 
 [![Totema Studio Logo](./doc/totema-studio-logo-217.png)](https://patreon.com/totemastudio)
 
@@ -237,3 +253,4 @@ I made this for free as a gift to the video game community so if this tool helpe
 ## License
 
 [MIT](LICENSE.md) © [Gabriel Le Breton](https://gableroux.com)
+
