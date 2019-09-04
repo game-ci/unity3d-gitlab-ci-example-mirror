@@ -48,10 +48,6 @@ test:
   <<: *cache
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
-  cache:
-    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
-    paths:
-      - Library/
   artifacts:
     paths:
       - ./Builds/
