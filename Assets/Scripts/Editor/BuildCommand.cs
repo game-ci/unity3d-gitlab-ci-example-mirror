@@ -1,9 +1,16 @@
 ﻿using UnityEditor;
 using System.Linq;
 using System;
+using System.IO;
 
 static class BuildCommand
 {
+    private const string KEYSTORE_NAME  = "KEYSTORE_NAME";
+    private const string KEYSTORE_PASS  = "KEYSTORE_PASS";
+    private const string KEY_ALIAS_PASS = "KEY_ALIAS_PASS";
+    private const string KEY_ALIAS_NAME = "KEY_ALIAS_NAME";
+    private const string KEYSTORE       = "keystore.keystore";
+
     static string GetArgument(string name)
     {
         string[] args = Environment.GetCommandLineArgs();
@@ -93,44 +100,73 @@ static class BuildCommand
         return (TEnum)Enum.Parse(typeof(TEnum), strEnumValue);
     }
 
-    static string getEnv(string key, bool secret = false, bool verbose = true)
+    static bool TryGetEnv(string key, out string value)
     {
-        var env_var = Environment.GetEnvironmentVariable(key);
-        if (verbose)
-        {
-            if (env_var != null)
-            {
-                if (secret)
-                {
-                    Console.WriteLine(":: env['" + key + "'] set");
-                }
-                else
-                {
-                    Console.WriteLine(":: env['" + key + "'] set to '" + env_var + "'");
-                }
-            }
-            else
-            {
-                Console.WriteLine(":: env['" + key + "'] is null");
-            }
-        }
-        return env_var;
+        value = Environment.GetEnvironmentVariable(key);
+        return !string.IsNullOrEmpty(value);
     }
 
     static void PerformBuild()
     {
         Console.WriteLine(":: Performing build");
+
         //PlayerSettings.keystorePass = getEnv ("KEYSTORE_PASS", true);
         //PlayerSettings.keyaliasPass = getEnv ("KEY_ALIAS_PASS", true);
         //EditorSetup.AndroidSdkRoot = getEnv ("ANDROID_SDK_HOME");
         //EditorSetup.JdkRoot = getEnv ("JAVA_HOME");
         //EditorSetup.AndroidNdkRoot = getEnv ("ANDROID_NDK_HOME");
         var buildTarget = GetBuildTarget();
+
+        if (buildTarget == BuildTarget.Android) {
+            HandleAndroidKeystore();
+        }
+
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, GetBuildOptions());
         Console.WriteLine(":: Done with build");
+    }
+
+    private static void HandleAndroidKeystore()
+    {
+        PlayerSettings.Android.useCustomKeystore = false;
+
+        if (!File.Exists(KEYSTORE)) {
+            Console.WriteLine($":: {KEYSTORE} not found, skipping setup, using Unity's default keystore");
+            return;    
+        }
+
+        string keystorePass;
+        string keystoreAliasPass;
+
+        if (TryGetEnv(KEYSTORE_NAME, out string keystoreName)) {
+            PlayerSettings.Android.keystoreName = keystoreName;
+            Console.WriteLine($":: using ${KEYSTORE_NAME} env var on PlayerSettings");
+        } else {
+            Console.WriteLine($":: ${KEYSTORE_NAME} env var not set, use Project's PlayerSettings");
+        }
+
+        if (TryGetEnv(KEY_ALIAS_NAME, out string keyaliasName)) {
+            PlayerSettings.Android.keyaliasName = keyaliasName;
+            Console.WriteLine($":: using ${KEY_ALIAS_NAME} env var on PlayerSettings");
+        } else {
+            Console.WriteLine($":: ${KEY_ALIAS_NAME} env var not set, use Project's PlayerSettings");
+        }
+
+        if (!TryGetEnv(KEYSTORE_PASS, out keystorePass)) {
+            Console.WriteLine($":: ${KEYSTORE_PASS} env var not set, skipping setup, using Unity's default keystore");
+            return;
+        }
+
+        if (!TryGetEnv(KEY_ALIAS_PASS, out keystoreAliasPass)) {
+            Console.WriteLine($":: ${KEY_ALIAS_PASS} env var not set, skipping setup, using Unity's default keystore");
+            return;
+        }
+
+        PlayerSettings.Android.useCustomKeystore = true;
+        PlayerSettings.Android.keystorePass = keystorePass;
+        PlayerSettings.Android.keyaliasPass = keystoreAliasPass;
     }
 }
