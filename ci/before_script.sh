@@ -6,7 +6,20 @@ mkdir -p /root/.cache/unity3d
 mkdir -p /root/.local/share/unity3d/Unity/
 set +x
 
-LICENSE="UNITY_LICENSE_CONTENT_"${BUILD_TARGET^^}
+UPPERCASE_BUILD_TARGET=${BUILD_TARGET^^};
+
+if [ $UPPERCASE_BUILD_TARGET = "ANDROID" ]
+then
+    if [ -n $ANDROID_KEYSTORE_BASE64 ]
+	then
+        echo '$ANDROID_KEYSTORE_BASE64 found, decoding content into keystore.keystore'
+        echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > keystore.keystore
+    else
+        echo '$ANDROID_KEYSTORE_BASE64'" env var not found, building with Unity's default debug keystore"
+    fi
+fi
+
+LICENSE="UNITY_LICENSE_CONTENT_"$UPPERCASE_BUILD_TARGET
 
 if [ -z "${!LICENSE}" ]
 then
