@@ -74,11 +74,12 @@ static class BuildCommand
         return buildName;
     }
 
-    static string GetFixedBuildPath(BuildTarget buildTarget, string buildPath, string buildName)
+    static string GetFixedBuildPath(BuildTarget buildTarget, string buildPath, string buildName, BuildOptions buildOptions)
     {
-        if (buildTarget.ToString().ToLower().Contains("windows"))
-        {
-            buildName = buildName + ".exe";
+        if (buildTarget.ToString().ToLower().Contains("windows")) {
+            buildName += ".exe";
+        } else if (buildTarget == BuildTarget.Android && buildOptions == BuildOptions.None) {
+            buildName += ".apk";
         }
         return buildPath + buildName;
     }
@@ -121,9 +122,10 @@ static class BuildCommand
             HandleAndroidKeystore();
         }
 
-        var buildPath = GetBuildPath();
-        var buildName = GetBuildName();
-        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
+        var buildPath      = GetBuildPath();
+        var buildName      = GetBuildName();
+        var buildOptions   = GetBuildOptions();
+        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, GetBuildOptions());
         Console.WriteLine(":: Done with build");
