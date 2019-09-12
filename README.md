@@ -20,23 +20,24 @@ This repository is hosted on multiple remotes to provide examples for [Gitlab-CI
 
 - [Getting started](#getting-started)
 - [Points of interest](#points-of-interest)
-    - [Build script](#build-script)
-    - [CI Configuration](#ci-configuration)
-        - [gitlab-ci](#gitlab-ci)
-        - [WIP: CircleCI](#wip-circleci)
-        - [Travis](#travis)
-    - [Test files](#test-files)
+  - [Build script](#build-script)
+  - [CI Configuration](#ci-configuration)
+    - [gitlab-ci](#gitlab-ci)
+    - [WIP: CircleCI](#wip-circleci)
+    - [Travis](#travis)
+  - [Test files](#test-files)
 - [How to activate](#how-to-activate)
-    - [Unity Personal](#unity-personal)
-    - [Unity Plus/Pro](#unity-pluspro)
-    - [Travis](#travis-1)
+  - [Unity Personal](#unity-personal)
+  - [Unity Plus/Pro](#unity-pluspro)
+  - [Travis](#travis-1)
+  - [Unity license per target](#unity-license-per-target)
 - [How to add build targets](#how-to-add-build-targets)
-    - [gitlab-ci](#gitlab-ci-1)
-    - [iOS support](#ios-support)
-    - [Android support](#android-support)
+  - [gitlab-ci](#gitlab-ci-1)
+  - [iOS support](#ios-support)
+  - [Android support](#android-support)
 - [How to run scripts manually](#how-to-run-scripts-manually)
-    - [Test](#test)
-    - [Build](#build)
+  - [Test](#test)
+  - [Build](#build)
 - [About the example project](#about-the-example-project)
 - [Get involved](#get-involved)
 - [Shameless plug](#shameless-plug)
@@ -193,6 +194,10 @@ For the record, the message I was getting:
 >  Please be sure to escape special characters such as ' ' and '$'.
 >  For more information, see https://docs.travis-ci.com/user/encryption-keys.
 
+### Unity license per target
+
+If you need a specific Unity license for a build target, you can add environment var `UNITY_LICENSE_CONTENT_{BUILD_TARGET}`. (`UNITY_LICENSE_CONTENT_ANDROID`, `UNITY_LICENSE_CONTENT_IOS`, ...)
+
 ## How to add build targets
 
 Supported build targets can be found [here](https://docs.unity3d.com/ScriptReference/BuildTarget.html)
@@ -214,7 +219,22 @@ build-StandaloneWindows64:
 
 ### Android support
 
-**Help wanted!** See [#17](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/17)
+To make build working with Android, you will need a specific Unity license (because that is not the same docker image).  
+Add the content of your specific Unity license in your CI's environment variable : `UNITY_LICENSE_CONTENT_ANDROID`
+
+By default the apk is not signed and the build will use the Unity's default debug key.  
+For security reason, you must not add your keystore to git.  
+Encode your keystore file as base64 using openssl:  
+`openssl base64 -A -in yourKeystore.keystore`
+
+Copy the result to your CI's environment variable `ANDROID_KEYSTORE_BASE64`
+
+Add following environment variables:  
+- `KEYSTORE_PASS` : Keystore pass  
+- `KEY_ALIAS_NAME` : Keystore alias name to use (if not set, the program will use the alias name set in Project's PlayerSettings)  
+- `KEY_ALIAS_PASS` : Keystore alias pass to use
+
+Note about keystore security, if you would like to use another solution, see [HERE](https://android.jlelse.eu/where-to-store-android-keystore-file-in-ci-cd-cycle-2365f4e02e57)
 
 ## How to run scripts manually
 
