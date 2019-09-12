@@ -49,7 +49,12 @@ static class BuildCommand
 #endif
         }
 
-        return ToEnum<BuildTarget>(buildTargetName, BuildTarget.NoTarget);
+        if (buildTargetName.TryConvertToEnum(out BuildTarget target))
+            return target;
+
+        Console.WriteLine($":: {nameof(buildTargetName)} \"{buildTargetName}\" not defined on enum {nameof(BuildTarget)}, using {nameof(BuildTarget.NoTarget)} enum to build");
+
+        return BuildTarget.NoTarget;
     }
 
     static string GetBuildPath()
@@ -91,14 +96,16 @@ static class BuildCommand
     }
 
     // https://stackoverflow.com/questions/1082532/how-to-tryparse-for-enum-value
-    static TEnum ToEnum<TEnum>(this string strEnumValue, TEnum defaultValue)
+    static bool TryConvertToEnum<TEnum>(this string strEnumValue, out TEnum value)
     {
         if (!Enum.IsDefined(typeof(TEnum), strEnumValue))
         {
-            return defaultValue;
+            value = default;
+            return false;
         }
 
-        return (TEnum)Enum.Parse(typeof(TEnum), strEnumValue);
+        value = (TEnum)Enum.Parse(typeof(TEnum), strEnumValue);
+        return true;
     }
 
     static bool TryGetEnv(string key, out string value)
