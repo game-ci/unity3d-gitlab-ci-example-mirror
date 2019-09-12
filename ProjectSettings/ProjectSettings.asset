@@ -161,7 +161,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.DefaultProductName
-    Standalone: com.atomicorn.myproduct
+    Standalone: 
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
