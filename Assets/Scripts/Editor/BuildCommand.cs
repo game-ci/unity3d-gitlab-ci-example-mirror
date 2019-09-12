@@ -2,11 +2,9 @@
 using System.Linq;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 static class BuildCommand
 {
-    private const string KEYSTORE_NAME  = "KEYSTORE_NAME";
     private const string KEYSTORE_PASS  = "KEYSTORE_PASS";
     private const string KEY_ALIAS_PASS = "KEY_ALIAS_PASS";
     private const string KEY_ALIAS_NAME = "KEY_ALIAS_NAME";
@@ -166,15 +164,10 @@ static class BuildCommand
             return;    
         }
 
+        PlayerSettings.Android.keystoreName = KEYSTORE;
+
         string keystorePass;
         string keystoreAliasPass;
-
-        if (TryGetEnv(KEYSTORE_NAME, out string keystoreName)) {
-            PlayerSettings.Android.keystoreName = keystoreName;
-            Console.WriteLine($":: using ${KEYSTORE_NAME} env var on PlayerSettings");
-        } else {
-            Console.WriteLine($":: ${KEYSTORE_NAME} env var not set, use Project's PlayerSettings");
-        }
 
         if (TryGetEnv(KEY_ALIAS_NAME, out string keyaliasName)) {
             PlayerSettings.Android.keyaliasName = keyaliasName;
