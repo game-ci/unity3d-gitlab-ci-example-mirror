@@ -2,6 +2,7 @@
 using System.Linq;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 static class BuildCommand
 {
@@ -10,6 +11,7 @@ static class BuildCommand
     private const string KEY_ALIAS_PASS = "KEY_ALIAS_PASS";
     private const string KEY_ALIAS_NAME = "KEY_ALIAS_NAME";
     private const string KEYSTORE       = "keystore.keystore";
+    private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
 
     static string GetArgument(string name)
     {
@@ -91,8 +93,30 @@ static class BuildCommand
 
     static BuildOptions GetBuildOptions()
     {
-        string buildOptions = GetArgument("customBuildOptions");
-        return buildOptions == "AcceptExternalModificationsToPlayer" ? BuildOptions.AcceptExternalModificationsToPlayer : BuildOptions.None;
+        if (TryGetEnv(BUILD_OPTIONS_ENV_VAR, out string envVar)) {
+            string[] allOptionVars = envVar.Split(',');
+            BuildOptions allOptions = BuildOptions.None;
+            BuildOptions option;
+            string optionVar;
+            int length = allOptionVars.Length;
+
+            Console.WriteLine($":: Detecting {BUILD_OPTIONS_ENV_VAR} en var with {length} elements ({envVar})");
+
+            for (int i = 0; i < length; i++) {
+                optionVar = allOptionVars[i];
+
+                if (optionVar.TryConvertToEnum(out option)) {
+                    allOptions |= option;
+                }
+                else {
+                    Console.WriteLine($":: Cannot convert {optionVar} to {nameof(BuildOptions)} enum, skipping it.");
+                }
+            }
+
+            return allOptions;
+        }
+
+        return BuildOptions.None;
     }
 
     // https://stackoverflow.com/questions/1082532/how-to-tryparse-for-enum-value
@@ -129,7 +153,7 @@ static class BuildCommand
         var buildOptions   = GetBuildOptions();
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, GetBuildOptions());
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
         Console.WriteLine(":: Done with build");
     }
 
