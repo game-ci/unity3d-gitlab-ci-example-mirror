@@ -80,6 +80,24 @@ Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't suppor
 
 * [`.gitlab-ci.yml`](.gitlab-ci.yml)
 
+Note: you can add BuildOptions per target by adding environment variable `BuildOptions`.
+
+```
+build-ios:
+  <<: *build
+  image: gableroux/unity3d:2019.1.14f1-android
+  variables:
+    BUILD_TARGET: iOS
+	BuildOptions: AcceptExternalModificationsToPlayer
+```
+
+If you would like to use several BuildOptions, you have to separate all values by `,` :  
+```	
+	BuildOptions: AcceptExternalModificationsToPlayer,CompressTextures,ConnectToHost
+```
+
+See [HERE](https://docs.unity3d.com/ScriptReference/BuildOptions.html) for BuildOptions values.
+
 #### WIP: CircleCI
 
 **TODO**
