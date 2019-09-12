@@ -111,11 +111,6 @@ static class BuildCommand
     {
         Console.WriteLine(":: Performing build");
 
-        //PlayerSettings.keystorePass = getEnv ("KEYSTORE_PASS", true);
-        //PlayerSettings.keyaliasPass = getEnv ("KEY_ALIAS_PASS", true);
-        //EditorSetup.AndroidSdkRoot = getEnv ("ANDROID_SDK_HOME");
-        //EditorSetup.JdkRoot = getEnv ("JAVA_HOME");
-        //EditorSetup.AndroidNdkRoot = getEnv ("ANDROID_NDK_HOME");
         var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
