@@ -98,7 +98,7 @@ static class BuildCommand
             string optionVar;
             int length = allOptionVars.Length;
 
-            Console.WriteLine($":: Detecting {BUILD_OPTIONS_ENV_VAR} en var with {length} elements ({envVar})");
+            Console.WriteLine($":: Detecting {BUILD_OPTIONS_ENV_VAR} env var with {length} elements ({envVar})");
 
             for (int i = 0; i < length; i++) {
                 optionVar = allOptionVars[i];
