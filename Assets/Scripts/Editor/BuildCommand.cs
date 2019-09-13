@@ -173,7 +173,7 @@ static class BuildCommand
             PlayerSettings.Android.keyaliasName = keyaliasName;
             Console.WriteLine($":: using ${KEY_ALIAS_NAME} env var on PlayerSettings");
         } else {
-            Console.WriteLine($":: ${KEY_ALIAS_NAME} env var not set, use Project's PlayerSettings");
+            Console.WriteLine($":: ${KEY_ALIAS_NAME} env var not set, using Project's PlayerSettings");
         }
 
         if (!TryGetEnv(KEYSTORE_PASS, out keystorePass)) {
