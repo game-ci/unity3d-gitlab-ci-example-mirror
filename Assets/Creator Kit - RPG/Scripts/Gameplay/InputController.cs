@@ -10,13 +10,28 @@ namespace RPGM.UI
     public class InputController : MonoBehaviour
     {
         public float stepSize = 0.1f;
+        public Controller mobileController;
+        public Controller standaloneController;
+        public Canvas mobileCanvas;
         GameModel model = Schedule.GetModel<GameModel>();
+
+        private Controller controller;
 
         public enum State
         {
             CharacterControl,
             DialogControl,
             Pause
+        }
+
+        public void Awake()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            controller = mobileController;
+#else
+            controller = standaloneController;
+            mobileCanvas.enabled = false;
+#endif
         }
 
         State state;
@@ -39,23 +54,23 @@ namespace RPGM.UI
         void DialogControl()
         {
             model.player.nextMoveCommand = Vector3.zero;
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (controller.GetInputDown(InputButton.Left))
                 model.dialog.FocusButton(-1);
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            else if (controller.GetInputDown(InputButton.Right))
                 model.dialog.FocusButton(+1);
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (controller.GetInputDown(InputButton.Action))
                 model.dialog.SelectActiveButton();
         }
 
         void CharacterControl()
         {
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (controller.GetInput(InputButton.Up))
                 model.player.nextMoveCommand = Vector3.up * stepSize;
-            else if (Input.GetKey(KeyCode.DownArrow))
+            else if (controller.GetInput(InputButton.Down))
                 model.player.nextMoveCommand = Vector3.down * stepSize;
-            else if (Input.GetKey(KeyCode.LeftArrow))
+            else if (controller.GetInput(InputButton.Left))
                 model.player.nextMoveCommand = Vector3.left * stepSize;
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (controller.GetInput(InputButton.Right))
                 model.player.nextMoveCommand = Vector3.right * stepSize;
             else
                 model.player.nextMoveCommand = Vector3.zero;

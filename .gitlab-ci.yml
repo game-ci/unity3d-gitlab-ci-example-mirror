@@ -26,6 +26,14 @@ get-license:
   <<: *cache
   script:
     - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
+    
+get-android-license:
+  when: manual
+  stage: build_and_test
+  image: gableroux/unity3d:2019.1.14f1-android
+  <<: *cache
+  script:
+    - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
 
 .test: &test
   stage: build_and_test
@@ -80,6 +88,12 @@ build-WebGL:
   <<: *build
   variables:
     BUILD_TARGET: WebGL
+    
+build-android:
+  <<: *build
+  image: gableroux/unity3d:2019.1.14f1-android
+  variables:
+    BUILD_TARGET: Android
 
 pages:
   image: alpine:latest
