@@ -1,4 +1,4 @@
-#image: gableroux/unity3d:2019.1.14f1
+image: gableroux/unity3d:2019.1.14f1
 
 stages:
   - build_and_test
@@ -43,6 +43,7 @@ get-license-file:
     paths:
       - $UNITY_LICENSE_FILE
       - debug_images/
+    expire_in: 10 min # Expireing this as artifacts will contain sensitive data and should not be kept public
 
 #.test: &test
 #  stage: build_and_test
