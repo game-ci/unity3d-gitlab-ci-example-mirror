@@ -38,7 +38,7 @@ get-license-file:
   dependencies:
     - get-activation-file
   script:
-    - node index.js
+    - unity3d-activator
   artifacts:
     paths:
       - $UNITY_LICENSE_FILE
