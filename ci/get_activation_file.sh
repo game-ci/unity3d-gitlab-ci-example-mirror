@@ -5,12 +5,12 @@ xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
     -logFile /dev/stdout \
     -batchmode \
     -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
-      tee unity-output.log
+      tee ./unity-output.log
 
-cat unity-output.log |
+cat ./unity-output.log |
   grep 'LICENSE SYSTEM .* Posting *' |
-  sed 's/.*Posting *//' > unity.alf
+  sed 's/.*Posting *//' > "${UNITY_ACTIVATION_FILE:-./unity3d.alf}"
 
 # Fail job if unity.alf is empty
-[ -s unity.alf ]
+[ -s "${UNITY_ACTIVATION_FILE:-./unity3d.alf}" ]
 exit $?
