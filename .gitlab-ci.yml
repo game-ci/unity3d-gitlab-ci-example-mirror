@@ -2,6 +2,7 @@
 
 stages:
   - build_and_test
+  - get_license
 #  - deploy
 
 variables:
@@ -31,7 +32,7 @@ get-activation-file:
       - $UNITY_ACTIVATION_FILE
 
 get-license-file:
-  stage: build_and_test
+  stage: get_license
   image: gableroux/unity3d-activator:v1.0.1
   retry: 2 # this job sometimes fail for unknown reasons, trying it again sometimes help
   dependencies:
