@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 namespace UnityEditor
 {
     [CustomGridBrush(true, false, false, "Group Brush")]
-    public class GroupBrush : GridBrush
+    public class GroupBrush : UnityEditor.Tilemaps.GridBrush
     {
         public Vector3Int gap
         {
@@ -177,7 +177,7 @@ namespace UnityEditor
     }
 
     [CustomEditor(typeof(GroupBrush))]
-    public class GroupBrushEditor : GridBrushEditor
+    public class GroupBrushEditor : UnityEditor.Tilemaps.GridBrushEditor
     {
     }
 }

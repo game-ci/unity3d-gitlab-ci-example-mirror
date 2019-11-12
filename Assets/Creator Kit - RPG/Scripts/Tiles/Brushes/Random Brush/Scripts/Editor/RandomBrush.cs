@@ -8,7 +8,7 @@ namespace UnityEditor
 {
     [CustomGridBrush(false, false, false, "Random Brush")]
     [CreateAssetMenu(fileName = "New Random Brush", menuName = "Brushes/Random Brush")]
-    public class RandomBrush : GridBrush
+    public class RandomBrush : UnityEditor.Tilemaps.GridBrush
     {
         internal struct SizeEnumerator : IEnumerator<Vector3Int>
         {
@@ -133,7 +133,7 @@ namespace UnityEditor
     }
 
     [CustomEditor(typeof(RandomBrush))]
-    public class RandomBrushEditor : GridBrushEditor
+    public class RandomBrushEditor : UnityEditor.Tilemaps.GridBrushEditor
     {
         private RandomBrush randomBrush { get { return target as RandomBrush; } }
         private GameObject lastBrushTarget;

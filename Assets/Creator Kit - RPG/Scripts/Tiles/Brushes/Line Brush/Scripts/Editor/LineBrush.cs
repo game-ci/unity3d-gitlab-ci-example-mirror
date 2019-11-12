@@ -9,7 +9,7 @@ namespace UnityEditor
 {
     [CustomGridBrush(true, false, false, "Line Brush")]
     [CreateAssetMenu(fileName = "New Line Brush", menuName = "Brushes/Line Brush")]
-    public class LineBrush : GridBrush
+    public class LineBrush : UnityEditor.Tilemaps.GridBrush
     {
         public bool lineStartActive = false;
         public bool fillGaps = false;
@@ -150,7 +150,7 @@ namespace UnityEditor
     }
 
     [CustomEditor(typeof(LineBrush))]
-    public class LineBrushEditor : GridBrushEditor
+    public class LineBrushEditor : UnityEditor.Tilemaps.GridBrushEditor
     {
         private LineBrush lineBrush { get { return target as LineBrush; } }
         private Tilemap lastTilemap;

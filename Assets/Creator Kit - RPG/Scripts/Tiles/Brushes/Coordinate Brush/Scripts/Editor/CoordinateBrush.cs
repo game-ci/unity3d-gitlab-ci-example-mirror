@@ -6,7 +6,7 @@ namespace UnityEditor
 {
     [CustomGridBrush(true, false, false, "Coordinate Brush")]
     [CreateAssetMenu(fileName = "New Coordinate Brush", menuName = "Brushes/Coordinate Brush")]
-    public class CoordinateBrush : GridBrush {
+    public class CoordinateBrush : UnityEditor.Tilemaps.GridBrush {
         public int z = 0;
 
         public override void Paint(GridLayout grid, GameObject brushTarget, Vector3Int position)
@@ -36,7 +36,7 @@ namespace UnityEditor
     }
 
     [CustomEditor(typeof(CoordinateBrush))]
-    public class CoordinateBrushEditor : GridBrushEditor
+    public class CoordinateBrushEditor : UnityEditor.Tilemaps.GridBrushEditor
     {
         private CoordinateBrush coordinateBrush { get { return target as CoordinateBrush; } }
 
