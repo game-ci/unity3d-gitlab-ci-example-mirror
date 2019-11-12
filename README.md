@@ -20,24 +20,25 @@ This repository is hosted on multiple remotes to provide examples for [Gitlab-CI
 
 - [Getting started](#getting-started)
 - [Points of interest](#points-of-interest)
-  - [Build script](#build-script)
-  - [CI Configuration](#ci-configuration)
-    - [gitlab-ci](#gitlab-ci)
-    - [WIP: CircleCI](#wip-circleci)
-    - [Travis](#travis)
-  - [Test files](#test-files)
+    - [Build script](#build-script)
+    - [CI Configuration](#ci-configuration)
+        - [gitlab-ci](#gitlab-ci)
+        - [WIP: CircleCI](#wip-circleci)
+        - [Travis](#travis)
+    - [Test files](#test-files)
 - [How to activate](#how-to-activate)
-  - [Unity Personal](#unity-personal)
-  - [Unity Plus/Pro](#unity-pluspro)
-  - [Travis](#travis-1)
-  - [Unity license per target](#unity-license-per-target)
+    - [Unity Personal](#unity-personal)
+    - [Unity Plus/Pro](#unity-pluspro)
+    - [Unity license per target](#unity-license-per-target)
+        - [Note about components in recent images](#note-about-components-in-recent-images)
+    - [Travis](#travis-1)
 - [How to add build targets](#how-to-add-build-targets)
-  - [gitlab-ci](#gitlab-ci-1)
-  - [iOS support](#ios-support)
-  - [Android support](#android-support)
+    - [gitlab-ci](#gitlab-ci-1)
+    - [iOS support](#ios-support)
+    - [Android support](#android-support)
 - [How to run scripts manually](#how-to-run-scripts-manually)
-  - [Test](#test)
-  - [Build](#build)
+    - [Test](#test)
+    - [Build](#build)
 - [About the example project](#about-the-example-project)
 - [Get involved](#get-involved)
 - [Shameless plug](#shameless-plug)
@@ -78,6 +79,8 @@ You need to have this file in your project in order to build your project in the
 
 Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't support Gitlab as of september 2018, if you're on github, Travis is more popular but CircleCI and [gitlab-ci will also work](https://about.gitlab.com/features/github/). If you can't decide, see [CircleCI vs. GitLab CI/CD](https://about.gitlab.com/comparison/gitlab-vs-circleci.html) and [Travis CI vs GitLab](https://about.gitlab.com/comparison/travis-ci-vs-gitlab.html).
 
+You need to have one of these files in your project in order to build your project to actually use your CI.
+
 #### gitlab-ci
 
 * [`.gitlab-ci.yml`](.gitlab-ci.yml)
@@ -87,7 +90,7 @@ Note: you can add BuildOptions per target by adding environment variable `BuildO
 ```
 build-ios:
   <<: *build
-  image: gableroux/unity3d:2019.1.14f1-android
+  image: gableroux/unity3d:2019.2.11f1-android
   variables:
     BUILD_TARGET: iOS
 	BuildOptions: AcceptExternalModificationsToPlayer
@@ -127,7 +130,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
 
     ```bash
-    UNITY_VERSION=2019.1.14f1
+    UNITY_VERSION=2019.2.11f1
     docker run -it --rm \
     -e "UNITY_USERNAME=username@example.com" \
     -e "UNITY_PASSWORD=example_password" \
@@ -182,7 +185,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     _hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_. Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` env var.
 
     ```bash
-    UNITY_VERSION=2018.2.3f1
+    UNITY_VERSION=2019.2.11f1
     docker run -it --rm \
     -e "UNITY_USERNAME=username@example.com" \
     -e "UNITY_PASSWORD=example_password" \
@@ -208,6 +211,14 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
 
+### Unity license per target
+
+Before `2018.4.8f1` for 2018 versions and before `2019.2.4f1` for 2019 versions, if you need a specific Unity license for a build target, you can add environment var `UNITY_LICENSE_CONTENT_{BUILD_TARGET}`. (`UNITY_LICENSE_CONTENT_ANDROID`, `UNITY_LICENSE_CONTENT_IOS`, ...). _This is not required anymore now that images share a base image [See related change](https://gitlab.com/gableroux/unity3d/merge_requests/63)**
+
+#### Note about components in recent images
+
+Starting from these versions, base image doesn't include windows, mac and webgl components anymore. This means you must use `-mac`, `-windows` or `-webgl` images. [See related change](https://gitlab.com/gableroux/unity3d/merge_requests/63)
+
 ### Travis
 
 Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
@@ -221,10 +232,6 @@ For the record, the message I was getting:
 > The previous command failed, possibly due to a malformed secure environment variable.
 >  Please be sure to escape special characters such as ' ' and '$'.
 >  For more information, see https://docs.travis-ci.com/user/encryption-keys.
-
-### Unity license per target
-
-If you need a specific Unity license for a build target, you can add environment var `UNITY_LICENSE_CONTENT_{BUILD_TARGET}`. (`UNITY_LICENSE_CONTENT_ANDROID`, `UNITY_LICENSE_CONTENT_IOS`, ...)
 
 ## How to add build targets
 
@@ -271,14 +278,14 @@ You can execute the local scripts and specify the path of your Unity executable 
 ### Test
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.2.11f1/Unity.app/Contents/MacOS/Unity" \
   ./local_test.sh
 ```
 
 ### Build
 
 ```bash
-UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.1.14f1/Unity.app/Contents/MacOS/Unity" \
+UNITY_EXECUTABLE="/Applications/Unity/Hub/Editor/2019.2.11f1/Unity.app/Contents/MacOS/Unity" \
   ./local_build.sh
 ```
 
