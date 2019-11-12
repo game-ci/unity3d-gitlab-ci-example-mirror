@@ -2,13 +2,11 @@ image: gableroux/unity3d:2019.1.14f1
 
 stages:
   - build_and_test
-  - get_license
-#  - deploy
+  - deploy
 
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
-  UNITY_LICENSE_FILE: ./Unity_lic.ulf
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -30,22 +28,7 @@ get-activation-file:
   artifacts:
     paths:
       - $UNITY_ACTIVATION_FILE
-    expire_in: 10 min # Expiring this as artifacts will contain sensitive data and should not be kept public
-
-get-license-file:
-  stage: get_license
-  image: gableroux/unity3d-activator:v1.0.1
-  retry: 2 # this job sometimes fail for unknown reasons, trying it again sometimes help
-  dependencies:
-    - get-activation-file
-  script:
-    - unity3d-activator
-  artifacts:
-    when: always
-    paths:
-      - $UNITY_LICENSE_FILE
-      - debug_images/
-    expire_in: 10 min # Expiring this as artifacts will contain sensitive data and should not be kept public
+    expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
 
 .test: &test
   stage: build_and_test
