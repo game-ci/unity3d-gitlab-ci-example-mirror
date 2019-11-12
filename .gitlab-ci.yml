@@ -23,7 +23,7 @@ variables:
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
-#  when: manual
+  when: manual
   stage: build_and_test
   script:
     - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
