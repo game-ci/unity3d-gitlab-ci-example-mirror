@@ -42,10 +42,15 @@ get-activation-file:
     paths:
       - $(pwd)/$TEST_PLATFORM-results.xml
 
-test:
+test-playmode:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
+
+test-editmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: editmode
 
 .build: &build
   stage: build_and_test
@@ -67,6 +72,7 @@ build-StandaloneLinux64:
 
 build-StandaloneOSX:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -78,11 +84,13 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-webgl
   variables:
     BUILD_TARGET: WebGL
 
