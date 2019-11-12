@@ -1,11 +1,14 @@
-image: gableroux/unity3d:2019.1.14f1
+image: gableroux/unity3d:2019.2.11f1
 
 stages:
   - build_and_test
   - deploy
 
+# If you are looking for a place where to add 'UNITY_LICENSE_FILE' nad secrets, please visit your project's gitlab page:
+# settings > CI/CD > Variables instead
 variables:
   BUILD_NAME: ExampleProjectName
+  UNITY_ACTIVATION_FILE: ./unity3d.alf
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -17,23 +20,17 @@ variables:
     paths:
       - Library/
 
-# run this when you need to request a license again
-# you will need to follow activation steps from documentation
-# Look at the logs and grab the XML
-get-license:
+# run this job when you need to request a license
+# you may need to follow activation steps from documentation
+get-activation-file:
   when: manual
   stage: build_and_test
-  <<: *cache
   script:
-    - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
-    
-get-android-license:
-  when: manual
-  stage: build_and_test
-  image: gableroux/unity3d:2019.1.14f1-android
-  <<: *cache
-  script:
-    - chmod +x ./ci/get_license.sh && ./ci/get_license.sh
+    - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
+  artifacts:
+    paths:
+      - $UNITY_ACTIVATION_FILE
+    expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
 
 .test: &test
   stage: build_and_test
@@ -45,10 +42,15 @@ get-android-license:
     paths:
       - $(pwd)/$TEST_PLATFORM-results.xml
 
-test:
+test-playmode:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
+
+test-editmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: editmode
 
 .build: &build
   stage: build_and_test
@@ -70,6 +72,7 @@ build-StandaloneLinux64:
 
 build-StandaloneOSX:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -81,17 +84,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
+  image: gableroux/unity3d:2019.2.11f1-webgl
   variables:
     BUILD_TARGET: WebGL
-    
+
 build-android:
   <<: *build
-  image: gableroux/unity3d:2019.1.14f1-android
+  image: gableroux/unity3d:2019.2.11f1-android
   variables:
     BUILD_TARGET: Android
 
