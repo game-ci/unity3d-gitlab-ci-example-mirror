@@ -28,6 +28,8 @@ This repository is hosted on multiple remotes to provide examples for [Gitlab-CI
     - [Test files](#test-files)
 - [How to activate](#how-to-activate)
     - [Unity Personal](#unity-personal)
+        - [a. Using gitlab-ci](#a-using-gitlab-ci)
+        - [b. Locally](#b-locally)
     - [Unity Plus/Pro](#unity-pluspro)
     - [Unity license per target](#unity-license-per-target)
         - [Note about components in recent images](#note-about-components-in-recent-images)
@@ -51,17 +53,18 @@ This repository is hosted on multiple remotes to provide examples for [Gitlab-CI
 If you don't have a Unity project yet:
 
 1. Fork this project from github or gitlab
-2. Update the readme and remove undesired CI configurations
-3. Follow How to activate instructions
-4. Configure your CI
+1. Update the readme and remove undesired CI configurations
+1. Follow How to activate instructions
+1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE_CONTENT` in your project variables)
 
 If you already have your own project:
 
-1. Copy desired CI file
-2. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
-3. Copy build script (make sure you use the same path as original project, it must be in an `Editor` folder)
-4. Follow How to activate instructions
-5. Configure your CI
+1. Copy desired ci file (`.gitlab-ci.yml`, or `.travis.yml`, etc.)
+1. Copy [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs) (make sure you use the same path as original project, it must be in an `Editor` folder)
+1. Copy [`ci` folder](ci)
+1. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
+1. Follow How to activate instructions
+1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE_CONTENT` in your project variables)
 
 ## Points of interest
 
@@ -120,9 +123,22 @@ See [HERE](https://docs.unity3d.com/ScriptReference/BuildOptions.html) for Build
 
 ## How to activate
 
-You'll first need to run this locally. All you need is [docker](https://www.docker.com/) installed on your machine.
+There are a few methods available, if you're using gitlab-ci, the easiest method in the current documentation is using gitlab-ci.
 
 ### Unity Personal
+
+#### a. Using gitlab-ci
+
+Once you've added all required files to your project (mainly `.gitlab-ci.yml`), there should be a manual step that can be triggered for activation. 
+
+1. Visit your project's settings > CI/CD > Variables and add `UNITY_USERNAME` and `UNITY_PASSWORD` with your credentials
+1. Push your first commit to your project and visit CI/CD Pipelines.
+1. Locate your latest job, there should be a `play` button, click on it and click `get-activation-file`
+1. Wait for the job to run and follow instructions in the console 
+
+#### b. Locally
+
+All you need is [docker](https://www.docker.com/) installed on your machine.
 
 1. Clone this project
 2. Pull the docker image and run bash inside, passing unity username and password to env
