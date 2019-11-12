@@ -9,16 +9,16 @@ variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   UNITY_LICENSE_FILE: ./Unity_lic.ulf
-#
-#.unity_before_script: &unity_before_script
-#  before_script:
-#    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
-#
-#.cache: &cache
-#  cache:
-#    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
-#    paths:
-#      - Library/
+
+.unity_before_script: &unity_before_script
+  before_script:
+    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+
+.cache: &cache
+  cache:
+    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
+    paths:
+      - Library/
 
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
@@ -30,6 +30,7 @@ get-activation-file:
   artifacts:
     paths:
       - $UNITY_ACTIVATION_FILE
+    expire_in: 10 min # Expiring this as artifacts will contain sensitive data and should not be kept public
 
 get-license-file:
   stage: get_license
@@ -44,76 +45,76 @@ get-license-file:
     paths:
       - $UNITY_LICENSE_FILE
       - debug_images/
-    expire_in: 10 min # Expireing this as artifacts will contain sensitive data and should not be kept public
+    expire_in: 10 min # Expiring this as artifacts will contain sensitive data and should not be kept public
 
-#.test: &test
-#  stage: build_and_test
-#  <<: *unity_before_script
-#  <<: *cache
-#  script:
-#    - chmod +x ./ci/test.sh && ./ci/test.sh
-#  artifacts:
-#    paths:
-#      - $(pwd)/$TEST_PLATFORM-results.xml
-#
-#test:
-#  <<: *test
-#  variables:
-#    TEST_PLATFORM: playmode
-#
-#.build: &build
-#  stage: build_and_test
-#  <<: *unity_before_script
-#  <<: *cache
-#  script:
-#    - chmod +x ./ci/build.sh && ./ci/build.sh
-#  artifacts:
-#    paths:
-#      - ./Builds/
-##tip: uncomment following lines if you'd like to build only on master branch
-##   only:
-##     - master
-#
-#build-StandaloneLinux64:
-#  <<: *build
-#  variables:
-#    BUILD_TARGET: StandaloneLinux64
-#
-#build-StandaloneOSX:
-#  <<: *build
-#  variables:
-#    BUILD_TARGET: StandaloneOSX
-#
-##Note: build target names changed in recent versions, use this for versions < 2017.2:
-## build-StandaloneOSXUniversal:
-##   <<: *build
-##   variables:
-##     BUILD_TARGET: StandaloneOSXUniversal
-#
-#build-StandaloneWindows64:
-#  <<: *build
-#  variables:
-#    BUILD_TARGET: StandaloneWindows64
-#
-#build-WebGL:
-#  <<: *build
-#  variables:
-#    BUILD_TARGET: WebGL
-#
-#build-android:
-#  <<: *build
-#  image: gableroux/unity3d:2019.1.14f1-android
-#  variables:
-#    BUILD_TARGET: Android
-#
-#pages:
-#  image: alpine:latest
-#  stage: deploy
-#  script:
-#    - mv "./Builds/WebGL/${BUILD_NAME}" public
-#  artifacts:
-#    paths:
-#      - public
-#  only:
-#    - master
-#
+.test: &test
+  stage: build_and_test
+  <<: *unity_before_script
+  <<: *cache
+  script:
+    - chmod +x ./ci/test.sh && ./ci/test.sh
+  artifacts:
+    paths:
+      - $(pwd)/$TEST_PLATFORM-results.xml
+
+test:
+  <<: *test
+  variables:
+    TEST_PLATFORM: playmode
+
+.build: &build
+  stage: build_and_test
+  <<: *unity_before_script
+  <<: *cache
+  script:
+    - chmod +x ./ci/build.sh && ./ci/build.sh
+  artifacts:
+    paths:
+      - ./Builds/
+#tip: uncomment following lines if you'd like to build only on master branch
+#   only:
+#     - master
+
+build-StandaloneLinux64:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneLinux64
+
+build-StandaloneOSX:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneOSX
+
+#Note: build target names changed in recent versions, use this for versions < 2017.2:
+# build-StandaloneOSXUniversal:
+#   <<: *build
+#   variables:
+#     BUILD_TARGET: StandaloneOSXUniversal
+
+build-StandaloneWindows64:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneWindows64
+
+build-WebGL:
+  <<: *build
+  variables:
+    BUILD_TARGET: WebGL
+
+build-android:
+  <<: *build
+  image: gableroux/unity3d:2019.1.14f1-android
+  variables:
+    BUILD_TARGET: Android
+
+pages:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - mv "./Builds/WebGL/${BUILD_NAME}" public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
