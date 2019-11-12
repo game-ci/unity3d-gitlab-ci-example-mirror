@@ -72,6 +72,8 @@ Script passed to the unity3d command line as argument to create builds
 
 * See [`BuildScript.cs`](Assets/Scripts/Editor/BuildCommand.cs)
 
+You need to have this file in your project in order to build your project in the CI.
+
 ### CI Configuration
 
 Pick one, if you're on gitlab, use gitlab-ci as Travis and CircleCI don't support Gitlab as of september 2018, if you're on github, Travis is more popular but CircleCI and [gitlab-ci will also work](https://about.gitlab.com/features/github/). If you can't decide, see [CircleCI vs. GitLab CI/CD](https://about.gitlab.com/comparison/gitlab-vs-circleci.html) and [Travis CI vs GitLab](https://about.gitlab.com/comparison/travis-ci-vs-gitlab.html).
@@ -135,6 +137,14 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
     gableroux/unity3d:$UNITY_VERSION \
     bash
     ```
+    
+    If your password contains a `!`, you can escape it like this (`example_pass!word`):
+    
+ ```bash
+ ...
+ -e "UNITY_PASSWORD=example_pass"'!'"word" \
+ ...
+ ```   
 3. In Unity docker container's bash, run once like this, it will try to activate
 
     ```bash
@@ -159,7 +169,7 @@ You'll first need to run this locally. All you need is [docker](https://www.dock
 5. Copy xml content and save as `unity3d.alf`
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
-8. Download `Unity_v2018.x.ulf` # TODO: confirm new file name for 2019
+8. Download `Unity_v2018.x.ulf` (`Unity_v2019.x.ulf` for 2019 versions)
 9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
 [`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
