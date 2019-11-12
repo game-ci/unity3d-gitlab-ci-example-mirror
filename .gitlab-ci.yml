@@ -4,6 +4,8 @@ stages:
   - build_and_test
   - deploy
 
+# If you are looking for a place where to add 'UNITY_LICENSE_FILE' nad secrets, please visit your project's gitlab page:
+# settings > CI/CD > Variables instead
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
