@@ -157,7 +157,9 @@ static class BuildCommand
 
     private static void HandleAndroidKeystore()
     {
+#if UNITY_2019_1_OR_NEWER
         PlayerSettings.Android.useCustomKeystore = false;
+#endif
 
         if (!File.Exists(KEYSTORE)) {
             Console.WriteLine($":: {KEYSTORE} not found, skipping setup, using Unity's default keystore");
@@ -185,8 +187,9 @@ static class BuildCommand
             Console.WriteLine($":: ${KEY_ALIAS_PASS} env var not set, skipping setup, using Unity's default keystore");
             return;
         }
-
+#if UNITY_2019_1_OR_NEWER
         PlayerSettings.Android.useCustomKeystore = true;
+#endif
         PlayerSettings.Android.keystorePass = keystorePass;
         PlayerSettings.Android.keyaliasPass = keystoreAliasPass;
     }
