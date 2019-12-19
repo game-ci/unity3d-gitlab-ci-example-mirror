@@ -25,4 +25,4 @@ else
 fi
 
 cat $(pwd)/$TEST_PLATFORM-results.xml | grep test-run | grep Passed
-exit $UNITY_TEST_EXIT_CODE
+exit $UNITY_EXIT_CODE
