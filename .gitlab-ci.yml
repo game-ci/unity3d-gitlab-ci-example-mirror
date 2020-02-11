@@ -115,7 +115,7 @@ build-and-deploy-ios:
   tags:
     - ios
     - mac
-  needs: ["build-ios"]
+  needs: ["build-ios-xcode"]
 
 pages:
   image: alpine:latest
