@@ -265,8 +265,107 @@ build-StandaloneWindows64:
 ```
 
 ### iOS support
+#### Setup (only one time per mac)
+Install the latest Xcode command line tools :
+```
+xcode-select --install
+```
+Install fastlane using : 
+```
+# Using RubyGems
+sudo gem install fastlane -NV
 
-**Help wanted!** See [#16](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/16)
+# Alternatively using Homebrew
+brew install fastlane
+```
+
+#### Unity Settings:
+Switch target to iOS, then, in PlayerSettings -> Other Settings, 
+- Fill the field `Signing Team ID` 
+- Ensure `Automatically Sign` is unchecked
+- iOS Provisioning Profile  
+---- `ProfileID` : `match AppStore yourBundleIdentifier` < yourBundleIdentifier to replace by yours.  
+---- `ProfileType` : `Distribution`
+
+#### XCode project: 
+Make a first iOS build using your mac from Unity, that will create an xcode project.  
+Ensure your target the same path than the ci.  
+Ex : if you let `BUILD_NAME: ExampleProjectName` in `.gitlab-ci.yml`, your xcode project must be at the root of the following path : `.\Builds\iOS\ExampleProjectName\`
+
+#### App on portail:
+Make sure that you have setup your app on the Apple Developer Portal and the App Store Connect or use [fastlane produce](https://docs.fastlane.tools/actions/produce/) to create it.
+
+#### Fastlane initialization: 
+Open the terminal at the same path then run `fastlane init`, follow instructions to generate Appfile and default Fastfile.
+
+#### Provisioning profile:
+Run `fastlane match init`, follow instructions, select `appstore` provisioning profile type. ([Documentation](https://docs.fastlane.tools/actions/match/))
+
+#### Make lane:
+Copy the following instructions on your Fastfile:
+```
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    sync_code_signing(type:"appstore", readonly: is_ci)
+    increment_build_number({
+        build_number: latest_testflight_build_number + 1
+    })
+    build_app(scheme:"Unity-iPhone")
+    upload_to_testflight(groups:["Team"]) 
+  end
+end
+```
+Note about `upload_to_testflight` : Change "Team" to your internal tester or remove (groups:["Team"]) if you want set manually who can test the build  
+Docs:   
+[sync_code_signing (alias for match)](https://docs.fastlane.tools/actions/sync_code_signing/)  
+[increment_build_number](https://docs.fastlane.tools/actions/increment_build_number/)  
+[build_app (alias for gym)](https://docs.fastlane.tools/actions/build_app/)  
+[upload_to_testflight (alias for pilot)](https://docs.fastlane.tools/actions/testflight/)
+
+
+#### Local test:
+Run `fastlane ios beta` to test the build and the deployement localy.  
+If the build and upload are ok, you have to force add some file to your git using command below   
+```
+git add -f pathToTheFileToAdd
+```
+you have to add those following files :
+- `Gemfile`, 
+- `Gemfile.lock` (if here), 
+- `fastlane/Appfile`, 
+- `fastlane/Fastfile`, 
+- `fastlane/Matchfile`
+
+#### Gitlab-runner : register your mac :
+To automate your build with gitlab, you need to setup your mac as a gitlab runner.  
+Installation : 
+```
+sudo curl --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-darwin-amd64
+```
+Give permission to execute : 
+```
+sudo chmod +x /usr/local/bin/gitlab-runner
+```
+[Source (if you would like to check)](https://docs.gitlab.com/runner/install/osx.html)
+
+Go to your project gitlab page, then go to `settings` -> `CI/CD` -> `Runners` -> `Specitic Runners` -> `Set up a specific Runner manually` -> take note of the token 
+
+Follow instructions on this [LINK](https://docs.gitlab.com/runner/register/index.html) to register your mac as a gitlab-runner for your specific project.  
+Follow **macOS** instructions **without** sudo command for registration.
+
+Tags : set `mac,ios`  
+Executor : set `shell`
+
+Then, to install/launch the runner : 
+```
+cd ~ 
+gitlab-runner install
+gitlab-runner start
+```
+Runner is installed and will be run after a system reboot.
 
 ### Android support
 
