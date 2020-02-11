@@ -100,6 +100,23 @@ build-android:
   variables:
     BUILD_TARGET: Android
 
+build-ios-xcode:
+  <<: *build
+  image: gableroux/unity3d:2019.2.11f1-ios
+  variables:
+    BUILD_TARGET: iOS
+
+build-and-deploy-ios:
+  stage: deploy
+  script:
+    - cd ./Builds/iOS/$BUILD_NAME
+    - pod install
+    - fastlane ios beta
+  tags:
+    - ios
+    - mac
+  needs: ["build-ios"]
+
 pages:
   image: alpine:latest
   stage: deploy
