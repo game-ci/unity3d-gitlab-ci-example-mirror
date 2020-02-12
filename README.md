@@ -367,6 +367,8 @@ gitlab-runner start
 ```
 Runner is installed and will be run after a system reboot.
 
+Now, you can uncomment the job `build-and-deploy-ios` in `.gitlab-ci.yml` to make the app build and deployement work.
+
 ### Android support
 
 To make build working with Android, you will need a specific Unity license (because that is not the same docker image).  

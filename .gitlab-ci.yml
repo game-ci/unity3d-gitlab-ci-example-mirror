@@ -106,16 +106,16 @@ build-ios-xcode:
   variables:
     BUILD_TARGET: iOS
 
-build-and-deploy-ios:
-  stage: deploy
-  script:
-    - cd ./Builds/iOS/$BUILD_NAME
-    - pod install
-    - fastlane ios beta
-  tags:
-    - ios
-    - mac
-  needs: ["build-ios-xcode"]
+#build-and-deploy-ios:
+#  stage: deploy
+#  script:
+#    - cd ./Builds/iOS/$BUILD_NAME
+#    - pod install
+#    - fastlane ios beta
+#  tags:
+#    - ios
+#    - mac
+#  needs: ["build-ios-xcode"]
 
 pages:
   image: alpine:latest
