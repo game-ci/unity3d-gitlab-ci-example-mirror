@@ -151,7 +151,11 @@ static class BuildCommand
         var buildOptions   = GetBuildOptions();
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
+        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
+
+        if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+            throw new Exception($"Build end with {buildReport.summary.result} status");
+
         Console.WriteLine(":: Done with build");
     }
 
