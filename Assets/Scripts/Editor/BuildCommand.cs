@@ -11,6 +11,7 @@ static class BuildCommand
     private const string KEYSTORE       = "keystore.keystore";
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
     private const string ANDROID_BUNDLE_VERSION_CODE = "BUNDLE_VERSION_CODE";
+    private const string ANDROID_APP_BUNDLE = "BUILD_APP_BUNDLE";
 
     static string GetArgument(string name)
     {
@@ -148,6 +149,7 @@ static class BuildCommand
         var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
+            HandleAndroidAppBundle();
             HandleAndroidBundleVersionCode();
             HandleAndroidKeystore();
         }
@@ -159,6 +161,27 @@ static class BuildCommand
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
         Console.WriteLine(":: Done with build");
+    }
+
+    private static void HandleAndroidAppBundle()
+    {
+        if (TryGetEnv(ANDROID_APP_BUNDLE, out string value))
+        {
+#if UNITY_2018_3_OR_NEWER
+            if (bool.TryParse(value, out bool buildAppBundle))
+            {
+                EditorUserBuildSettings.buildAppBundle = buildAppBundle;
+                Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected, set buildAppBundle to {value}.");
+            }
+            else
+            {
+                Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but the value \"{value}\" is not a boolean.");
+
+            }
+#else
+            Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but does not work with lower Unity version than 2018.3");
+#endif
+        }
     }
 
     private static void HandleAndroidBundleVersionCode()
