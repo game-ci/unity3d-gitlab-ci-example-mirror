@@ -99,6 +99,8 @@ build-android:
   image: gableroux/unity3d:2019.2.11f1-android
   variables:
     BUILD_TARGET: Android
+    BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
+    BUILD_APP_BUNDLE: "false"
 
 pages:
   image: alpine:latest
