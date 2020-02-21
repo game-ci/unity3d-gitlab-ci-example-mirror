@@ -10,6 +10,7 @@ static class BuildCommand
     private const string KEY_ALIAS_NAME = "KEY_ALIAS_NAME";
     private const string KEYSTORE       = "keystore.keystore";
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
+    private const string ANDROID_BUNDLE_VERSION_CODE = "BUNDLE_VERSION_CODE";
 
     static string GetArgument(string name)
     {
@@ -147,6 +148,7 @@ static class BuildCommand
         var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
+            HandleAndroidBundleVersionCode();
             HandleAndroidKeystore();
         }
 
@@ -157,6 +159,20 @@ static class BuildCommand
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
         Console.WriteLine(":: Done with build");
+    }
+
+    private static void HandleAndroidBundleVersionCode()
+    {
+        if (TryGetEnv(ANDROID_BUNDLE_VERSION_CODE, out string value))
+        {
+            if (int.TryParse(value, out int version))
+            {
+                PlayerSettings.Android.bundleVersionCode = version;
+                Console.WriteLine($":: {ANDROID_BUNDLE_VERSION_CODE} env var detected, set the bundle version code to {value}.");
+            }
+            else
+                Console.WriteLine($":: {ANDROID_BUNDLE_VERSION_CODE} env var detected but the version value \"{value}\" is not an integer.");
+        }
     }
 
     private static void HandleAndroidKeystore()
