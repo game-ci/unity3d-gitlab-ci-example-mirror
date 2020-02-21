@@ -102,6 +102,17 @@ build-android:
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
     BUILD_APP_BUNDLE: "false"
 
+#deploy-android:
+#  stage: deploy
+#  image: ruby
+#  script: 
+#    - cd ./Builds/Android
+#    - echo $GPC_TOKEN > gpc_tocken.json
+#    - gem install bundler
+#    - bundle install
+#    - fastlane supply --apk $BUILD_NAME.apk --track internal
+#  needs: ["build-android"]
+
 pages:
   image: alpine:latest
   stage: deploy
