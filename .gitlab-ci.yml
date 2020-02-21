@@ -99,6 +99,17 @@ build-android:
   image: gableroux/unity3d:2019.2.11f1-android
   variables:
     BUILD_TARGET: Android
+    BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
+    BUILD_APP_BUNDLE: "false"
+
+#deploy-android:
+#  stage: deploy
+#  image: fastlanetools/fastlane
+#  script: 
+#    - cd ./Builds/Android
+#    - echo $GPC_TOKEN > gpc_token.json
+#    - fastlane supply --aab $BUILD_NAME.aab --track internal --package_name com.youcompany.yourgame --json_key ./gpc_token.json
+#  needs: ["build-android"]
 
 build-ios-xcode:
   <<: *build
