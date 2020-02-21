@@ -104,13 +104,11 @@ build-android:
 
 #deploy-android:
 #  stage: deploy
-#  image: ruby
+#  image: fastlanetools/fastlane
 #  script: 
 #    - cd ./Builds/Android
-#    - echo $GPC_TOKEN > gpc_tocken.json
-#    - gem install bundler
-#    - bundle install
-#    - fastlane supply --apk $BUILD_NAME.apk --track internal
+#    - echo $GPC_TOKEN > gpc_token.json
+#    - fastlane supply --aab $BUILD_NAME.aab --track internal --package_name com.youcompany.yourgame --json_key ./gpc_token.json
 #  needs: ["build-android"]
 
 pages:
