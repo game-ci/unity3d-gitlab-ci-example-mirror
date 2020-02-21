@@ -84,7 +84,11 @@ static class BuildCommand
         if (buildTarget.ToString().ToLower().Contains("windows")) {
             buildName += ".exe";
         } else if (buildTarget == BuildTarget.Android && buildOptions == BuildOptions.None) {
+#if UNITY_2018_3_OR_NEWER
+            buildName += EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk";
+#else
             buildName += ".apk";
+#endif
         }
         return buildPath + buildName;
     }
