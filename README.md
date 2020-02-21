@@ -287,6 +287,26 @@ Add following environment variables:
 
 Note about keystore security, if you would like to use another solution, see [HERE](https://android.jlelse.eu/where-to-store-android-keystore-file-in-ci-cd-cycle-2365f4e02e57)
 
+#### Android app bundle
+
+`BUILD_APP_BUNDLE` en var is defined in gitlab-ci.yml, set to true to build an .aab file.  
+Note : to build an android app bundle, you need an image with Android NDK. See issue [HERE](https://gitlab.com/gableroux/unity3d/issues/61)
+
+#### Bundle version code
+
+The bundle version code must be increment for each deployed build.  
+To simplify the process, the `BUNDLE_VERSION_CODE` env var is used and set as bundle version code.  
+Currently, for gitlab, `BUNDLE_VERSION_CODE = $CI_PIPELINE_IID`. [Documentation](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html)  
+If you use another CI solution, set a CI env var incrementing for each pipeline.  
+
+#### Fastlane supply (deployement)
+
+Follow [setup instructions](https://docs.fastlane.tools/actions/supply/) to get a google play console token, then, add the content to env var `GPC_TOKEN`.  
+Uncomment the `#deploy-android` job in gitlab-ci.yml and replace `com.youcompany.yourgame` by your package name.  
+You can change the track `internal` to `alpha`, `beta` or `production`.  
+That is the simplest way with command line but you can also make Fastfile and Appfile, with `fastlane init` after building a temporary gradle project (export gradle project option in Unity build settings).  
+Then make a `fastlane supply init`, and update all metadata, images, changelogs, etc... that will be upload to the store.
+
 ## How to run scripts manually
 
 You can execute the local scripts and specify the path of your Unity executable using `UNITY_EXECUTABLE`. You may try this in your project before you setup the whole CI so you confirm it works with your current unity version :+1:
