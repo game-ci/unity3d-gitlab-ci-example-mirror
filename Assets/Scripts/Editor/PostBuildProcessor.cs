@@ -6,7 +6,6 @@ using System;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
-using System;
 
 public static class BuildPostProcess
 {
