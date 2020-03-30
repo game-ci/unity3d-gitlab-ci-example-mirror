@@ -143,17 +143,18 @@ static class BuildCommand
         return !string.IsNullOrEmpty(value);
     }
 
-    static void SetScriptingBackendFromEnv() {
-        if (TryGetEnv(SCRIPTING_BACKEND, out string scriptingBackend)) {
-            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+    static void SetScriptingBackendFromEnv(BuildTarget platform) {
+        var targetGroup = BuildPipeline.GetBuildTargetGroup(platform);
+        if (TryGetEnv(SCRIPTING_BACKEND_ENV_VAR, out string scriptingBackend)) {
             if (scriptingBackend.TryConvertToEnum(out ScriptingImplementation backend)) {
                 Console.WriteLine($":: Setting ScriptingBackend to {backend}");
-                PlayerSettings.SetScriptingBackend(buildTargetGroup, backend);
+                PlayerSettings.SetScriptingBackend(targetGroup, backend);
             } else {
-                throw new Exception($"{scriptingBackend} could not be found in ScriptingImplementation enum");
+                throw new Exception($"Could not find '{scriptingBackend}' in ScriptingImplementation enum. Possible values are: {Enum.GetValues(typeof(ScriptingImplementation))}");
             }
         } else {
-            Console.WriteLine($":: Using project's configured ScriptingBackend");
+            var defaultBackend = PlayerSettings.GetDefaultScriptingBackend(targetGroup);
+            Console.WriteLine($":: Using project's configured ScriptingBackend (should be {defaultBackend} for tagetGroup {targetGroup}");
         }
     }
 
@@ -174,7 +175,7 @@ static class BuildCommand
         var buildOptions   = GetBuildOptions();
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
 
-        SetScriptingBackendFromEnv();
+        SetScriptingBackendFromEnv(buildTarget);
 
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
