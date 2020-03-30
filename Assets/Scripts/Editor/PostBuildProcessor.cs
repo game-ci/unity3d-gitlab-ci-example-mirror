@@ -32,7 +32,7 @@ public static class BuildPostProcess
         var pbxProject = new PBXProject();
         pbxProject.ReadFromFile(projectPath);
 
-        string guidProject = pbxProject.TargetGuidByName(name: PBXProject.GetUnityMainTargetGuid());
+        string guidProject = pbxProject.TargetGuidByName(pbxProject.GetUnityMainTargetGuid());
 
         Debug.Log("Setting Versioning system to Apple Generic...");
         pbxProject.SetBuildProperty(guidProject, VERSIONING_SYSTEM_KEY, APPLE_GENERIC_VALUE);
