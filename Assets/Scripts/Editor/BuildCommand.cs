@@ -12,6 +12,7 @@ static class BuildCommand
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
     private const string ANDROID_BUNDLE_VERSION_CODE = "BUNDLE_VERSION_CODE";
     private const string ANDROID_APP_BUNDLE = "BUILD_APP_BUNDLE";
+    private const string SCRIPTING_BACKEND_ENV_VAR = "SCRIPTING_BACKEND"
 
     static string GetArgument(string name)
     {
@@ -142,6 +143,20 @@ static class BuildCommand
         return !string.IsNullOrEmpty(value);
     }
 
+    static void SetScriptingBackendFromEnv() {
+        if (TryGetEnv(SCRIPTING_BACKEND, out string scriptingBackend)) {
+            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+            if (scriptingBackend.TryConvertToEnum(out ScriptingImplementation backend)) {
+                Console.WriteLine($":: Setting ScriptingBackend to {backend}");
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, backend);
+            } else {
+                throw new Exception($"{scriptingBackend} could not be found in ScriptingImplementation enum");
+            }
+        } else {
+            Console.WriteLine($":: Using project's configured ScriptingBackend");
+        }
+    }
+
     static void PerformBuild()
     {
         Console.WriteLine(":: Performing build");
@@ -158,6 +173,8 @@ static class BuildCommand
         var buildName      = GetBuildName();
         var buildOptions   = GetBuildOptions();
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
+
+        SetScriptingBackendFromEnv();
 
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
