@@ -96,7 +96,9 @@ build-WebGL:
 
 build-android:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-android
+  #image: gableroux/unity3d:2019.3.7f1-android
+  # Temporary branch to test before merging and deploying
+  image: gableroux/unity3d:2019.3.7f1-android-android-ndk-and-skip-base
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
