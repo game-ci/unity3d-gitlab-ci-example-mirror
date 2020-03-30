@@ -1,4 +1,4 @@
-image: gableroux/unity3d:2019.2.11f1
+image: gableroux/unity3d:2019.3.7f1
 
 stages:
   - build_and_test
@@ -41,6 +41,10 @@ get-activation-file:
   artifacts:
     paths:
       - $(pwd)/$TEST_PLATFORM-results.xml
+  # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
+  # you may need to remove or replace these to fit your need if you are using your own runners
+  tags:
+    - gitlab-org
 
 test-playmode:
   <<: *test
@@ -61,9 +65,10 @@ test-editmode:
   artifacts:
     paths:
       - ./Builds/
-#tip: uncomment following lines if you'd like to build only on master branch
-#   only:
-#     - master
+  # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
+  # you may need to remove or replace these to fit your need if you are using your own runners
+  tags:
+    - gitlab-org
 
 build-StandaloneLinux64:
   <<: *build
@@ -72,7 +77,7 @@ build-StandaloneLinux64:
 
 build-StandaloneOSX:
   <<: *build
-  image: gableroux/unity3d:2019.2.11f1-mac
+  image: gableroux/unity3d:2019.3.7f1-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -84,19 +89,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: gableroux/unity3d:2019.2.11f1-windows
+  image: gableroux/unity3d:2019.3.7f1-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
-  image: gableroux/unity3d:2019.2.11f1-webgl
+  image: gableroux/unity3d:2019.3.7f1-webgl
   variables:
     BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
-  image: gableroux/unity3d:2019.2.11f1-android
+  image: gableroux/unity3d:2019.3.7f1-android
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
@@ -115,7 +120,7 @@ build-android:
 
 build-ios-xcode:
   <<: *build
-  image: gableroux/unity3d:2019.2.11f1-ios
+  image: gableroux/unity3d:2019.3.7f1-ios
   variables:
     BUILD_TARGET: iOS
 

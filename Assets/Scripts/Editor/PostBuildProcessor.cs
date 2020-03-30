@@ -6,7 +6,6 @@ using System;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
-using System;
 
 public static class BuildPostProcess
 {
@@ -33,7 +32,7 @@ public static class BuildPostProcess
         var pbxProject = new PBXProject();
         pbxProject.ReadFromFile(projectPath);
 
-        string guidProject = pbxProject.TargetGuidByName(PBXProject.GetUnityTargetName());
+        string guidProject = pbxProject.TargetGuidByName(pbxProject.GetUnityMainTargetGuid());
 
         Debug.Log("Setting Versioning system to Apple Generic...");
         pbxProject.SetBuildProperty(guidProject, VERSIONING_SYSTEM_KEY, APPLE_GENERIC_VALUE);
