@@ -82,7 +82,7 @@ build-StandaloneLinux64-il2cpp:
     # TODO: use this instead:
     # image: gableroux/unity3d:2019.3.7f1-linux-il2cpp
     BUILD_TARGET: StandaloneLinux64
-    SCRIPTING_BACKEND: il2cpp
+    SCRIPTING_BACKEND: IL2CPP
 
 build-StandaloneOSX:
   <<: *build

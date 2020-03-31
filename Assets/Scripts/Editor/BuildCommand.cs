@@ -150,7 +150,8 @@ static class BuildCommand
                 Console.WriteLine($":: Setting ScriptingBackend to {backend}");
                 PlayerSettings.SetScriptingBackend(targetGroup, backend);
             } else {
-                throw new Exception($"Could not find '{scriptingBackend}' in ScriptingImplementation enum. Possible values are: {Enum.GetValues(typeof(ScriptingImplementation))}");
+                string possibleValues = string.Join(", ", Enum.GetValues(typeof(ScriptingImplementation)).Cast<ScriptingImplementation>());
+                throw new Exception($"Could not find '{scriptingBackend}' in ScriptingImplementation enum. Possible values are: {possibleValues}");
             }
         } else {
             var defaultBackend = PlayerSettings.GetDefaultScriptingBackend(targetGroup);
