@@ -2,7 +2,6 @@
 using UnityEditor;
 using System.IO;
 using UnityEngine;
-using System;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;

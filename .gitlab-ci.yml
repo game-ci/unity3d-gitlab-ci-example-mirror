@@ -75,6 +75,15 @@ build-StandaloneLinux64:
   variables:
     BUILD_TARGET: StandaloneLinux64
 
+build-StandaloneLinux64-il2cpp:
+  <<: *build
+  image: gableroux/unity3d:2019.3.7f1-linux-il2cpp
+  variables:
+    BUILD_TARGET: StandaloneLinux64
+    SCRIPTING_BACKEND: IL2CPP
+    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
+    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
+
 build-StandaloneOSX:
   <<: *build
   image: gableroux/unity3d:2019.3.7f1-mac
