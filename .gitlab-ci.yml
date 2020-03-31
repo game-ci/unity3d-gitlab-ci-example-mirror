@@ -77,10 +77,10 @@ build-StandaloneLinux64:
 
 build-StandaloneLinux64-il2cpp:
   <<: *build
+  image: gableroux/unity3d:2019.3.7f1-linux-il2cpp-99-try-il2cpp 
+  # TODO: use this instead:
+  # image: gableroux/unity3d:2019.3.7f1-linux-il2cpp
   variables:
-    image: gableroux/unity3d:2019.3.7f1-linux-il2cpp-99-try-il2cpp 
-    # TODO: use this instead:
-    # image: gableroux/unity3d:2019.3.7f1-linux-il2cpp
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
 
