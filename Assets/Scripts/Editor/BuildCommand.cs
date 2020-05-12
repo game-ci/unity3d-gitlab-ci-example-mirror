@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using System.Linq;
 using System;
 using System.IO;
@@ -82,11 +82,11 @@ static class BuildCommand
         return buildName;
     }
 
-    static string GetFixedBuildPath(BuildTarget buildTarget, string buildPath, string buildName, BuildOptions buildOptions)
+    static string GetFixedBuildPath(BuildTarget buildTarget, string buildPath, string buildName)
     {
         if (buildTarget.ToString().ToLower().Contains("windows")) {
             buildName += ".exe";
-        } else if (buildTarget == BuildTarget.Android && buildOptions == BuildOptions.None) {
+        } else if (buildTarget == BuildTarget.Android) {
 #if UNITY_2018_3_OR_NEWER
             buildName += EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk";
 #else
@@ -174,7 +174,7 @@ static class BuildCommand
         var buildPath      = GetBuildPath();
         var buildName      = GetBuildName();
         var buildOptions   = GetBuildOptions();
-        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName, buildOptions);
+        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
         SetScriptingBackendFromEnv(buildTarget);
 
