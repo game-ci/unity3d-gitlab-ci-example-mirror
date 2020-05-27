@@ -4,13 +4,20 @@ set -x
 
 echo "Testing for $TEST_PLATFORM"
 
+CODE_COVERAGE_PACKAGE="com.unity.testtools.codecoverage"
+PACKAGE_MANIFEST_PATH="Packages/manifest.json"
+
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
   -projectPath $(pwd) \
   -runTests \
   -testPlatform $TEST_PLATFORM \
   -testResults $(pwd)/$TEST_PLATFORM-results.xml \
   -logFile /dev/stdout \
-  -batchmode
+  -batchmode \
+  -enableCodeCoverage \
+  -coverageResultsPath $(pwd)/$TEST_PLATFORM-coverage \
+  -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+Assembly-CSharp" \
+  -debugCodeOptimization
 
 UNITY_EXIT_CODE=$?
 
@@ -22,6 +29,16 @@ elif [ $UNITY_EXIT_CODE -eq 3 ]; then
   echo "Run failure (other failure)";
 else
   echo "Unexpected exit code $UNITY_EXIT_CODE";
+fi
+
+if grep $CODE_COVERAGE_PACKAGE $PACKAGE_MANIFEST_PATH; then
+  cat $(pwd)/$TEST_PLATFORM-coverage/Report/Summary.xml | grep Linecoverage
+  mv $(pwd)/$TEST_PLATFORM-coverage/$CI_PROJECT_NAME-opencov/*Mode/TestCoverageResults_*.xml $(pwd)/$TEST_PLATFORM-coverage/coverage.xml
+  rm -r $(pwd)/$TEST_PLATFORM-coverage/$CI_PROJECT_NAME-opencov/
+else
+  { 
+    echo -e "\033[33mCode Coverage package not found in $PACKAGE_MANIFEST_PATH. Please install the package \"Code Coverage\" through Unity's Package Manager to enable coverage reports.\033[0m" 
+  } 2> /dev/null
 fi
 
 cat $(pwd)/$TEST_PLATFORM-results.xml | grep test-run | grep Passed
