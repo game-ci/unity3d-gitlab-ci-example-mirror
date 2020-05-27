@@ -31,12 +31,15 @@ else
   echo "Unexpected exit code $UNITY_EXIT_CODE";
 fi
 
-if ! grep $CODE_COVERAGE_PACKAGE $PACKAGE_MANIFEST_PATH; then
-	{ 
-		echo -e "\033[33mCode Coverage package not found in $PACKAGE_MANIFEST_PATH. Please install the package \"Code Coverage\" through Unity's Package Manager to enable coverage reports.\033[0m" 
-	} 2> /dev/null
+if grep $CODE_COVERAGE_PACKAGE $PACKAGE_MANIFEST_PATH; then
+  cat $(pwd)/$TEST_PLATFORM-coverage/Report/Summary.xml | grep Linecoverage
+  mv $(pwd)/$TEST_PLATFORM-coverage/$CI_PROJECT_NAME-opencov/*Mode/TestCoverageResults_*.xml $(pwd)/$TEST_PLATFORM-coverage/coverage.xml
+  rm -r $(pwd)/$TEST_PLATFORM-coverage/$CI_PROJECT_NAME-opencov/
+else
+  { 
+    echo -e "\033[33mCode Coverage package not found in $PACKAGE_MANIFEST_PATH. Please install the package \"Code Coverage\" through Unity's Package Manager to enable coverage reports.\033[0m" 
+  } 2> /dev/null
 fi
 
 cat $(pwd)/$TEST_PLATFORM-results.xml | grep test-run | grep Passed
-cat $(pwd)/$TEST_PLATFORM-coverage/Report/Summary.xml | grep Linecoverage
 exit $UNITY_EXIT_CODE
