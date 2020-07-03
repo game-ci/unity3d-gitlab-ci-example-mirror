@@ -491,7 +491,7 @@ This is an updated version of the [Unity's Creator Kit: RPG free asset](https://
 
 ## Get involved
 
-There is a discord `#technical-english` channel at [totema.studio/discord](https://totema.studio/discord). Feel free to join in! I will be looking for maintainers as this project is getting more and more attention :tada:.
+There is a `#unity3d-ci` discord channel at [totema.studio/discord](https://totema.studio/discord). Feel free to join! Maintainers, contributors or anyone using the tool is welcome :tada:. Come say hi!
 
 ## Shameless plug
 
