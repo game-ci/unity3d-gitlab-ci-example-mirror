@@ -20,10 +20,17 @@ variables:
     paths:
       - Library/
 
+.license: &license
+  rules:
+    - if: '$UNITY_LICENSE_CONTENT != null'
+      when: always
+
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
-  when: manual
+  rules:
+    - if: '$UNITY_LICENSE_CONTENT == null'
+      when: manual
   stage: build_and_test
   script:
     - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
@@ -36,6 +43,7 @@ get-activation-file:
   stage: build_and_test
   <<: *unity_before_script
   <<: *cache
+  <<: *license
   script:
     - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
@@ -62,6 +70,7 @@ test-editmode:
   stage: build_and_test
   <<: *unity_before_script
   <<: *cache
+  <<: *license
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
