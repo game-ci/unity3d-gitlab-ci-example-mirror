@@ -1,5 +1,3 @@
-image: gableroux/unity3d:2019.3.7f1
-
 stages:
   - build_and_test
   - deploy
@@ -9,6 +7,9 @@ stages:
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
+  UNITY_VERSION: 2019.3.7f1
+
+image: gableroux/unity3d:$UNITY_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -88,7 +89,7 @@ build-StandaloneLinux64:
 
 build-StandaloneLinux64-il2cpp:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-linux-il2cpp
+  image: gableroux/unity3d:$UNITY_VERSION-linux-il2cpp
   variables:
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
@@ -97,7 +98,7 @@ build-StandaloneLinux64-il2cpp:
 
 build-StandaloneOSX:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-mac
+  image: gableroux/unity3d:$UNITY_VERSION-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -109,19 +110,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-windows
+  image: gableroux/unity3d:$UNITY_VERSION-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-webgl
+  image: gableroux/unity3d:$UNITY_VERSION-webgl
   variables:
     BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-android
+  image: gableroux/unity3d:$UNITY_VERSION-android
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
@@ -140,7 +141,7 @@ build-android:
 
 build-ios-xcode:
   <<: *build
-  image: gableroux/unity3d:2019.3.7f1-ios
+  image: gableroux/unity3d:$UNITY_VERSION-ios
   variables:
     BUILD_TARGET: iOS
 
