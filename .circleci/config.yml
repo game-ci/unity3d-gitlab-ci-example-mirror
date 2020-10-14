@@ -2,18 +2,18 @@ version: 2
 references:
   docker_image: &docker_image
     docker:
-      - image: gableroux/unity3d:2018.2.6f1
+      - image: gableroux/unity3d:2019.3.7f1
   setup_unity_license_env_var: &setup_unity_license_env_var
     command: |
       mkdir -p /root/.cache/unity3d
       mkdir -p /root/.local/share/unity3d/Unity/
       openssl version
-      openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2018.ulf-cipher -out /Unity_v2018.ulf -k $KEY
-      export UNITY_LICENSE_CONTENT=`cat /Unity_v2018.ulf`
+      openssl aes-256-cbc -md md5 -d -in ./ci/Unity_v2019.x.ulf-cipher -out /Unity_v2019.x.ulf -k $KEY
+      export UNITY_LICENSE_CONTENT=`cat /Unity_v2019.x.ulf`
       echo "$UNITY_LICENSE_CONTENT" | tr -d '\r' > "/root/.local/share/unity3d/Unity/Unity_lic.ulf"
   remove_license_file: &remove_license_file
     command: |
-      rm /Unity_v2018.ulf
+      rm /Unity_v2019.x.ulf
       rm /root/.local/share/unity3d/Unity/Unity_lic.ulf
 jobs:
   test_editmode:
