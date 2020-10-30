@@ -19,12 +19,12 @@ then
     fi
 fi
 
-LICENSE="UNITY_LICENSE_CONTENT_"$UPPERCASE_BUILD_TARGET
+LICENSE="UNITY_LICENSE_"$UPPERCASE_BUILD_TARGET
 
 if [ -z "${!LICENSE}" ]
 then
-    echo "$LICENSE env var not found, using default UNITY_LICENSE_CONTENT env var"
-    LICENSE=UNITY_LICENSE_CONTENT
+    echo "$LICENSE env var not found, using default UNITY_LICENSE env var"
+    LICENSE=UNITY_LICENSE
 else
     echo "Using $LICENSE env var"
 fi

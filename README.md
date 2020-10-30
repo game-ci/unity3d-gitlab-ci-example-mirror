@@ -67,7 +67,7 @@ If you don't have a Unity project yet:
 1. Fork this project from github or gitlab
 1. Update the readme and remove undesired CI configurations
 1. Follow How to activate instructions
-1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE_CONTENT` in your project variables)
+1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE` in your project variables)
 
 If you already have your own project:
 
@@ -76,7 +76,7 @@ If you already have your own project:
 1. Copy [`ci` folder](ci)
 1. Update the Unity version according to your project version in the CI file. All versions are available at [gableroux/unity3d docker image](https://hub.docker.com/r/gableroux/unity3d/)
 1. Follow How to activate instructions
-1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE_CONTENT` in your project variables)
+1. Configure your CI environment variables (once everything is set, you should only need `UNITY_LICENSE` in your project variables)
 
 ## Points of interest
 
@@ -203,9 +203,9 @@ All you need is [docker](https://www.docker.com/) installed on your machine.
 6. Open https://license.unity3d.com/manual and answer questions
 7. Upload `unity3d.alf` for manual activation
 8. Download `Unity_v2018.x.ulf` (`Unity_v2019.x.ulf` for 2019 versions)
-9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
+9. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
-[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE` to the right place before running tests or creating the builds.
 
 ### Unity Plus/Pro
 
@@ -237,13 +237,13 @@ All you need is [docker](https://www.docker.com/) installed on your machine.
     ```
 4. Wait for the command to finish without errors
 5. Obtain the contents of the license file by running `cat /root/.local/share/unity3d/Unity/Unity_lic.ulf`
-5. Copy the content to your CI's environment variable `UNITY_LICENSE_CONTENT`.
+5. Copy the content to your CI's environment variable `UNITY_LICENSE`.
    _Note: if you are doing this on windows, chances are the [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816). Luckily for you, [`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the env variable so you'll be alright_
-[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE` to the right place before running tests or creating the builds.
 
 ### Unity license per target
 
-Before `2018.4.8f1` for 2018 versions and before `2019.2.4f1` for 2019 versions, if you need a specific Unity license for a build target, you can add environment var `UNITY_LICENSE_CONTENT_{BUILD_TARGET}`. (`UNITY_LICENSE_CONTENT_ANDROID`, `UNITY_LICENSE_CONTENT_IOS`, ...). _This is not required anymore now that images share a base image [See related change](https://gitlab.com/gableroux/unity3d/merge_requests/63)**
+Before `2018.4.8f1` for 2018 versions and before `2019.2.4f1` for 2019 versions, if you need a specific Unity license for a build target, you can add environment var `UNITY_LICENSE_{BUILD_TARGET}`. (`UNITY_LICENSE_ANDROID`, `UNITY_LICENSE_IOS`, ...). _This is not required anymore now that images share a base image [See related change](https://gitlab.com/gableroux/unity3d/merge_requests/63)**
 
 #### Note about components in recent images
 
@@ -251,7 +251,7 @@ Starting from these versions, base image doesn't include windows, mac and webgl 
 
 ### Travis
 
-Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE_CONTENT` env var itself afterward.
+Travis doesn't support multiple-lines env variable out of the box and I had troubles with escaping so I recommend encrypting the license file. `.travis.yml` will decrypt the file and add its content to `UNITY_LICENSE` env var itself afterward.
 
 ```bash
 travis encrypt-file --pro -r YOUR_TRAVIS_USERNAME/YOUR_TRAVIS_REPO_NAME ./Unity_v2018.x.ulf # TODO confirm new file name for 2019
@@ -418,7 +418,7 @@ Now, you can uncomment the job `build-and-deploy-ios` in `.gitlab-ci.yml` to mak
 ### Android support
 
 To make build working with Android, you will need a specific Unity license (because that is not the same docker image).  
-Add the content of your specific Unity license in your CI's environment variable : `UNITY_LICENSE_CONTENT_ANDROID`
+Add the content of your specific Unity license in your CI's environment variable : `UNITY_LICENSE_ANDROID`
 
 By default the apk is not signed and the build will use the Unity's default debug key.  
 For security reason, you must not add your keystore to git.  

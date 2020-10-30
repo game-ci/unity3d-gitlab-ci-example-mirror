@@ -25,14 +25,14 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 .license: &license
   rules:
-    - if: '$UNITY_LICENSE_CONTENT != null'
+    - if: '$UNITY_LICENSE != null'
       when: always
 
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
   rules:
-    - if: '$UNITY_LICENSE_CONTENT == null'
+    - if: '$UNITY_LICENSE == null'
       when: manual
   stage: build_and_test
   script:
