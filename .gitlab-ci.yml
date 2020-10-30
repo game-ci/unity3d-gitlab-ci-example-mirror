@@ -9,7 +9,7 @@ variables:
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   UNITY_VERSION: "2019.3.7f1"
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: "0.3" # https://github.com/Unity-CI/docker/releases
+  IMAGE_VERSION: "0.4" # https://github.com/Unity-CI/docker/releases
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
@@ -116,12 +116,11 @@ build-StandaloneWindows64:
   variables:
     BUILD_TARGET: StandaloneWindows64
 
-# TODO: the image seems to be missing right now
-#build-WebGL:
-#  <<: *build
-#  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
-#  variables:
-#    BUILD_TARGET: WebGL
+build-WebGL:
+  <<: *build
+  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
+  variables:
+    BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
