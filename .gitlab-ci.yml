@@ -7,9 +7,11 @@ stages:
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
-  UNITY_VERSION: 2019.3.7f1
+  UNITY_VERSION: "2019.3.7f1"
+  IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
+  IMAGE_VERSION: "0.3" # https://github.com/Unity-CI/docker/releases
 
-image: unityci/editor:$UNITY_VERSION
+image: $IMAGE:$UNITY_VERSION-$IMAGE_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -89,7 +91,7 @@ build-StandaloneLinux64:
 
 build-StandaloneLinux64-il2cpp:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-linux-il2cpp
+  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
@@ -98,7 +100,7 @@ build-StandaloneLinux64-il2cpp:
 
 build-StandaloneOSX:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-mac
+  image: $IMAGE:$UNITY_VERSION-mac-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -110,19 +112,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-windows
+  image: $IMAGE:$UNITY_VERSION-windows-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-webgl
+  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
   variables:
     BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-android
+  image: $IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
@@ -131,7 +133,7 @@ build-android:
 #deploy-android:
 #  stage: deploy
 #  image: ruby
-#  script: 
+#  script:
 #    - cd ./Builds/Android
 #    - echo $GPC_TOKEN > gpc_token.json
 #    - gem install bundler
@@ -141,7 +143,7 @@ build-android:
 
 build-ios-xcode:
   <<: *build
-  image: unityci/editor:$UNITY_VERSION-ios
+  image: $IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION
   variables:
     BUILD_TARGET: iOS
 
