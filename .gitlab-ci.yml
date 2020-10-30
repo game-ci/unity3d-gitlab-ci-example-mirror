@@ -9,7 +9,7 @@ variables:
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   UNITY_VERSION: 2019.3.7f1
 
-image: gableroux/unity3d:$UNITY_VERSION
+image: unityci/editor:$UNITY_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -89,7 +89,7 @@ build-StandaloneLinux64:
 
 build-StandaloneLinux64-il2cpp:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-linux-il2cpp
+  image: unityci/editor:$UNITY_VERSION-linux-il2cpp
   variables:
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
@@ -98,7 +98,7 @@ build-StandaloneLinux64-il2cpp:
 
 build-StandaloneOSX:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-mac
+  image: unityci/editor:$UNITY_VERSION-mac
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -110,19 +110,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-windows
+  image: unityci/editor:$UNITY_VERSION-windows
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-webgl
+  image: unityci/editor:$UNITY_VERSION-webgl
   variables:
     BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-android
+  image: unityci/editor:$UNITY_VERSION-android
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
@@ -141,7 +141,7 @@ build-android:
 
 build-ios-xcode:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-ios
+  image: unityci/editor:$UNITY_VERSION-ios
   variables:
     BUILD_TARGET: iOS
 
