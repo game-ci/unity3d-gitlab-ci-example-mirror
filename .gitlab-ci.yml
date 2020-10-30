@@ -11,7 +11,7 @@ variables:
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
   IMAGE_VERSION: "0.3" # https://github.com/Unity-CI/docker/releases
 
-image: $IMAGE:$UNITY_VERSION-$IMAGE_VERSION
+image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -100,7 +100,7 @@ build-StandaloneLinux64-il2cpp:
 
 build-StandaloneOSX:
   <<: *build
-  image: $IMAGE:$UNITY_VERSION-mac-$IMAGE_VERSION
+  image: $IMAGE:$UNITY_VERSION-mac-mono-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -112,15 +112,16 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: $IMAGE:$UNITY_VERSION-windows-$IMAGE_VERSION
+  image: $IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneWindows64
 
-build-WebGL:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: WebGL
+# TODO: the image seems to be missing right now
+#build-WebGL:
+#  <<: *build
+#  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
+#  variables:
+#    BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
