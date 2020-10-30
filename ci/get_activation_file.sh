@@ -8,7 +8,7 @@ if [[ -z "${UNITY_USERNAME}" ]] || [[ -z "${UNITY_PASSWORD}" ]]; then
 fi
 
 xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-  /opt/Unity/Editor/Unity \
+  unity-editor \
     -logFile /dev/stdout \
     -batchmode \
     -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
