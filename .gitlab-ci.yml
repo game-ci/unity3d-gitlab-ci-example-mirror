@@ -7,9 +7,11 @@ stages:
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
-  UNITY_VERSION: 2019.3.7f1
+  UNITY_VERSION: "2019.3.7f1"
+  IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
+  IMAGE_VERSION: "0.4" # https://github.com/Unity-CI/docker/releases
 
-image: gableroux/unity3d:$UNITY_VERSION
+image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -23,14 +25,14 @@ image: gableroux/unity3d:$UNITY_VERSION
 
 .license: &license
   rules:
-    - if: '$UNITY_LICENSE_CONTENT != null'
+    - if: '$UNITY_LICENSE != null'
       when: always
 
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
   rules:
-    - if: '$UNITY_LICENSE_CONTENT == null'
+    - if: '$UNITY_LICENSE == null'
       when: manual
   stage: build_and_test
   script:
@@ -89,7 +91,7 @@ build-StandaloneLinux64:
 
 build-StandaloneLinux64-il2cpp:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-linux-il2cpp
+  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
@@ -98,7 +100,7 @@ build-StandaloneLinux64-il2cpp:
 
 build-StandaloneOSX:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-mac
+  image: $IMAGE:$UNITY_VERSION-mac-mono-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneOSX
 
@@ -110,19 +112,19 @@ build-StandaloneOSX:
 
 build-StandaloneWindows64:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-windows
+  image: $IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneWindows64
 
 build-WebGL:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-webgl
+  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
   variables:
     BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-android
+  image: $IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION
   variables:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
@@ -131,7 +133,7 @@ build-android:
 #deploy-android:
 #  stage: deploy
 #  image: ruby
-#  script: 
+#  script:
 #    - cd ./Builds/Android
 #    - echo $GPC_TOKEN > gpc_token.json
 #    - gem install bundler
@@ -141,7 +143,7 @@ build-android:
 
 build-ios-xcode:
   <<: *build
-  image: gableroux/unity3d:$UNITY_VERSION-ios
+  image: $IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION
   variables:
     BUILD_TARGET: iOS
 

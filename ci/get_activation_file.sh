@@ -8,7 +8,7 @@ if [[ -z "${UNITY_USERNAME}" ]] || [[ -z "${UNITY_PASSWORD}" ]]; then
 fi
 
 xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
-  /opt/Unity/Editor/Unity \
+  unity-editor \
     -logFile /dev/stdout \
     -batchmode \
     -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
@@ -37,7 +37,7 @@ if [[ ${exit_code} -eq 0 ]]; then
   echo "   3. Upload ${activation_file} in the form"
   echo "   4. Answer questions (unity pro vs personal edition, both will work, just pick the one you use)"
   echo "   5. Download 'Unity_v2019.x.ulf' file (year should match your unity version here, 'Unity_v2018.x.ulf' for 2018, etc.)"
-  echo "   6. Copy the content of 'Unity_v2019.x.ulf' license file to your CI's environment variable 'UNITY_LICENSE_CONTENT'. (Open your project's parameters > CI/CD > Variables and add 'UNITY_LICENSE_CONTENT' as the key and paste the content of the license file into the value)"
+  echo "   6. Copy the content of 'Unity_v2019.x.ulf' license file to your CI's environment variable 'UNITY_LICENSE'. (Open your project's parameters > CI/CD > Variables and add 'UNITY_LICENSE' as the key and paste the content of the license file into the value)"
   echo ""
   echo "Once you're done, hit retry on the pipeline where other jobs failed, or just push another commit. Things should be green"
   echo ""
