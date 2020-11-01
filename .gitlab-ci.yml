@@ -7,7 +7,7 @@ stages:
 variables:
   BUILD_NAME: ExampleProjectName
   UNITY_ACTIVATION_FILE: ./unity3d.alf
-  UNITY_VERSION: "2019.3.7f1"
+  UNITY_VERSION: "2020.1.11f1"
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
   IMAGE_VERSION: "0.4" # https://github.com/Unity-CI/docker/releases
 
