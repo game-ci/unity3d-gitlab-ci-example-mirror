@@ -14,6 +14,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -testResults $(pwd)/$TEST_PLATFORM-results.xml \
   -logFile /dev/stdout \
   -batchmode \
+  -nographics \
   -enableCodeCoverage \
   -coverageResultsPath $(pwd)/$TEST_PLATFORM-coverage \
   -coverageOptions "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+Assembly-CSharp" \
