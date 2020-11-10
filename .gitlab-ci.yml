@@ -9,7 +9,7 @@ variables:
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   UNITY_VERSION: "2020.1.11f1"
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: "0.4" # https://github.com/Unity-CI/docker/releases
+  IMAGE_VERSION: "0.5" # https://github.com/Unity-CI/docker/releases
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
