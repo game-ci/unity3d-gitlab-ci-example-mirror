@@ -8,6 +8,6 @@ docker run \
   -e UNITY_USERNAME \
   -e UNITY_PASSWORD \
   -w /project/ \
-  -v $(pwd):/project/ \
+  -v $UNITY_DIR:/project/ \
   $IMAGE_NAME \
   /bin/bash -c "/project/ci/before_script.sh && /project/ci/test.sh"
