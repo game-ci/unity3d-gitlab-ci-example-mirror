@@ -5,7 +5,7 @@
 
 ## Documentation
 
-**Visit [github.com/game-ci/documentation](github.com/game-ci/documentation).**
+**Visit [github.com/game-ci/documentation](https://github.com/game-ci/documentation).**
 
 ## Shameless plug
 
