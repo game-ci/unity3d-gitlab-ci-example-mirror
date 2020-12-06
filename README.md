@@ -5,7 +5,7 @@
 
 ## Documentation
 
-**Visit [unity-ci.com/docs/gitlab/](https://unity-ci.com/docs/gitlab/).**
+**Visit [github.com/game-ci/documentation](github.com/game-ci/documentation).**
 
 ## Shameless plug
 
