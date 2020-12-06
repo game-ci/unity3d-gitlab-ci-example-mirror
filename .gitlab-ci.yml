@@ -91,14 +91,15 @@ build-StandaloneLinux64:
   variables:
     BUILD_TARGET: StandaloneLinux64
 
-build-StandaloneLinux64-il2cpp:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: StandaloneLinux64
-    SCRIPTING_BACKEND: IL2CPP
-    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
-    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
+# linux il2cpp currently unsupported, see https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
+#build-StandaloneLinux64-il2cpp:
+#  <<: *build
+#  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
+#  variables:
+#    BUILD_TARGET: StandaloneLinux64
+#    SCRIPTING_BACKEND: IL2CPP
+#    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
+#    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
 
 build-StandaloneOSX:
   <<: *build
@@ -118,11 +119,12 @@ build-StandaloneWindows64:
   variables:
     BUILD_TARGET: StandaloneWindows64
 
-build-WebGL:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: WebGL
+# webgl is currently unsupported, see https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
+#build-WebGL:
+#  <<: *build
+#  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
+#  variables:
+#    BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
@@ -160,14 +162,15 @@ build-ios-xcode:
 #    - mac
 #  needs: ["build-ios-xcode"]
 
-pages:
-  image: alpine:latest
-  stage: deploy
-  script:
-    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+# Deploying webgl is currently unsupported due to https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
+#pages:
+#  image: alpine:latest
+#  stage: deploy
+#  script:
+#    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
+#  artifacts:
+#    paths:
+#      - public
+#  only:
+#    - master
 
