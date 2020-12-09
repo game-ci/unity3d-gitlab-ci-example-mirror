@@ -7,7 +7,7 @@
 
 ## Documentation
 
-**Visit [github.com/game-ci/documentation](https://github.com/game-ci/documentation).**
+**Visit [game.ci/docs/gitlab/getting-started](https://game.ci/docs/gitlab/getting-started).**
 
 ## Shameless plug
 
