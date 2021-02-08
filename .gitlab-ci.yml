@@ -9,7 +9,7 @@ variables:
   UNITY_ACTIVATION_FILE: ./unity3d.alf
   UNITY_VERSION: "2020.1.11f1"
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: "0.8" # https://github.com/game-ci/docker/releases
+  IMAGE_VERSION: "0.9" # https://github.com/game-ci/docker/releases
   UNITY_DIR: $CI_PROJECT_DIR # this needs to be an absolute path. Defaults to the root of your tree.
 
 
@@ -91,15 +91,14 @@ build-StandaloneLinux64:
   variables:
     BUILD_TARGET: StandaloneLinux64
 
-# linux il2cpp currently unsupported, see https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
-#build-StandaloneLinux64-il2cpp:
-#  <<: *build
-#  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
-#  variables:
-#    BUILD_TARGET: StandaloneLinux64
-#    SCRIPTING_BACKEND: IL2CPP
-#    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
-#    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
+build-StandaloneLinux64-il2cpp:
+  <<: *build
+  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
+  variables:
+    BUILD_TARGET: StandaloneLinux64
+    SCRIPTING_BACKEND: IL2CPP
+    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
+    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
 
 build-StandaloneOSX:
   <<: *build
@@ -119,12 +118,11 @@ build-StandaloneWindows64:
   variables:
     BUILD_TARGET: StandaloneWindows64
 
-# webgl is currently unsupported, see https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
-#build-WebGL:
-#  <<: *build
-#  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
-#  variables:
-#    BUILD_TARGET: WebGL
+build-WebGL:
+  <<: *build
+  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
+  variables:
+    BUILD_TARGET: WebGL
 
 build-android:
   <<: *build
@@ -133,6 +131,17 @@ build-android:
     BUILD_TARGET: Android
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
     BUILD_APP_BUNDLE: "false"
+
+build-android-il2cpp:
+  <<: *build
+  image: $IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION
+  variables:
+    BUILD_TARGET: Android
+    BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
+    BUILD_APP_BUNDLE: "false"
+    SCRIPTING_BACKEND: IL2CPP
+    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
+    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
 
 #deploy-android:
 #  stage: deploy
