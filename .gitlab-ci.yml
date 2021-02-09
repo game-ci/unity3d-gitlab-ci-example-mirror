@@ -97,8 +97,6 @@ build-StandaloneLinux64-il2cpp:
   variables:
     BUILD_TARGET: StandaloneLinux64
     SCRIPTING_BACKEND: IL2CPP
-    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
-    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
 
 build-StandaloneOSX:
   <<: *build
@@ -121,6 +119,10 @@ build-StandaloneWindows64:
 build-WebGL:
   <<: *build
   image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
+  # Temporary workaround for https://github.com/game-ci/docker/releases/tag/v0.9 and webgl support in current project
+  before_script:
+    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - apt-get update && apt-get install ffmpeg -y
   variables:
     BUILD_TARGET: WebGL
 
@@ -171,17 +173,16 @@ build-ios-xcode:
 #    - mac
 #  needs: ["build-ios-xcode"]
 
-# Deploying webgl is currently unsupported due to https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/139
-#pages:
-#  image: alpine:latest
-#  stage: deploy
-#  script:
-#    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
-#  artifacts:
-#    paths:
-#      - public
-#  only:
-#    - master
+pages:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
+  artifacts:
+    paths:
+      - public
+  only:
+   - master
 
 workflow:
   rules:
