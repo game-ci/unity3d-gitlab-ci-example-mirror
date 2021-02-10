@@ -142,8 +142,6 @@ build-android-il2cpp:
     BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
     BUILD_APP_BUNDLE: "false"
     SCRIPTING_BACKEND: IL2CPP
-    # https://forum.unity.com/threads/linux-il2cpp-linux-sysroot-not-specified-or-does-not-exist.854008/
-    IL2CPP_ADDITIONAL_ARGS: "--sysroot-path=/ --tool-chain-path=/"
 
 #deploy-android:
 #  stage: deploy
