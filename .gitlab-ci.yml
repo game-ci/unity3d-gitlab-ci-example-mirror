@@ -50,7 +50,7 @@ get-activation-file:
   <<: *cache
   <<: *license
   script:
-    - apt-get install libsaxonb-java
+    - apt-get update && apt-get install -y libsaxonb-java
     - chmod +x ./ci/test.sh && ./ci/test.sh
     - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
   artifacts:
