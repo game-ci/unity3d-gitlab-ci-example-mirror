@@ -50,11 +50,16 @@ get-activation-file:
   <<: *cache
   <<: *license
   script:
+    - apt-get install libsaxonb-java
     - chmod +x ./ci/test.sh && ./ci/test.sh
+    - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
   artifacts:
-    paths:
-      - $UNITY_DIR/$TEST_PLATFORM-results.xml
-      - $UNITY_DIR/$TEST_PLATFORM-coverage/
+    when: always
+    reports:
+      junit:
+        - $UNITY_DIR/$TEST_PLATFORM-junit-results.xml
+        - $UNITY_DIR/$TEST_PLATFORM-coverage/
+    expire_in: 2 weeks
   # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
   # you may need to remove or replace these to fit your need if you are using your own runners
   tags:
