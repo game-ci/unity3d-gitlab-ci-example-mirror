@@ -13,7 +13,8 @@ static class BuildCommand
     private const string ANDROID_BUNDLE_VERSION_CODE = "BUNDLE_VERSION_CODE";
     private const string ANDROID_APP_BUNDLE = "BUILD_APP_BUNDLE";
     private const string SCRIPTING_BACKEND_ENV_VAR = "SCRIPTING_BACKEND";
-
+    private const string VERSION_NUMBER_VAR = "VERSION_NUMBER_VAR";
+    
     static string GetArgument(string name)
     {
         string[] args = Environment.GetCommandLineArgs();
@@ -162,7 +163,12 @@ static class BuildCommand
     static void PerformBuild()
     {
         Console.WriteLine(":: Performing build");
-
+        if (TryGetEnv(VERSION_NUMBER_VAR, out string bundleVersionNumber))
+        {
+            Console.WriteLine($":: Setting bundleVersionNumber to {bundleVersionNumber}");
+            PlayerSettings.bundleVersion = bundleVersionNumber;
+        }
+        
         var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
