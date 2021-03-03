@@ -69,7 +69,7 @@ get-activation-file:
     # This could be made faster by adding these packages to base image or running in a separate job (and step)
     # We could use an image with these two depencencies only and only do the saxonb-xslt command on 
     # previous job's artifacts
-    - apt-get update && apt-get install -y java libsaxonb-java
+    - apt-get update && apt-get install -y default-jre libsaxonb-java
     - chmod +x ./ci/test.sh && ./ci/test.sh
     - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
   artifacts:
