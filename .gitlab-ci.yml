@@ -50,7 +50,26 @@ get-activation-file:
   <<: *cache
   <<: *license
   script:
-    - apt-get update && apt-get install -y libsaxonb-java
+    - chmod +x ./ci/test.sh && ./ci/test.sh
+  artifacts:
+    when: always
+    expire_in: 2 weeks
+  # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
+  # you may need to remove or replace these to fit your need if you are using your own runners
+  tags:
+    - gitlab-org
+  coverage: /<Linecoverage>(.*?)</Linecoverage>/
+
+.test-with-junit-reports: &test-with-junit-reports
+  stage: build_and_test
+  <<: *unity_before_script
+  <<: *cache
+  <<: *license
+  script:
+    # This could be made faster by adding these packages to base image or running in a separate job (and step)
+    # We could use an image with these two depencencies only and only do the saxonb-xslt command on 
+    # previous job's artifacts
+    - apt-get update && apt-get install -y java libsaxonb-java
     - chmod +x ./ci/test.sh && ./ci/test.sh
     - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
   artifacts:
@@ -73,6 +92,16 @@ test-playmode:
 
 test-editmode:
   <<: *test
+  variables:
+    TEST_PLATFORM: editmode
+
+test-playmode-with-junit-reports:
+  <<: *test-with-junit-reports
+  variables:
+    TEST_PLATFORM: playmode
+
+test-editmode-with-junit-reports:
+  <<: *test-with-junit-reports
   variables:
     TEST_PLATFORM: editmode
 
