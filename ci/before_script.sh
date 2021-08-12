@@ -11,7 +11,7 @@ UPPERCASE_BUILD_TARGET=${BUILD_TARGET^^};
 if [ $UPPERCASE_BUILD_TARGET = "ANDROID" ]
 then
     if [ -n $ANDROID_KEYSTORE_BASE64 ]
-	then
+    then
         echo '$ANDROID_KEYSTORE_BASE64 found, decoding content into keystore.keystore'
         echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > keystore.keystore
     else
