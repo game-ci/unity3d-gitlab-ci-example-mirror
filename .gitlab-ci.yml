@@ -56,7 +56,7 @@ get-activation-file:
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
-  stage: build_and_test
+  stage: prepare
   script:
     - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
   artifacts:
