@@ -76,4 +76,5 @@ InitTestScene*.unity
 Unity_v*.x.ulf
 .idea
 *-results.xml
+.DS_Store
 
