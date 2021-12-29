@@ -31,7 +31,11 @@ public static class BuildPostProcess
         var pbxProject = new PBXProject();
         pbxProject.ReadFromFile(projectPath);
 
-        string guidProject = pbxProject.TargetGuidByName(pbxProject.GetUnityMainTargetGuid());
+#if UNITY_2020_1_OR_NEWER
+        var guidProject = pbxProject.GetUnityMainTargetGuid();
+#else
+        var guidProject = pbxProject.TargetGuidByName(pbxProject.GetUnityMainTargetGuid());
+#endif
 
         Debug.Log("Setting Versioning system to Apple Generic...");
         pbxProject.SetBuildProperty(guidProject, VERSIONING_SYSTEM_KEY, APPLE_GENERIC_VALUE);
