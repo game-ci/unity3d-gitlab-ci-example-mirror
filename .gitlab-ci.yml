@@ -54,6 +54,7 @@ get-unity-version:
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
+  <<: *unity_before_script
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
