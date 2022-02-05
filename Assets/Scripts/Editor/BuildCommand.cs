@@ -2,6 +2,7 @@ using UnityEditor;
 using System.Linq;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 static class BuildCommand
 {
@@ -162,14 +163,31 @@ static class BuildCommand
 
     static void PerformBuild()
     {
+        var buildTarget = GetBuildTarget();
+
         Console.WriteLine(":: Performing build");
         if (TryGetEnv(VERSION_NUMBER_VAR, out string bundleVersionNumber))
         {
+            // transform bundle version to conform to iOS standards
+            if (buildTarget == BuildTarget.iOS)
+            {
+                // regex pattern searching for CI_PIPELINE_ID-CI_JOB_ID
+                string iosVersionPattern = @"\d+-\d+";
+                Match m = Regex.Match(bundleVersionNumber, iosVersionPattern);
+                
+                // set version to the regex result, and replace "-" with "." as iOS only allows numbers and .
+                bundleVersionNumber = m.Value;
+                bundleVersionNumber = bundleVersionNumber.Replace("-", ".");
+                
+                //trim off end of string if too long for iOS standards
+                if (bundleVersionNumber.Length > 18)
+                {
+                    bundleVersionNumber.Remove(17);
+                }
+            }
             Console.WriteLine($":: Setting bundleVersionNumber to {bundleVersionNumber}");
             PlayerSettings.bundleVersion = bundleVersionNumber;
         }
-        
-        var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
             HandleAndroidAppBundle();
