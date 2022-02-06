@@ -157,7 +157,7 @@ static class BuildCommand
             }
         } else {
             var defaultBackend = PlayerSettings.GetDefaultScriptingBackend(targetGroup);
-            Console.WriteLine($":: Using project's configured ScriptingBackend (should be {defaultBackend} for tagetGroup {targetGroup}");
+            Console.WriteLine($":: Using project's configured ScriptingBackend (should be {defaultBackend} for targetGroup {targetGroup}");
         }
     }
 
@@ -172,7 +172,7 @@ static class BuildCommand
             {
                 bundleVersionNumber = GetFixedIOSBundleVersionNumber(bundleVersionNumber);
             }
-            Console.WriteLine($":: Setting bundleVersionNumber to {bundleVersionNumber}");
+            Console.WriteLine($":: Setting bundleVersionNumber to '{bundleVersionNumber}' (Length: {bundleVersionNumber.Length})");
             PlayerSettings.bundleVersion = bundleVersionNumber;
         }
 
@@ -231,7 +231,6 @@ static class BuildCommand
             else
             {
                 Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but the value \"{value}\" is not a boolean.");
-
             }
 #else
             Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but does not work with lower Unity version than 2018.3");
