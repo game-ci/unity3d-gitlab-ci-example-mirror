@@ -166,24 +166,11 @@ static class BuildCommand
         var buildTarget = GetBuildTarget();
 
         Console.WriteLine(":: Performing build");
-        if (TryGetEnv(VERSION_NUMBER_VAR, out string bundleVersionNumber))
+        if (TryGetEnv(VERSION_NUMBER_VAR, out var bundleVersionNumber))
         {
-            // transform bundle version to conform to iOS standards
             if (buildTarget == BuildTarget.iOS)
             {
-                // regex pattern searching for CI_PIPELINE_ID-CI_JOB_ID
-                string iosVersionPattern = @"\d+-\d+";
-                Match m = Regex.Match(bundleVersionNumber, iosVersionPattern);
-                
-                // set version to the regex result, and replace "-" with "." as iOS only allows numbers and .
-                bundleVersionNumber = m.Value;
-                bundleVersionNumber = bundleVersionNumber.Replace("-", ".");
-                
-                //trim off end of string if too long for iOS standards
-                if (bundleVersionNumber.Length > 18)
-                {
-                    bundleVersionNumber.Remove(17);
-                }
+                bundleVersionNumber = GetFixedIOSBundleVersionNumber(bundleVersionNumber);
             }
             Console.WriteLine($":: Setting bundleVersionNumber to {bundleVersionNumber}");
             PlayerSettings.bundleVersion = bundleVersionNumber;
@@ -208,6 +195,27 @@ static class BuildCommand
             throw new Exception($"Build ended with {buildReport.summary.result} status");
 
         Console.WriteLine(":: Done with build");
+    }
+
+    private static string GetFixedIOSBundleVersionNumber(string bundleVersionNumber)
+    {
+        Console.WriteLine($":: Applying iOS Fix to bundle version {bundleVersionNumber}");
+        // regex pattern searching for CI_PIPELINE_ID-CI_JOB_ID
+        var iosVersionPattern = @"\d+-\d+";
+        var m = Regex.Match(bundleVersionNumber, iosVersionPattern);
+
+        // set version to the regex result, and replace "-" with "." as iOS only allows numbers and .
+        bundleVersionNumber = m.Value;
+        bundleVersionNumber = bundleVersionNumber.Replace("-", ".");
+
+        // Substring bundleVersionNumber if it exceeds the maximum length
+        const int iosMaxBundleVersionLength = 18;
+        if (bundleVersionNumber.Length > iosMaxBundleVersionLength)
+        {
+            bundleVersionNumber = bundleVersionNumber.Substring(0, iosMaxBundleVersionLength);
+        }
+
+        return bundleVersionNumber;
     }
 
     private static void HandleAndroidAppBundle()
