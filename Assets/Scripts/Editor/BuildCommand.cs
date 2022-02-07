@@ -2,6 +2,7 @@ using UnityEditor;
 using System.Linq;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 static class BuildCommand
 {
@@ -156,20 +157,24 @@ static class BuildCommand
             }
         } else {
             var defaultBackend = PlayerSettings.GetDefaultScriptingBackend(targetGroup);
-            Console.WriteLine($":: Using project's configured ScriptingBackend (should be {defaultBackend} for tagetGroup {targetGroup}");
+            Console.WriteLine($":: Using project's configured ScriptingBackend (should be {defaultBackend} for targetGroup {targetGroup}");
         }
     }
 
     static void PerformBuild()
     {
+        var buildTarget = GetBuildTarget();
+
         Console.WriteLine(":: Performing build");
-        if (TryGetEnv(VERSION_NUMBER_VAR, out string bundleVersionNumber))
+        if (TryGetEnv(VERSION_NUMBER_VAR, out var bundleVersionNumber))
         {
-            Console.WriteLine($":: Setting bundleVersionNumber to {bundleVersionNumber}");
+            if (buildTarget == BuildTarget.iOS)
+            {
+                bundleVersionNumber = GetFixedIOSBundleVersionNumber(bundleVersionNumber);
+            }
+            Console.WriteLine($":: Setting bundleVersionNumber to '{bundleVersionNumber}' (Length: {bundleVersionNumber.Length})");
             PlayerSettings.bundleVersion = bundleVersionNumber;
         }
-        
-        var buildTarget = GetBuildTarget();
 
         if (buildTarget == BuildTarget.Android) {
             HandleAndroidAppBundle();
@@ -192,6 +197,27 @@ static class BuildCommand
         Console.WriteLine(":: Done with build");
     }
 
+    private static string GetFixedIOSBundleVersionNumber(string bundleVersionNumber)
+    {
+        Console.WriteLine($":: Applying iOS Fix to bundle version {bundleVersionNumber}");
+        // regex pattern searching for CI_PIPELINE_ID-CI_JOB_ID
+        var iosVersionPattern = @"\d+-\d+";
+        var m = Regex.Match(bundleVersionNumber, iosVersionPattern);
+
+        // set version to the regex result, and replace "-" with "." as iOS only allows numbers and .
+        bundleVersionNumber = m.Value;
+        bundleVersionNumber = bundleVersionNumber.Replace("-", ".");
+
+        // Substring bundleVersionNumber if it exceeds the maximum length
+        const int iosMaxBundleVersionLength = 18;
+        if (bundleVersionNumber.Length > iosMaxBundleVersionLength)
+        {
+            bundleVersionNumber = bundleVersionNumber.Substring(0, iosMaxBundleVersionLength);
+        }
+
+        return bundleVersionNumber;
+    }
+
     private static void HandleAndroidAppBundle()
     {
         if (TryGetEnv(ANDROID_APP_BUNDLE, out string value))
@@ -205,7 +231,6 @@ static class BuildCommand
             else
             {
                 Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but the value \"{value}\" is not a boolean.");
-
             }
 #else
             Console.WriteLine($":: {ANDROID_APP_BUNDLE} env var detected but does not work with lower Unity version than 2018.3");
