@@ -2,7 +2,6 @@ using UnityEditor;
 using System.Linq;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 static class BuildCommand
 {
@@ -11,10 +10,11 @@ static class BuildCommand
     private const string KEY_ALIAS_NAME = "KEY_ALIAS_NAME";
     private const string KEYSTORE       = "keystore.keystore";
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
-    private const string ANDROID_BUNDLE_VERSION_CODE = "BUNDLE_VERSION_CODE";
+    private const string ANDROID_BUNDLE_VERSION_CODE = "VERSION_BUILD_VAR";
     private const string ANDROID_APP_BUNDLE = "BUILD_APP_BUNDLE";
     private const string SCRIPTING_BACKEND_ENV_VAR = "SCRIPTING_BACKEND";
     private const string VERSION_NUMBER_VAR = "VERSION_NUMBER_VAR";
+    private const string VERSION_iOS = "VERSION_BUILD_VAR";
     
     static string GetArgument(string name)
     {
@@ -170,7 +170,7 @@ static class BuildCommand
         {
             if (buildTarget == BuildTarget.iOS)
             {
-                bundleVersionNumber = GetFixedIOSBundleVersionNumber(bundleVersionNumber);
+                bundleVersionNumber = GetIosVersion();
             }
             Console.WriteLine($":: Setting bundleVersionNumber to '{bundleVersionNumber}' (Length: {bundleVersionNumber.Length})");
             PlayerSettings.bundleVersion = bundleVersionNumber;
@@ -195,27 +195,6 @@ static class BuildCommand
             throw new Exception($"Build ended with {buildReport.summary.result} status");
 
         Console.WriteLine(":: Done with build");
-    }
-
-    private static string GetFixedIOSBundleVersionNumber(string bundleVersionNumber)
-    {
-        Console.WriteLine($":: Applying iOS Fix to bundle version {bundleVersionNumber}");
-        // regex pattern searching for CI_PIPELINE_ID-CI_JOB_ID
-        var iosVersionPattern = @"\d+-\d+";
-        var m = Regex.Match(bundleVersionNumber, iosVersionPattern);
-
-        // set version to the regex result, and replace "-" with "." as iOS only allows numbers and .
-        bundleVersionNumber = m.Value;
-        bundleVersionNumber = bundleVersionNumber.Replace("-", ".");
-
-        // Substring bundleVersionNumber if it exceeds the maximum length
-        const int iosMaxBundleVersionLength = 18;
-        if (bundleVersionNumber.Length > iosMaxBundleVersionLength)
-        {
-            bundleVersionNumber = bundleVersionNumber.Substring(0, iosMaxBundleVersionLength);
-        }
-
-        return bundleVersionNumber;
     }
 
     private static void HandleAndroidAppBundle()
@@ -250,6 +229,22 @@ static class BuildCommand
             else
                 Console.WriteLine($":: {ANDROID_BUNDLE_VERSION_CODE} env var detected but the version value \"{value}\" is not an integer.");
         }
+    }
+
+    private static string GetIosVersion()
+    {
+        if (TryGetEnv(VERSION_iOS, out string value))
+        {
+            if (int.TryParse(value, out int version))
+            {
+                Console.WriteLine($":: {VERSION_iOS} env var detected, set the version to {value}.");
+                return version.ToString();
+            }
+            else
+                Console.WriteLine($":: {VERSION_iOS} env var detected but the version value \"{value}\" is not an integer.");
+        }
+
+        throw new ArgumentNullException(nameof(value), $":: Error finding {VERSION_iOS} env var");
     }
 
     private static void HandleAndroidKeystore()
