@@ -243,7 +243,7 @@ pages:
     paths:
       - public
   only:
-    - main
+    - $CI_DEFAULT_BRANCH
 
 workflow:
   rules:
