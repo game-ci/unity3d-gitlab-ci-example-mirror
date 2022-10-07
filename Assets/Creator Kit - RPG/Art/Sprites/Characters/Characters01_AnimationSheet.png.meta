@@ -390,7 +390,7 @@ TextureImporter:
       41386430: 2186277476908879412
     second: ImportLogs
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -410,6 +410,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -419,11 +421,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -441,9 +443,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -495,6 +502,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
     buildTarget: iPhone
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: 4
@@ -1862,6 +1881,71 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Thief_WalkEW_03: 21300038
+      Archer_Idle_01: 21300114
+      Archer_WalkS_03: 21300086
+      Archer_Idle_04: 21300248
+      Thief_WalkS_01: 21300018
+      Thief_WalkN_01: 21300050
+      Thief_WalkN_00: 21300048
+      Thief_WalkS_02: 21300020
+      Archer_WalkEW_00: 21300064
+      Thief_Idle_06: 21300012
+      Archer_WalkS_07: 21300094
+      Thief_WalkEW_07: 21300046
+      Archer_WalkN_04: 21300104
+      Thief_Idle_07: 21300014
+      Thief_WalkS_03: 21300022
+      Thief_Idle_04: 21300008
+      Archer_WalkN_03: 21300102
+      Archer_WalkN_05: 21300106
+      Archer_WalkEW_04: 21300072
+      Archer_WalkEW_05: 21300074
+      Thief_WalkEW_00: 21300032
+      Thief_WalkEW_05: 21300042
+      Thief_WalkEW_06: 21300044
+      Thief_WalkN_04: 21300056
+      Archer_Idle_02: 21300244
+      Thief_WalkS_05: 21300026
+      Archer_WalkEW_01: 21300066
+      _Thief: 21300000
+      Archer_WalkEW_06: 21300076
+      Archer_WalkS_04: 21300088
+      Archer_WalkS_02: 21300084
+      Archer_Idle_05: 21300250
+      Archer_WalkN_06: 21300108
+      Thief_WalkN_03: 21300054
+      Archer_Idle_03: 21300246
+      Thief_WalkS_00: 21300016
+      Archer_WalkN_02: 21300100
+      Thief_WalkN_06: 21300060
+      Thief_Idle_05: 21300010
+      Thief_WalkN_05: 21300058
+      Archer_WalkEW_07: 21300078
+      Archer_WalkS_06: 21300092
+      Archer_WalkN_01: 21300098
+      Archer_WalkS_01: 21300082
+      Archer_Idle_06: 21300252
+      Archer_WalkS_00: 21300080
+      Thief_WalkS_06: 21300028
+      Thief_WalkEW_04: 21300040
+      Archer_WalkN_00: 21300096
+      Thief_Idle_01: 21300002
+      Archer_WalkEW_02: 21300068
+      Thief_WalkS_04: 21300024
+      Thief_WalkEW_02: 21300036
+      Archer_Idle_07: 21300254
+      Archer_WalkN_07: 21300110
+      Thief_WalkEW_01: 21300034
+      Thief_WalkN_07: 21300062
+      _Archer: 21300112
+      Archer_WalkS_05: 21300090
+      Thief_WalkN_02: 21300052
+      Thief_Idle_02: 21300004
+      Archer_WalkEW_03: 21300070
+      Thief_WalkS_07: 21300030
+      Thief_Idle_03: 21300006
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
