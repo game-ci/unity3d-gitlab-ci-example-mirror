@@ -156,7 +156,7 @@ TextureImporter:
       213: 21300100
     second: WarriorAndVillagers_AnimationSheet_50
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -173,9 +173,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -185,11 +188,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -207,9 +210,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -221,6 +230,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -233,6 +243,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -245,6 +256,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -257,6 +269,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -269,6 +282,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -1334,9 +1361,59 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      Chicken_Idle_01: 21300098
+      Villager01_Idle_01: 21300066
+      Villager01_Idle_02: 21300068
+      Villager01_Idle_03: 21300070
+      Villager01_Idle_04: 21300072
+      Villager01_Idle_05: 21300074
+      Villager01_Idle_06: 21300076
+      Villager01_Idle_07: 21300078
+      Villager02_Idle_01: 21300082
+      Villager02_Idle_02: 21300084
+      Villager02_Idle_03: 21300086
+      Villager02_Idle_04: 21300088
+      Villager02_Idle_05: 21300090
+      Villager02_Idle_06: 21300092
+      Villager02_Idle_07: 21300094
+      Warrior_Idle_01: 21300050
+      Warrior_Idle_02: 21300052
+      Warrior_Idle_03: 21300054
+      Warrior_Idle_04: 21300056
+      Warrior_Idle_05: 21300058
+      Warrior_Idle_06: 21300060
+      Warrior_Idle_07: 21300062
+      Warrior_WalkEW_00: 21300000
+      Warrior_WalkEW_01: 21300002
+      Warrior_WalkEW_02: 21300004
+      Warrior_WalkEW_03: 21300006
+      Warrior_WalkEW_04: 21300008
+      Warrior_WalkEW_05: 21300010
+      Warrior_WalkEW_06: 21300012
+      Warrior_WalkEW_07: 21300014
+      Warrior_WalkN_00: 21300032
+      Warrior_WalkN_01: 21300034
+      Warrior_WalkN_02: 21300036
+      Warrior_WalkN_03: 21300038
+      Warrior_WalkN_04: 21300040
+      Warrior_WalkN_05: 21300042
+      Warrior_WalkN_06: 21300044
+      Warrior_WalkN_07: 21300046
+      Warrior_WalkS_00: 21300016
+      Warrior_WalkS_01: 21300018
+      Warrior_WalkS_02: 21300020
+      Warrior_WalkS_03: 21300022
+      Warrior_WalkS_04: 21300024
+      Warrior_WalkS_05: 21300026
+      Warrior_WalkS_06: 21300028
+      Warrior_WalkS_07: 21300030
+      _Chicken: 21300096
+      _Villager01: 21300064
+      _Villager02: 21300080
+      _Warrior: 21300048
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

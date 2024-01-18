@@ -222,7 +222,7 @@ TextureImporter:
       41386430: 2186277476908879412
     second: ImportLogs
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -239,9 +239,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -251,11 +254,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -273,9 +276,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -287,6 +296,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -299,6 +309,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -311,6 +322,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -323,6 +335,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -335,6 +348,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -1862,9 +1889,81 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      animated HighGrass_0: 21300000
+      animated HighGrass_1: 21300002
+      animated HighGrass_10: 21300020
+      animated HighGrass_11: 21300022
+      animated HighGrass_12: 21300024
+      animated HighGrass_13: 21300026
+      animated HighGrass_14: 21300028
+      animated HighGrass_15: 21300030
+      animated HighGrass_16: 21300032
+      animated HighGrass_17: 21300034
+      animated HighGrass_18: 21300036
+      animated HighGrass_19: 21300038
+      animated HighGrass_2: 21300004
+      animated HighGrass_20: 21300040
+      animated HighGrass_21: 21300042
+      animated HighGrass_22: 21300044
+      animated HighGrass_23: 21300046
+      animated HighGrass_24: 21300048
+      animated HighGrass_25: 21300050
+      animated HighGrass_26: 21300052
+      animated HighGrass_27: 21300054
+      animated HighGrass_28: 21300056
+      animated HighGrass_29: 21300058
+      animated HighGrass_3: 21300006
+      animated HighGrass_30: 21300060
+      animated HighGrass_31: 21300062
+      animated HighGrass_32: 21300064
+      animated HighGrass_33: 21300066
+      animated HighGrass_34: 21300068
+      animated HighGrass_35: 21300070
+      animated HighGrass_36: 21300072
+      animated HighGrass_37: 21300074
+      animated HighGrass_38: 21300076
+      animated HighGrass_39: 21300078
+      animated HighGrass_4: 21300008
+      animated HighGrass_40: 21300080
+      animated HighGrass_41: 21300082
+      animated HighGrass_42: 21300084
+      animated HighGrass_43: 21300086
+      animated HighGrass_44: 21300088
+      animated HighGrass_45: 21300090
+      animated HighGrass_46: 21300092
+      animated HighGrass_47: 21300094
+      animated HighGrass_48: 21300096
+      animated HighGrass_49: 21300098
+      animated HighGrass_5: 21300010
+      animated HighGrass_50: 21300100
+      animated HighGrass_51: 21300102
+      animated HighGrass_52: 21300104
+      animated HighGrass_53: 21300106
+      animated HighGrass_54: 21300108
+      animated HighGrass_55: 21300110
+      animated HighGrass_56: 21300112
+      animated HighGrass_57: 21300114
+      animated HighGrass_58: 21300116
+      animated HighGrass_59: 21300118
+      animated HighGrass_6: 21300012
+      animated HighGrass_60: 21300120
+      animated HighGrass_61: 21300122
+      animated HighGrass_62: 21300124
+      animated HighGrass_63: 21300126
+      animated HighGrass_64: 21300128
+      animated HighGrass_65: 21300130
+      animated HighGrass_66: 21300132
+      animated HighGrass_67: 21300134
+      animated HighGrass_68: 21300136
+      animated HighGrass_69: 21300138
+      animated HighGrass_7: 21300014
+      animated HighGrass_70: 21300140
+      animated HighGrass_71: 21300142
+      animated HighGrass_8: 21300016
+      animated HighGrass_9: 21300018
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

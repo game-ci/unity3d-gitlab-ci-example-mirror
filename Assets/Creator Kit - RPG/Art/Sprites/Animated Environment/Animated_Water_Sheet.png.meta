@@ -222,7 +222,7 @@ TextureImporter:
       41386430: 2186277476908879412
     second: ImportLogs
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -239,9 +239,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -251,11 +254,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -273,9 +276,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -287,6 +296,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -299,6 +309,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -311,6 +322,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -323,6 +335,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -335,6 +348,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -1862,9 +1889,81 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      water_0: 21300000
+      water_1: 21300002
+      water_10: 21300020
+      water_11: 21300022
+      water_12: 21300024
+      water_13: 21300026
+      water_14: 21300028
+      water_15: 21300030
+      water_16: 21300032
+      water_17: 21300034
+      water_18: 21300036
+      water_19: 21300038
+      water_2: 21300004
+      water_20: 21300040
+      water_21: 21300042
+      water_22: 21300044
+      water_23: 21300046
+      water_24: 21300048
+      water_25: 21300050
+      water_26: 21300052
+      water_27: 21300054
+      water_28: 21300056
+      water_29: 21300058
+      water_3: 21300006
+      water_30: 21300060
+      water_31: 21300062
+      water_32: 21300064
+      water_33: 21300066
+      water_34: 21300068
+      water_35: 21300070
+      water_36: 21300072
+      water_37: 21300074
+      water_38: 21300076
+      water_39: 21300078
+      water_4: 21300008
+      water_40: 21300080
+      water_41: 21300082
+      water_42: 21300084
+      water_43: 21300086
+      water_44: 21300088
+      water_45: 21300090
+      water_46: 21300092
+      water_47: 21300094
+      water_48: 21300096
+      water_49: 21300098
+      water_5: 21300010
+      water_50: 21300100
+      water_51: 21300102
+      water_52: 21300104
+      water_53: 21300106
+      water_54: 21300108
+      water_55: 21300110
+      water_56: 21300112
+      water_57: 21300114
+      water_58: 21300116
+      water_59: 21300118
+      water_6: 21300012
+      water_60: 21300120
+      water_61: 21300122
+      water_62: 21300124
+      water_63: 21300126
+      water_64: 21300128
+      water_65: 21300130
+      water_66: 21300132
+      water_67: 21300134
+      water_68: 21300136
+      water_69: 21300138
+      water_7: 21300014
+      water_70: 21300140
+      water_71: 21300142
+      water_8: 21300016
+      water_9: 21300018
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
