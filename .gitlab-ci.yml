@@ -7,12 +7,12 @@ stages:
 # settings > CI/CD > Variables instead
 variables:
   BUILD_NAME: ExampleProjectName
-  UNITY_ACTIVATION_FILE: ./unity3d.alf
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: "0.15" # https://github.com/game-ci/docker/releases
+  IMAGE_VERSION: 3 # This will automatically use latest v1.x.x, see https://github.com/game-ci/docker/releases
   UNITY_DIR: $CI_PROJECT_DIR # this needs to be an absolute path. Defaults to the root of your tree.
-  # You can expose this in Unity via Application.version 
+  # You can expose this in Unity via Application.version
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
+  VERSION_BUILD_VAR: $CI_PIPELINE_IID
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
@@ -34,11 +34,16 @@ get-unity-version:
     - job: get-unity-version
       artifacts: true
 
+.unity_after_script: &unity_after_script
+  after_script:
+    - chmod +x ./ci/return_license.sh && ./ci/return_license.sh
+
 .cache: &cache
   cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
     paths:
       - $UNITY_DIR/Library/
+      - $UNITY_DIR/../unity-builder
 
 .license: &license
   rules:
@@ -50,21 +55,7 @@ get-unity-version:
     - *unity_before_script
     - *cache
     - *license
-
-# run this job when you need to request a license
-# you may need to follow activation steps from documentation
-get-activation-file:
-  <<: *unity_before_script
-  rules:
-    - if: '$UNITY_LICENSE == null'
-      when: manual
-  stage: prepare
-  script:
-    - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
-  artifacts:
-    paths:
-      - $UNITY_ACTIVATION_FILE
-    expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
+    - *unity_after_script
 
 .test: &test
   stage: build_and_test
@@ -80,15 +71,18 @@ get-activation-file:
     - gitlab-org
   coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
+# Tests without junit reporting results in GitLab
 test-playmode:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
+    TESTING_TYPE: NUNIT
 
 test-editmode:
   <<: *test
   variables:
     TEST_PLATFORM: editmode
+    TESTING_TYPE: NUNIT
 
 # uncomment the following blocks if you'd like to have junit reporting unity test results in gitlab
 # We currently have the following issue which prevents it from working right now, but you can give
