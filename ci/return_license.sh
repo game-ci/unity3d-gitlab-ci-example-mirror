@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if [[ -n "$UNITY_LICENSING_SERVER" ]]; then
+if [[ -n "${UNITY_LICENSING_SERVER:-}" ]]; then
   if [[ -z "${FLOATING_LICENSE:-}" ]]; then
     echo "Error: FLOATING_LICENSE environment variable is not set" >&2
     exit 1
@@ -13,7 +13,7 @@ if [[ -n "$UNITY_LICENSING_SERVER" ]]; then
     echo "Error: Failed to return floating license" >&2
     exit 1
   fi
-elif [[ -n "$UNITY_SERIAL" ]]; then
+elif [[ -n "${UNITY_SERIAL:-}" ]]; then
   # Validate required environment variables
   for var in UNITY_EMAIL UNITY_PASSWORD; do
     if [[ -z "${!var:-}" ]]; then
@@ -22,7 +22,6 @@ elif [[ -n "$UNITY_SERIAL" ]]; then
     fi
   done
 
-  echo "Returning serial license for user: $UNITY_EMAIL"
   echo "Returning serial license for user: $UNITY_EMAIL"
   project_path="../unity-builder/dist/BlankProject"
   if [[ ! -d "$project_path" ]]; then
