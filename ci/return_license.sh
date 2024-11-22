@@ -23,13 +23,20 @@ elif [[ -n "$UNITY_SERIAL" ]]; then
   done
 
   echo "Returning serial license for user: $UNITY_EMAIL"
+  echo "Returning serial license for user: $UNITY_EMAIL"
+  project_path="../unity-builder/dist/BlankProject"
+  if [[ ! -d "$project_path" ]]; then
+    echo "Error: Project path not found. Ensure before_script.sh was executed successfully" >&2
+    exit 1
+  fi
+
   unity-editor \
     -logFile /dev/stdout \
     -quit \
     -returnlicense \
     -username "$UNITY_EMAIL" \
     -password "$UNITY_PASSWORD" \
-    -projectPath "../unity-builder/dist/BlankProject" || {
+    -projectPath "$project_path" || {
       echo "Error: Failed to return serial license" >&2
       exit 1
     }
