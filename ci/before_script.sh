@@ -34,8 +34,6 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
       -username "$UNITY_EMAIL" \
       -password "$UNITY_PASSWORD" \
       -projectPath "$UNITY_BUILDER/dist/BlankProject"
-
-    # Store the exit code from the verify command
     UNITY_EXIT_CODE=$?
 
     # Check if UNITY_EXIT_CODE is 0
@@ -68,17 +66,14 @@ elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
   echo "Adding licensing server config"
 
   /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > license.txt #is this accessible in a env variable?
-  PARSEDFILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
-  FLOATING_LICENSE=$(sed -n 2p <<< "$PARSEDFILE")
-  FLOATING_LICENSE_TIMEOUT=$(sed -n 4p <<< "$PARSEDFILE")
+  UNITY_EXIT_CODE=$?
+  PARSED_FILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
+  FLOATING_LICENSE=$(sed -n 2p <<< "$PARSED_FILE")
+  FLOATING_LICENSE_TIMEOUT=$(sed -n 4p <<< "$PARSED_FILE")
   export FLOATING_LICENSE
   export FLOATING_LICENSE_TIMEOUT
 
   echo "Acquired floating license: \"$FLOATING_LICENSE\" with timeout $FLOATING_LICENSE_TIMEOUT"
-  # Store the exit code from the verify command
-    /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > license.txt #is this accessible in a env variable?
-    UNITY_EXIT_CODE=$?
-    PARSEDFILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
 else
   #
   # NO LICENSE ACTIVATION STRATEGY MATCHED
@@ -95,7 +90,6 @@ or UNITY_LICENSE. Otherwise please use UNITY_LICENSING_SERVER. See more info at 
 
   # Immediately exit as no UNITY_EXIT_CODE can be derived.
   exit 1;
-
 fi
 
 #
