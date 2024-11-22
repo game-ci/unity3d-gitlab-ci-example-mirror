@@ -1,32 +1,122 @@
 #!/usr/bin/env bash
 
-set -e
-set -x
-mkdir -p /root/.cache/unity3d
-mkdir -p /root/.local/share/unity3d/Unity/
-set +x
+set -euo pipefail
 
-unity_license_destination=/root/.local/share/unity3d/Unity/Unity_lic.ulf
-android_keystore_destination=keystore.keystore
+UNITY_BUILDER=../unity-builder
 
-
-upper_case_build_target=${BUILD_TARGET^^};
-
-if [ "$upper_case_build_target" = "ANDROID" ]
-then
-    if [ -n $ANDROID_KEYSTORE_BASE64 ]
-    then
-        echo "'\$ANDROID_KEYSTORE_BASE64' found, decoding content into ${android_keystore_destination}"
-        echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > ${android_keystore_destination}
-    else
-        echo '$ANDROID_KEYSTORE_BASE64'" env var not found, building with Unity's default debug keystore"
-    fi
+# check if unity-builder is already cloned (cached)
+if [ ! -d "$UNITY_BUILDER" ]; then
+  git clone https://github.com/game-ci/unity-builder.git --depth 1 --branch v4.1.3 $UNITY_BUILDER && \
+    cd $UNITY_BUILDER && \
+    git verify-commit v4.1.3 && \
+    cd -
 fi
 
-if [ -n "$UNITY_LICENSE" ]
-then
-    echo "Writing '\$UNITY_LICENSE' to license file ${unity_license_destination}"
-    echo "${UNITY_LICENSE}" | tr -d '\r' > ${unity_license_destination}
+if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
+  #
+  # SERIAL LICENSE MODE
+  #
+  # This will activate unity, using the serial activation process.
+  #
+  echo "Requesting activation"
+
+  # Loop the unity-editor call until the license is activated with exponential backoff and a maximum of 5 retries
+  retry_count=0
+
+  # Initialize delay to 15 seconds
+  delay=15
+
+  # Loop until UNITY_EXIT_CODE is 0 or retry count reaches 5
+  while [[ $retry_count -lt 5 ]]
+  do
+    # Activate license
+    unity-editor \
+      -logFile /dev/stdout \
+      -quit \
+      -serial "$UNITY_SERIAL" \
+      -username "$UNITY_EMAIL" \
+      -password "$UNITY_PASSWORD" \
+      -projectPath "$UNITY_BUILDER/dist/BlankProject"
+    UNITY_EXIT_CODE=$?
+
+    # Check if UNITY_EXIT_CODE is 0
+    if [[ $UNITY_EXIT_CODE -eq 0 ]]
+    then
+      echo "Activation successful"
+      break
+    else
+      # Increment retry count
+      ((retry_count++))
+
+      echo "::warning ::Activation failed, attempting retry #$retry_count"
+      echo "Activation failed, retrying in $delay seconds..."
+      sleep $delay
+
+      # Double the delay for the next iteration
+      delay=$((delay * 2))
+    fi
+  done
+
+  if [[ $retry_count -eq 5 ]]
+  then
+    echo "Activation failed after 5 retries"
+  fi
+
+elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
+  #
+  # Custom Unity License Server
+  #
+  echo "Adding licensing server config"
+
+  # Create temporary file with cleanup trap
+  license_file=$(mktemp)
+  trap 'rm -f "$license_file"' EXIT
+
+  /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > "$license_file"
+  UNITY_EXIT_CODE=$?
+
+  # More robust parsing with validation
+  PARSED_FILE=$(grep -oP '\".*?\"' < "$license_file" | tr -d '"')
+  FLOATING_LICENSE=$(sed -n 2p <<< "$PARSED_FILE")
+  FLOATING_LICENSE_TIMEOUT=$(sed -n 4p <<< "$PARSED_FILE")
+
+  # Validate parsed values
+  if [[ -z "$FLOATING_LICENSE" || -z "$FLOATING_LICENSE_TIMEOUT" ]]; then
+    echo "::error ::Failed to parse license information"
+    exit 1
+  fi
+  export FLOATING_LICENSE
+  export FLOATING_LICENSE_TIMEOUT
+
+  echo "Acquired floating license: \"$FLOATING_LICENSE\" with timeout $FLOATING_LICENSE_TIMEOUT"
 else
-    echo "'\$UNITY_LICENSE' env var not found"
+  #
+  # NO LICENSE ACTIVATION STRATEGY MATCHED
+  #
+  # This will exit since no activation strategies could be matched.
+  #
+  echo "License activation strategy could not be determined."
+  echo ""
+  echo "Visit https://game.ci/docs/github/activation for more"
+  echo "details on how to set up one of the possible activation strategies."
+
+  echo "::error ::No valid license activation strategy could be determined. Make sure to provide UNITY_EMAIL, UNITY_PASSWORD, and either a UNITY_SERIAL \
+or UNITY_LICENSE. Otherwise please use UNITY_LICENSING_SERVER. See more info at https://game.ci/docs/github/activation"
+
+  # Immediately exit as no UNITY_EXIT_CODE can be derived.
+  exit 1;
+fi
+
+#
+# Display information about the result
+#
+if [ $UNITY_EXIT_CODE -eq 0 ]; then
+  # Activation was a success
+  echo "Activation complete."
+else
+  # Activation failed so exit with the code from the license verification step
+  echo "Unclassified error occured while trying to activate license."
+  echo "Exit code was: $UNITY_EXIT_CODE"
+  echo "::error ::There was an error while trying to activate the Unity license."
+  exit $UNITY_EXIT_CODE
 fi
