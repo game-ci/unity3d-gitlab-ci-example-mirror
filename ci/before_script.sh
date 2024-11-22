@@ -69,13 +69,16 @@ elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
 
   /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > license.txt #is this accessible in a env variable?
   PARSEDFILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
-  export FLOATING_LICENSE
   FLOATING_LICENSE=$(sed -n 2p <<< "$PARSEDFILE")
   FLOATING_LICENSE_TIMEOUT=$(sed -n 4p <<< "$PARSEDFILE")
+  export FLOATING_LICENSE
+  export FLOATING_LICENSE_TIMEOUT
 
   echo "Acquired floating license: \"$FLOATING_LICENSE\" with timeout $FLOATING_LICENSE_TIMEOUT"
   # Store the exit code from the verify command
-  UNITY_EXIT_CODE=$?
+    /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > license.txt #is this accessible in a env variable?
+    UNITY_EXIT_CODE=$?
+    PARSEDFILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
 else
   #
   # NO LICENSE ACTIVATION STRATEGY MATCHED
