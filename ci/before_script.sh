@@ -6,7 +6,10 @@ UNITY_BUILDER=../unity-builder
 
 # check if unity-builder is already cloned (cached)
 if [ ! -d "$UNITY_BUILDER" ]; then
-  git clone https://github.com/game-ci/unity-builder.git --depth 1 --branch v4.1.3 $UNITY_BUILDER
+  git clone https://github.com/game-ci/unity-builder.git --depth 1 --branch v4.1.3 $UNITY_BUILDER && \
+    cd $UNITY_BUILDER && \
+    git verify-commit v4.1.3 && \
+    cd -
 fi
 
 if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
