@@ -4,10 +4,39 @@ set -euo pipefail
 
 UNITY_BUILDER=../unity-builder
 
-# check if unity-builder is already cloned (cached)
+# Function for retrying commands with exponential backoff
+retry_with_backoff() {
+  local cmd="$1"
+  local max_retries=5
+  local delay=15
+  local retry_count=0
+
+  # Temporarily disable 'set -e' for this block
+  set +e
+  while [[ $retry_count -lt $max_retries ]]; do
+    eval "$cmd"
+    local exit_code=$?
+
+    if [[ $exit_code -eq 0 ]]; then
+      echo "Command succeeded"
+      set -e
+      return 0
+    fi
+
+    ((retry_count++))
+    echo "::warning ::Command failed, attempting retry #$retry_count"
+    echo "Retrying in $delay seconds..."
+    sleep $delay
+    delay=$((delay * 2))
+  done
+  set -e
+  return 1
+}
+
+# Clone unity-builder if not cached
 if [ ! -d "$UNITY_BUILDER" ]; then
-  git clone https://github.com/game-ci/unity-builder.git --depth 1 --branch v4.1.3 $UNITY_BUILDER && \
-    cd $UNITY_BUILDER && \
+  git clone https://github.com/game-ci/unity-builder.git --depth 1 --branch v4.1.3 "$UNITY_BUILDER" && \
+    cd "$UNITY_BUILDER" && \
     git verify-commit v4.1.3 && \
     cd -
 fi
@@ -20,50 +49,18 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
   #
   echo "Requesting activation"
 
-  # Loop the unity-editor call until the license is activated with exponential backoff and a maximum of 5 retries
-  retry_count=0
-
-  # Initialize delay to 15 seconds
-  delay=15
-
-  # Temporarily disable 'set -e' for this block
-  set +e
-  # Loop until UNITY_EXIT_CODE is 0 or retry count reaches 5
-  while [[ $retry_count -lt 5 ]]
-  do
-    # Activate license
-    unity-editor \
-      -logFile /dev/stdout \
-      -quit \
-      -serial "$UNITY_SERIAL" \
-      -username "$UNITY_EMAIL" \
-      -password "$UNITY_PASSWORD" \
-      -projectPath "$UNITY_BUILDER/dist/BlankProject"
-    UNITY_EXIT_CODE=$?
-
-    # Check if UNITY_EXIT_CODE is 0
-    if [[ $UNITY_EXIT_CODE -eq 0 ]]
-    then
-      echo "Activation successful"
-      break
-    else
-      # Increment retry count
-      ((retry_count++))
-
-      echo "::warning ::Activation failed, attempting retry #$retry_count"
-      echo "Activation failed, retrying in $delay seconds..."
-      sleep $delay
-
-      # Double the delay for the next iteration
-      delay=$((delay * 2))
-    fi
-  done
-  # Re-enable 'set -e' after the block
-  set -e
-
-  if [[ $retry_count -eq 5 ]]
-  then
+  # Use retry function for unity-editor activation
+  if retry_with_backoff "unity-editor \
+    -logFile /dev/stdout \
+    -quit \
+    -serial \"$UNITY_SERIAL\" \
+    -username \"$UNITY_EMAIL\" \
+    -password \"$UNITY_PASSWORD\" \
+    -projectPath \"$UNITY_BUILDER/dist/BlankProject\""; then
+    echo "Activation successful"
+  else
     echo "Activation failed after 5 retries"
+    exit 1
   fi
 
 elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
