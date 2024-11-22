@@ -26,6 +26,8 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
   # Initialize delay to 15 seconds
   delay=15
 
+  # Temporarily disable 'set -e' for this block
+  set +e
   # Loop until UNITY_EXIT_CODE is 0 or retry count reaches 5
   while [[ $retry_count -lt 5 ]]
   do
@@ -56,6 +58,8 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
       delay=$((delay * 2))
     fi
   done
+  # Re-enable 'set -e' after the block
+  set -e
 
   if [[ $retry_count -eq 5 ]]
   then
