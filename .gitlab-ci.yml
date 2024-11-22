@@ -8,7 +8,7 @@ stages:
 variables:
   BUILD_NAME: ExampleProjectName
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: 3 # This will automatically use latest v1.x.x, see https://github.com/game-ci/docker/releases
+  IMAGE_VERSION: 3 # This will automatically use latest v3.x.x, see https://github.com/game-ci/docker/releases
   UNITY_DIR: $CI_PROJECT_DIR # this needs to be an absolute path. Defaults to the root of your tree.
   # You can expose this in Unity via Application.version
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
@@ -116,11 +116,56 @@ test-editmode:
 #   <<: *test-with-junit-reports
 #   variables:
 #     TEST_PLATFORM: playmode
+#     TESTING_TYPE: NUNIT
 
-# test-editmode-with-junit-reports:
-#   <<: *test-with-junit-reports
+# test-editmode:
+#   <<: *test
 #   variables:
 #     TEST_PLATFORM: editmode
+#     TESTING_TYPE: NUNIT
+
+# uncomment the following blocks if you'd like to have junit reporting unity test results in gitlab
+# We currently have the following issue which prevents it from working right now, but you can give
+# a hand if you're interested in this feature:
+# https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/151
+
+.test-with-junit-reports: &test-with-junit-reports
+  stage: build_and_test
+  <<: *unity_defaults
+  script:
+    # This could be made faster by adding these packages to base image or running in a separate job (and step)
+    # We could use an image with these two depencencies only and only do the saxonb-xslt command on
+    # previous job's artifacts
+    - apt-get update && apt-get install -y default-jre libsaxonb-java
+    - chmod +x ./ci/test.sh && ./ci/test.sh
+    - saxonb-xslt -s $UNITY_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$UNITY_DIR/$TEST_PLATFORM-junit-results.xml
+  artifacts:
+    when: always
+    paths:
+    # This is exported to allow viewing the Coverage Report in detail if needed
+    - $UNITY_DIR/$TEST_PLATFORM-coverage/
+    reports:
+      junit:
+        - $UNITY_DIR/$TEST_PLATFORM-junit-results.xml
+        - "$UNITY_DIR/$TEST_PLATFORM-coverage/coverage.xml"
+    expire_in: 2 weeks
+  # https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/83
+  # you may need to remove or replace these to fit your need if you are using your own runners
+  tags:
+    - gitlab-org
+  coverage: /<Linecoverage>(.*?)</Linecoverage>/
+
+test-playmode-with-junit-reports:
+  <<: *test-with-junit-reports
+  variables:
+    TEST_PLATFORM: playmode
+    TESTING_TYPE: JUNIT
+
+test-editmode-with-junit-reports:
+  <<: *test-with-junit-reports
+  variables:
+    TEST_PLATFORM: editmode
+    TESTING_TYPE: JUNIT
 
 .build: &build
   stage: build_and_test
@@ -181,7 +226,6 @@ build-android:
   image: $IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION
   variables:
     BUILD_TARGET: Android
-    BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
     BUILD_APP_BUNDLE: "false"
 
 build-android-il2cpp:
@@ -189,7 +233,6 @@ build-android-il2cpp:
   image: $IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION
   variables:
     BUILD_TARGET: Android
-    BUNDLE_VERSION_CODE: $CI_PIPELINE_IID
     BUILD_APP_BUNDLE: "false"
     SCRIPTING_BACKEND: IL2CPP
 
@@ -230,7 +273,7 @@ pages:
     paths:
       - public
   only:
-    - master
+    - $CI_DEFAULT_BRANCH
 
 workflow:
   rules:

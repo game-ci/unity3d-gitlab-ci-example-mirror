@@ -75,4 +75,19 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
+
+# Some IDE configuration folders
+.idea
 .vscode
+
+# Ignoring unity license and activation files
+*.alf
+*.ulf
+
+# Code Coverage report files
+*-results.xml
+
+# macOS files
+.DS_Store
+
+

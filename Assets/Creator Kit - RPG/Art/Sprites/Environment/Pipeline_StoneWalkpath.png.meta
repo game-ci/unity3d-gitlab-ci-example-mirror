@@ -71,12 +71,11 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMipmapLimit: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -115,7 +114,6 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 1
-  swizzle: 50462976
   cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
@@ -128,7 +126,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -141,7 +138,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -154,7 +150,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -167,7 +162,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -180,7 +174,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -193,7 +186,6 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -546,24 +538,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      StoneWalkpath_0: 21300000
       StoneWalkpath_1: 21300002
-      StoneWalkpath_10: 21300020
-      StoneWalkpath_11: 21300022
-      StoneWalkpath_12: 21300024
-      StoneWalkpath_13: 21300026
       StoneWalkpath_14: 21300028
-      StoneWalkpath_15: 21300030
-      StoneWalkpath_2: 21300004
-      StoneWalkpath_3: 21300006
-      StoneWalkpath_4: 21300008
-      StoneWalkpath_5: 21300010
       StoneWalkpath_6: 21300012
-      StoneWalkpath_7: 21300014
+      StoneWalkpath_11: 21300022
+      StoneWalkpath_15: 21300030
       StoneWalkpath_8: 21300016
+      StoneWalkpath_5: 21300010
+      StoneWalkpath_4: 21300008
+      StoneWalkpath_7: 21300014
       StoneWalkpath_9: 21300018
-  mipmapLimitGroupName: 
+      StoneWalkpath_0: 21300000
+      StoneWalkpath_13: 21300026
+      StoneWalkpath_10: 21300020
+      StoneWalkpath_12: 21300024
+      StoneWalkpath_3: 21300006
+      StoneWalkpath_2: 21300004
+  spritePackingTag: 
   pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
