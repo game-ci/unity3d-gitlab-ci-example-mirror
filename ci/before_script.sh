@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 UNITY_BUILDER=../unity-builder
 
 # check if unity-builder is already cloned (cached)

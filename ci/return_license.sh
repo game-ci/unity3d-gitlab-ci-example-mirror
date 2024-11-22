@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 if [[ -n "$UNITY_LICENSING_SERVER" ]]; then
   #
   # Return any floating license used.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
+set -euo pipefail
 
 echo "Testing for $TEST_PLATFORM, Unit Type: $TESTING_TYPE"
 
