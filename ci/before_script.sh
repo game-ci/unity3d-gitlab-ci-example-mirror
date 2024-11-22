@@ -65,11 +65,23 @@ elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
   #
   echo "Adding licensing server config"
 
-  /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > license.txt #is this accessible in a env variable?
+  # Create temporary file with cleanup trap
+  license_file=$(mktemp)
+  trap 'rm -f "$license_file"' EXIT
+
+  /opt/unity/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client --acquire-floating > "$license_file"
   UNITY_EXIT_CODE=$?
-  PARSED_FILE=$(grep -oP '\".*?\"' < license.txt | tr -d '"')
+
+  # More robust parsing with validation
+  PARSED_FILE=$(grep -oP '\".*?\"' < "$license_file" | tr -d '"')
   FLOATING_LICENSE=$(sed -n 2p <<< "$PARSED_FILE")
   FLOATING_LICENSE_TIMEOUT=$(sed -n 4p <<< "$PARSED_FILE")
+
+  # Validate parsed values
+  if [[ -z "$FLOATING_LICENSE" || -z "$FLOATING_LICENSE_TIMEOUT" ]]; then
+    echo "::error ::Failed to parse license information"
+    exit 1
+  fi
   export FLOATING_LICENSE
   export FLOATING_LICENSE_TIMEOUT
 
