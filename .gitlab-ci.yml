@@ -47,7 +47,7 @@ get-unity-version:
 
 .license: &license
   rules:
-    - if: '$UNITY_SERIAL != null'
+    - if: '$UNITY_LICENSE != null || $UNITY_SERIAL != null'
       when: always
 
 .unity_defaults: &unity_defaults
