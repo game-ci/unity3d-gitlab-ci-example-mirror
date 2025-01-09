@@ -30,6 +30,7 @@ retry_with_backoff() {
     delay=$((delay * 2))
   done
   set -e
+  echo "Activation failed after $max_retries retries."
   return 1
 }
 
@@ -47,21 +48,17 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
   #
   # This will activate unity, using the serial activation process.
   #
-  echo "Requesting activation"
+  echo "Requesting activation by Serial Number"
 
-  # Use retry function for unity-editor activation
-  if retry_with_backoff "unity-editor \
-    -logFile /dev/stdout \
-    -quit \
-    -serial \"$UNITY_SERIAL\" \
-    -username \"$UNITY_EMAIL\" \
-    -password \"$UNITY_PASSWORD\" \
-    -projectPath \"$UNITY_BUILDER/dist/BlankProject\""; then
-    echo "Activation successful"
-  else
-    echo "Activation failed after 5 retries"
-    exit 1
-  fi
+  retry_with_backoff "unity-editor \
+   -logFile /dev/stdout \
+   -quit \
+   -serial \"$UNITY_SERIAL\" \
+   -username \"$UNITY_EMAIL\" \
+   -password \"$UNITY_PASSWORD\" \
+   -projectPath \"$UNITY_BUILDER/dist/BlankProject\""
+
+  UNITY_EXIT_CODE=$? 
 
 elif [[ -n "$UNITY_LICENSING_SERVER" ]]; then
   #
